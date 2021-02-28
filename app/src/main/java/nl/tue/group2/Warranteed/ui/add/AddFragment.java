@@ -1,4 +1,4 @@
-package nl.tue.group2.Warranteed.ui.dashboard;
+package nl.tue.group2.Warranteed.ui.add;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProvider;
 
 import nl.tue.group2.Warranteed.R;
 
-public class DashboardFragment extends Fragment {
+public class AddFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
+    private AddViewModel addViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+        addViewModel =
+                new ViewModelProvider(this).get(AddViewModel.class);
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
         final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        addViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

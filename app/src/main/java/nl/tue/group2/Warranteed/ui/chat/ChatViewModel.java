@@ -1,16 +1,16 @@
-package nl.tue.group2.Warranteed.ui.dashboard;
+package nl.tue.group2.Warranteed.ui.chat;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class DashboardViewModel extends ViewModel {
+public class ChatViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public DashboardViewModel() {
+    public ChatViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        mText.setValue("This is chat fragment");
     }
 
     public LiveData<String> getText() {
