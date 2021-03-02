@@ -22,14 +22,9 @@ public class ChatFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         chatViewModel =
                 new ViewModelProvider(this).get(ChatViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        View root = inflater.inflate(R.layout.fragment_add, container, false);
         final TextView textView = root.findViewById(R.id.text_dashboard);
-        chatViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        chatViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 }

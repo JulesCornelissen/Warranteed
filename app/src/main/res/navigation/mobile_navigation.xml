@@ -15,7 +15,7 @@
         android:id="@+id/navigation_add"
         android:name="nl.tue.group2.Warranteed.ui.add.AddFragment"
         android:label="@string/title_add"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_add" />
 
     <fragment
         android:id="@+id/navigation_store"
