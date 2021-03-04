@@ -1,14 +1,18 @@
 package nl.tue.group2.Warranteed;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import androidx.fragment.app.Fragment;
+
+import nl.tue.group2.Warranteed.ui.add.AddFragment;
+import nl.tue.group2.Warranteed.ui.chat.ChatFragment;
+import nl.tue.group2.Warranteed.ui.home.HomeFragment;
+import nl.tue.group2.Warranteed.ui.store.StoreFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,15 +20,36 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_add, R.id.navigation_store, R.id.navigation_chat)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);
+        BottomNavigationView navView = findViewById(R.id.bottom_nav);
+        navView.setOnNavigationItemSelectedListener(navListener);
+        //rotate device
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new HomeFragment()).commit();
+        }
     }
 
+    @SuppressLint("NonConstantResourceId")
+    private final BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            item -> {
+                Fragment selectedFragment = null;  //make empty fragment
+                switch (item.getItemId()) {     //get the current fragment id
+                    case R.id.navigation_home:
+                        selectedFragment = new HomeFragment();
+                        break;
+                    case R.id.navigation_add:
+                        selectedFragment = new AddFragment();
+                        break;
+                    case R.id.navigation_store:
+                        selectedFragment = new StoreFragment();
+                        break;
+                    case R.id.navigation_chat:
+                        selectedFragment = new ChatFragment();
+                        break;
+                }
+                //Display the selected fragment
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        selectedFragment).commit();
+                return true;
+            };
 }
