@@ -108,6 +108,7 @@ public class LoginActivity extends AppCompatActivity {
             loginViewModel.login(usernameEditText.getText().toString(),
                     passwordEditText.getText().toString());
         });
+
         registerButton.setEnabled(true);
         registerButton.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, Register.class);
