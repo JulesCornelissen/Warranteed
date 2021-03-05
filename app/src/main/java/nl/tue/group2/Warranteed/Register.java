@@ -24,8 +24,13 @@ public class Register extends AppCompatActivity {
 
         signupButton.setEnabled(true);
         signupButton.setOnClickListener(v -> {
-            Intent intent = new Intent(Register.this, MainActivity.class);
-            startActivity(intent);
+            Intent intentCustomer = new Intent(Register.this, MainActivity.class);
+            Intent intentStore = new Intent(Register.this, HomeStore.class);
+            if (cb_cust.isChecked()) {
+                startActivity(intentCustomer);
+            } else {
+                startActivity(intentStore);
+            }
         });
 
         cb_cust.setOnCheckedChangeListener((buttonView, isChecked) -> {
