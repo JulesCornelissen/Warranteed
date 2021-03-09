@@ -22,9 +22,15 @@
     <string name="store_owner">Store owner</string>
     <string name="checkbox">I am a:</string>
     <string name="warranties">Warranties</string>
-    <string name="store">Coolgreen</string>
+    <string name="store">CoolGreen</string>
     <string name="edit">Edit profile</string>
     <string name="start_chat">Start a chat</string>
+    <string name="description_store">Description CoolGreen:</string>
+    <string name="picture">Pictures CoolGreen:</string>
+    <string name="information">Information CoolGreen:</string>
+    <string name="shopinfo">Electronics shop based in the Netherlands</string>
+    <string name="contactinfo1">E-mail       - example@coolgreen.com</string>
+    <string name="contactinfo2">Phone number - +31 6 1234 5678</string>
     <string-array name="spinner_options">
         <item> All </item>
         <item> Valid </item>
