@@ -4,12 +4,10 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import java.util.Random;
 
 import nl.tue.group2.Warranteed.R;
 
@@ -19,7 +17,17 @@ public class NotificationHandler extends AppCompatActivity {
     private final String channelName;
     private final String channelDescription;
     private Context mContext;
+    private int notifID = 0; // temporary solution, probably overwrites old notifications when
+                             // restarting the app.
 
+    /**
+     * Notification handler to display notifications to the user.
+     *
+     * @param channelID The ID of the channel on which these notifications should be displayed
+     * @param channelName The name of the channel
+     * @param channelDescription
+     * @param mContext
+     */
     public NotificationHandler(String channelID, String channelName, String channelDescription, Context mContext) {
         this.channelID = channelID;
         this.channelName = channelName;
@@ -28,6 +36,9 @@ public class NotificationHandler extends AppCompatActivity {
         createNotificationChannel();
     }
 
+    /**
+     * Starts the notification channel for the app
+     */
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -42,18 +53,23 @@ public class NotificationHandler extends AppCompatActivity {
         }
     }
 
-    public void sendNotification(View view) {
-        Random r = new Random();
-        int notifID = r.nextInt();
+    /**
+     * Creates a notification on the device running the app with the specified title and message.
+     *
+     * @param notificationTitle The title of the notification
+     * @param notificationMessage The message contents of the notification
+     */
+    public void sendNotification(String notificationTitle, String notificationMessage) {
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this.mContext, this.channelID)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                .setContentTitle("Some notifc" + notifID)
-                .setContentText("Hello World!");
+                .setContentTitle(notificationTitle)
+                .setContentText(notificationMessage);
 //                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this.mContext);
 
-// notificationId is a unique int for each notification that you must define
-        notificationManager.notify(notifID, builder.build());
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(notifID++, builder.build());
 
     }
 

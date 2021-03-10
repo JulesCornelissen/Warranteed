@@ -11,6 +11,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.util.Random;
+
 import nl.tue.group2.Warranteed.notifications.NotificationHandler;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,8 +42,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
     }
 
+
+    /**
+     * A small sample notification sender/tester. Linked to a button on the mainview.
+     * @param view The view that gets passed from the button, required for the button.
+     */
     public void sendNotification(View view) {
-        this.notificationHandler.sendNotification(view);
+        Random r = new Random();
+        int notifID = r.nextInt();
+        this.notificationHandler.sendNotification("Warranteed", Integer.toString(notifID));
     }
 
 }
