@@ -21,4 +21,6 @@
     <string name="cust">Customer</string>
     <string name="store_owner">Store owner</string>
     <string name="checkbox">I am a:</string>
+    <string name="channel_description">Warranteed</string>
+    <string name="channel_name">general_notifications</string>
 </resources>
