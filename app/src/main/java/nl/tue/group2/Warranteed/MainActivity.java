@@ -9,6 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import nl.tue.group2.Warranteed.firebase.FireBase;
 import nl.tue.group2.Warranteed.ui.add.AddFragment;
 import nl.tue.group2.Warranteed.ui.chat.ChatFragment;
 import nl.tue.group2.Warranteed.ui.home.HomeFragment;
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FireBase instance = new FireBase(); // Creating Firebase instance
+        instance.readData(); // Own class that calls data from database as test. to be changed.
         BottomNavigationView navView = findViewById(R.id.bottom_nav);
         navView.setOnNavigationItemSelectedListener(navListener);
         //rotate device
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
         }
+
     }
 
     @SuppressLint("NonConstantResourceId")
