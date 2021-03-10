@@ -1,4 +1,4 @@
-package nl.tue.group2.Warranteed;
+package nl.tue.group2.Warranteed.ui.add;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;

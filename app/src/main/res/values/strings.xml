@@ -23,4 +23,14 @@
     <string name="checkbox">I am a:</string>
     <string name="channel_description">Warranteed</string>
     <string name="channel_name">general_notifications</string>
+    <string name="warranties">Warranties</string>
+    <string name="store">Coolgreen</string>
+    <string name="edit">Edit profile</string>
+    <string name="start_chat">Start a chat</string>
+    <string-array name="spinner_options">
+        <item> All </item>
+        <item> Valid </item>
+        <item> Expiring </item>
+        <item> Void </item>
+    </string-array>
 </resources>
