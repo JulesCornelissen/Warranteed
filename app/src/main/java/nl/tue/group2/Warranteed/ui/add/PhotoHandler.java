@@ -10,6 +10,8 @@ import android.provider.MediaStore;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import androidx.fragment.app.Fragment;
+
 /**
  * Created 3/2/2021 by SuperMartijn642
  */
@@ -24,7 +26,7 @@ public class PhotoHandler {
      * @param activity the currently active activity
      * @return true if the switch to a gallery app is successful
      */
-    public static boolean requestSelectPhoto(Activity activity) {
+    public static boolean requestSelectPhoto(Fragment activity) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         try {
@@ -37,7 +39,7 @@ public class PhotoHandler {
     }
 
     /**
-     * Checks whether the given request code is a result of calling {@link #requestSelectPhoto(Activity)}
+     * Checks whether the given request code is a result of calling {@link #requestSelectPhoto(Fragment)}
      * @param requestCode the request code
      * @return true if the request code corresponds to the select photo code
      */
@@ -46,7 +48,7 @@ public class PhotoHandler {
     }
 
     /**
-     * Gets the selected image from the intent data given by {@link Activity#onActivityResult(int, int, Intent)}
+     * Gets the selected image from the intent data given by {@link Fragment#onActivityResult(int, int, Intent)}
      * @param activity    the currently active activity
      * @param requestCode the request code
      * @param resultCode  the result code
@@ -70,7 +72,7 @@ public class PhotoHandler {
      * @param activity the currently active activity
      * @return true if the switch to the camera app is successful
      */
-    public static boolean requestImageCapture(Activity activity) {
+    public static boolean requestImageCapture(Fragment activity) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
             activity.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -82,7 +84,7 @@ public class PhotoHandler {
     }
 
     /**
-     * Checks whether the given request code is a result of calling {@link #requestImageCapture(Activity)}
+     * Checks whether the given request code is a result of calling {@link #requestImageCapture(Fragment)}
      * @param requestCode the request code
      * @return true if the request code corresponds to the image capture code
      */
@@ -91,7 +93,7 @@ public class PhotoHandler {
     }
 
     /**
-     * Gets the captured image from the intent data given by {@link Activity#onActivityResult(int, int, Intent)}
+     * Gets the captured image from the intent data given by {@link Fragment#onActivityResult(int, int, Intent)}
      * @param requestCode the request code
      * @param resultCode  the result code
      * @param data        the intent data

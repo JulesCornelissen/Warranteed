@@ -3,18 +3,15 @@ package nl.tue.group2.Warranteed;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
-import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import java.util.Random;
 
-import nl.tue.group2.Warranteed.notifications.NotificationHandler;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import nl.tue.group2.Warranteed.firebase.FireBase;
+import nl.tue.group2.Warranteed.notifications.NotificationHandler;
 import nl.tue.group2.Warranteed.ui.add.AddFragment;
 import nl.tue.group2.Warranteed.ui.chat.ChatFragment;
 import nl.tue.group2.Warranteed.ui.home.HomeFragment;
@@ -81,5 +78,4 @@ public class MainActivity extends AppCompatActivity {
         int notifID = r.nextInt();
         this.notificationHandler.sendNotification("Warranteed", Integer.toString(notifID));
     }
-
 }

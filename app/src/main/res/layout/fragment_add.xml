@@ -155,6 +155,7 @@
         app:layout_constraintBottom_toTopOf="@id/horizontalGuideline8" />
 
     <Button
+        android:id="@+id/takeImageButton"
         style="@style/Button"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -165,6 +166,7 @@
         app:layout_constraintBottom_toTopOf="@id/horizontalGuideline13" />
 
     <Button
+        android:id="@+id/selectImageButton"
         style="@style/Button"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -186,7 +188,7 @@
         app:layout_constraintBottom_toTopOf="@id/horizontalGuideline18" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/ic_launcher_foreground"
