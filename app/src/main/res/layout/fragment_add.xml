@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.add.AddFragment">
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/upload_screen_top"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/horizontalGuideline20" />
+
     <EditText
         android:id="@+id/nameField"
         style="@style/TextField"
@@ -51,21 +60,17 @@
         app:layout_constraintBottom_toTopOf="@id/horizontalGuideline8" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="Upload a receipt"
         android:textAlignment="viewStart"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.035" />
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toRightOf="@id/verticalGuideline5"
+        app:layout_constraintRight_toLeftOf="@id/verticalGuideline2"
+        app:layout_constraintTop_toBottomOf="@id/horizontalGuideline19"
+        app:layout_constraintBottom_toTopOf="@id/horizontalGuideline5" />
 
     <TextView
         android:layout_width="0dp"
@@ -378,5 +383,19 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.93" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalGuideline19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.02" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalGuideline20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
