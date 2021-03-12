@@ -1,5 +1,6 @@
 package nl.tue.group2.Warranteed;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,11 +9,17 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Register extends AppCompatActivity {
     CheckBox cb_cust, cb_store;
     EditText cb_Email, cb_Password, cb_Password2;
-
+    private FirebaseAuth mAuth;
 
 
     @Override
@@ -25,6 +32,7 @@ public class Register extends AppCompatActivity {
         cb_Email = findViewById(R.id.username);
         cb_Password = findViewById(R.id.reg_password1);
         cb_Password2 = findViewById(R.id.reg_password2);
+        mAuth = FirebaseAuth.getInstance();
 
         final Button signupButton = findViewById(R.id.signup);
 
@@ -37,16 +45,25 @@ public class Register extends AppCompatActivity {
             String password1 = cb_Password.getText().toString().trim();
             String password2 = cb_Password2.getText().toString().trim();
 
-
             if (!isDetailsValid(Email,password1,password2)) {
                 return;
             }
 
-            if (cb_cust.isChecked()) {
-                startActivity(intentCustomer);
-            } else {
-                startActivity(intentStore);
-            }
+            mAuth.createUserWithEmailAndPassword(Email,password1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        if (cb_cust.isChecked()) {
+                            startActivity(intentCustomer);
+                        } else {
+                            startActivity(intentStore);
+                        }
+                    }
+                    else{
+                        cb_Email.setError("email is not unique");
+                    }
+                }
+            });
         });
 
         cb_cust.setOnCheckedChangeListener((buttonView, isChecked) -> {
