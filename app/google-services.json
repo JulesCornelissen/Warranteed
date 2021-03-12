@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "580694719270",
+    "project_id": "warrenteed-60226",
+    "storage_bucket": "warrenteed-60226.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580694719270:android:53fafcdd6b33314aa55fe7",
+        "android_client_info": {
+          "package_name": "nl.tue.group2.Warranteed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580694719270-6abmj79ektuvj863t3slqkpi2gosoubk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBuQaHKMT0uZDGxTS5Ug7TJVDyeh1ZOp0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580694719270-6abmj79ektuvj863t3slqkpi2gosoubk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
