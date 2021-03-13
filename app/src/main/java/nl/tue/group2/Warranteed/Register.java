@@ -88,11 +88,14 @@ public class Register extends AppCompatActivity {
             cb_Email.setError("email is required");
             main = false;
         }
-        else if (!Email.contains("@")) {
+        else if (!Email.contains("@") || !(Email.endsWith(".nl") || (Email.endsWith(".com")))) {
             cb_Email.setError("email is incorrect");
             main = false;
         }
-
+        else if (Email.indexOf("@")==0  || (Email.indexOf("@")+1==Email.indexOf("."))) {
+            cb_Email.setError("email is incorrect");
+            main = false;
+        }
         if (TextUtils.isEmpty(password)) {
             cb_Password.setError("password is required");
             main = false;
