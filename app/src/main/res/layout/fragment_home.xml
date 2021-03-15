@@ -14,9 +14,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="167dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="195dp"
         android:fontFamily="sans-serif-medium"
         android:text="@string/warranties"
         android:textAlignment="center"
@@ -24,18 +24,16 @@
         android:textColor="@color/white"
         android:textSize="40sp" />
 
-    TODO: RecyclerView instead of ListView
-    <ListView
-        android:id="@+id/list_warranties"
-        android:layout_width="300dp"
-        android:layout_height="503dp"
-        android:layout_below="@+id/text_warranties"
-        android:background="@color/white"
+    <EditText
+        android:id="@+id/search_bar"
+        android:autofillHints="Search receipts"
+        android:inputType="text"
+        android:layout_width="338dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:padding="40dp"
-        android:layout_marginTop="100dp" />
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="67dp" />
 
     <Spinner
         android:id="@+id/spinner1"
@@ -43,10 +41,23 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="43dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="120dp"
         android:background="@android:drawable/btn_dropdown"
         android:entries="@array/spinner_options"
         android:spinnerMode="dropdown" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="300dp"
+        android:layout_height="503dp"
+        android:layout_below="@+id/text_warranties"
+        android:background="@color/purple_200"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        android:scrollbars="vertical"
+        android:layout_marginTop="100dp" />
 
 </RelativeLayout>

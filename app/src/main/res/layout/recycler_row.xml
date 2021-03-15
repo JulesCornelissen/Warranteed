@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="15dp"
+        android:layout_margin="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="128dp">
+
+            <TextView
+                android:id="@+id/textView_product"
+                android:layout_width="148dp"
+                android:layout_height="26dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:text="Product"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.07999998" />
+
+            <TextView
+                android:id="@+id/textView_warranty"
+                android:layout_width="69dp"
+                android:layout_height="19dp"
+                android:layout_marginTop="16dp"
+                android:text="Warranty:"
+                app:layout_constraintStart_toStartOf="@+id/textView_product"
+                app:layout_constraintTop_toBottomOf="@+id/textView_product" />
+
+            <TextView
+                android:id="@+id/textView_warranty_filled"
+                android:layout_width="62dp"
+                android:layout_height="17dp"
+                android:layout_marginTop="8dp"
+                android:text="expiring"
+                app:layout_constraintStart_toStartOf="@+id/textView_warranty"
+                app:layout_constraintTop_toBottomOf="@+id/textView_warranty" />
+
+            <TextView
+                android:id="@+id/textView_expiring"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:text="Expiring:"
+                app:layout_constraintStart_toEndOf="@+id/textView_warranty"
+                app:layout_constraintTop_toBottomOf="@+id/textView_product" />
+
+            <TextView
+                android:id="@+id/textView_store"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="16dp"
+                android:text="Store:"
+                app:layout_constraintStart_toEndOf="@+id/textView_expiring"
+                app:layout_constraintTop_toBottomOf="@+id/textView_product" />
+
+            <TextView
+                android:id="@+id/textView_expiring_filled"
+                android:layout_width="68dp"
+                android:layout_height="17dp"
+                android:layout_marginTop="8dp"
+                android:text="01-01-01"
+                app:layout_constraintStart_toStartOf="@+id/textView_expiring"
+                app:layout_constraintTop_toBottomOf="@+id/textView_expiring" />
+
+            <TextView
+                android:id="@+id/textView_store_filled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Coolgreen"
+                app:layout_constraintStart_toStartOf="@+id/textView_store"
+                app:layout_constraintTop_toBottomOf="@+id/textView_store" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
