@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 getString(R.string.channel_description),
                 this);
 
+        getSupportActionBar().hide();
     }
 
     @SuppressLint("NonConstantResourceId")
