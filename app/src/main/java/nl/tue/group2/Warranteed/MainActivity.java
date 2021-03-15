@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 this);
 
 
+        getSupportActionBar().hide();
     }
 
     @SuppressLint("NonConstantResourceId")
