@@ -2,7 +2,9 @@ package nl.tue.group2.Warranteed;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -21,8 +23,10 @@ public class MainActivity extends AppCompatActivity {
 
     private NotificationHandler notificationHandler;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FireBase instance = new FireBase(); // Creating Firebase instance
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 getString(R.string.channel_name),
                 getString(R.string.channel_description),
                 this);
+
 
     }
 
