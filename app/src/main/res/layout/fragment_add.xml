@@ -155,6 +155,7 @@
         app:layout_constraintBottom_toTopOf="@id/horizontalGuideline14" />
 
     <Button
+        android:id="@+id/clearButton"
         style="@style/CloseButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -187,6 +188,7 @@
         app:layout_constraintBottom_toTopOf="@id/horizontalGuideline15" />
 
     <Button
+        android:id="@+id/submitReceiptButton"
         style="@style/Button"
         android:layout_width="0dp"
         android:layout_height="0dp"

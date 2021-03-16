@@ -3,6 +3,7 @@
     <style name="TextField" parent="TextAppearance.AppCompat">
         <item name="android:background">@drawable/text_field_border</item>
         <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
     </style>
     <style name="Button" parent="TextAppearance.AppCompat">
         <item name="android:background">@drawable/round_button</item>
