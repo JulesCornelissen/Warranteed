@@ -1,12 +1,18 @@
 package nl.tue.group2.Warranteed.ui.add;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +22,8 @@ import nl.tue.group2.Warranteed.R;
 public class AddFragment extends Fragment {
 
     private Bitmap receiptImage;
+    private Calendar purchaseDate;
+    private Calendar expirationDate;
 
     @Nullable
     @Override
@@ -41,6 +49,35 @@ public class AddFragment extends Fragment {
         );
         this.getActivity().findViewById(R.id.selectImageButton).setOnClickListener(
                 v -> PhotoHandler.requestSelectPhoto(this)
+        );
+
+        this.purchaseDate = Calendar.getInstance();
+        this.getActivity().findViewById(R.id.purchaseDateField).setOnClickListener(
+                v -> {
+                    DatePickerDialog.OnDateSetListener listener = (v2, year, month, day) -> {
+                        this.purchaseDate.set(Calendar.YEAR, year);
+                        this.purchaseDate.set(Calendar.MONTH, month);
+                        this.purchaseDate.set(Calendar.DAY_OF_MONTH, day);
+                        ((EditText) v).setText(new SimpleDateFormat("dd/MM/yyyy", Locale.US).format(this.purchaseDate.getTime()));
+                    };
+                    DatePickerDialog dialog = new DatePickerDialog(this.getContext(), listener, this.purchaseDate.get(Calendar.YEAR), this.purchaseDate.get(Calendar.MONTH), this.purchaseDate.get(Calendar.DAY_OF_MONTH));
+                    dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                    dialog.show();
+                }
+        );
+        this.expirationDate = Calendar.getInstance();
+        this.getActivity().findViewById(R.id.expirationDateField).setOnClickListener(
+                v -> {
+                    DatePickerDialog.OnDateSetListener listener = (v2, year, month, day) -> {
+                        this.expirationDate.set(Calendar.YEAR, year);
+                        this.expirationDate.set(Calendar.MONTH, month);
+                        this.expirationDate.set(Calendar.DAY_OF_MONTH, day);
+                        ((EditText) v).setText(new SimpleDateFormat("dd/MM/yyyy", Locale.US).format(this.expirationDate.getTime()));
+                    };
+                    DatePickerDialog dialog = new DatePickerDialog(this.getContext(), listener, this.expirationDate.get(Calendar.YEAR), this.expirationDate.get(Calendar.MONTH), this.expirationDate.get(Calendar.DAY_OF_MONTH));
+                    dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                    dialog.show();
+                }
         );
     }
 
