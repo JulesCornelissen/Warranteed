@@ -2,17 +2,12 @@ package nl.tue.group2.Warranteed;
 
 public class Receipt {
 
-    // Variable to store data corresponding
-    // to product name in database
+    //variables for holding results
     private String product;
-
-    // Variable to store data corresponding
-    // to lastname keyword in database
     private String date;
-
-    // Variable to store data corresponding
-    // to state keyword in database
     private String state;
+    private String pdate;
+    private String duration;
 
     // Mandatory empty constructor
     // for use of FirebaseUI
@@ -42,5 +37,22 @@ public class Receipt {
     public void setState(String warranty_state)
     {
         this.state = warranty_state;
+    }
+    public String getPdate()
+    {
+        return pdate;
+    }
+    public void setPdate(String date)
+    {
+        this.pdate = date;
+    }
+
+    public String getDuration()
+    {
+        return duration;
+    }
+    public void setDuration(String years)
+    {
+        this.duration = years;
     }
 }

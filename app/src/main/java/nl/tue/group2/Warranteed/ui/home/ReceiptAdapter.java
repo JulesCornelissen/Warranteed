@@ -3,6 +3,7 @@ package nl.tue.group2.Warranteed.ui.home;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -10,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.Receipt;
 
 public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAdapter.Viewholder> {
+    private OnItemClickListener listener;
 
     public ReceiptAdapter(@NonNull FirestoreRecyclerOptions<Receipt> options) {
         super(options);
@@ -31,9 +34,7 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
         holder.view_state.setText(model.getState());
     }
 
-    // Function to tell the class about the Card view (here
-    // "person.xml")in
-    // which the data will be shown
+    //Method to tell the class about the cardView
     @NonNull
     @Override
     public Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -46,13 +47,38 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
     class Viewholder extends RecyclerView.ViewHolder {
         //create textviews
         TextView view_product, view_date, view_state;
+        ImageButton bt_info;
 
         public Viewholder(View itemView) {
             super(itemView);
-            //link textview to approptiate id
-            view_product = itemView.findViewById(R.id.textView_product);
-            view_state= itemView.findViewById(R.id.textView_expiring_filled);
-            view_date = itemView.findViewById(R.id.textView_warranty_filled);
+            //link textview to appropriate id
+            view_product = itemView.findViewById(R.id.receiptInfo_product);
+            view_state= itemView.findViewById(R.id.textView_warranty_filled);
+            view_date = itemView.findViewById(R.id.textView_expiring_filled);
+            bt_info = itemView.findViewById(R.id.imageButton_info);
+
+            bt_info.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    //check if position is not -1 and if listener is non empty
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick(getSnapshots().getSnapshot(position), position);
+                    }
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(DocumentSnapshot documentSnapshot, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.listener = onItemClickListener;
+    }
+
+    public void delete(int position){
+        getSnapshots().getSnapshot(position).getReference().delete();
     }
 }

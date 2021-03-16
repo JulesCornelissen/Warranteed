@@ -36,6 +36,7 @@
     <string name="contactinfo3">Address - CoolGreenstreet 12, 0000CG Rotterdam, Netherlands</string>
     <string name="purchaseinfo">Your purchases at CoolGreen</string>
     <string name="linkshop">Link to the shop CoolGreen: https://www.coolblue.nl"</string>
+    <string name="sample_date">01\–01\-21</string>
     <string-array name="spinner_options">
         <item> All </item>
         <item> Valid </item>

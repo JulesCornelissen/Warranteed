@@ -20,7 +20,7 @@
             android:layout_height="128dp">
 
             <TextView
-                android:id="@+id/textView_product"
+                android:id="@+id/receiptInfo_product"
                 android:layout_width="148dp"
                 android:layout_height="26dp"
                 android:layout_marginStart="24dp"
@@ -40,8 +40,8 @@
                 android:layout_height="19dp"
                 android:layout_marginTop="16dp"
                 android:text="Warranty:"
-                app:layout_constraintStart_toStartOf="@+id/textView_product"
-                app:layout_constraintTop_toBottomOf="@+id/textView_product" />
+                app:layout_constraintStart_toStartOf="@+id/receiptInfo_product"
+                app:layout_constraintTop_toBottomOf="@+id/receiptInfo_product" />
 
             <TextView
                 android:id="@+id/textView_warranty_filled"
@@ -49,6 +49,8 @@
                 android:layout_height="17dp"
                 android:layout_marginTop="8dp"
                 android:text="expiring"
+                android:textColor="@color/black"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/textView_warranty"
                 app:layout_constraintTop_toBottomOf="@+id/textView_warranty" />
 
@@ -60,7 +62,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Expiring:"
                 app:layout_constraintStart_toEndOf="@+id/textView_warranty"
-                app:layout_constraintTop_toBottomOf="@+id/textView_product" />
+                app:layout_constraintTop_toBottomOf="@+id/receiptInfo_product" />
 
             <TextView
                 android:id="@+id/textView_store"
@@ -70,14 +72,16 @@
                 android:layout_marginTop="16dp"
                 android:text="Store:"
                 app:layout_constraintStart_toEndOf="@+id/textView_expiring"
-                app:layout_constraintTop_toBottomOf="@+id/textView_product" />
+                app:layout_constraintTop_toBottomOf="@+id/receiptInfo_product" />
 
             <TextView
                 android:id="@+id/textView_expiring_filled"
                 android:layout_width="68dp"
                 android:layout_height="17dp"
                 android:layout_marginTop="8dp"
-                android:text="01-01-01"
+                android:text="@string/sample_date"
+                android:textColor="@color/black"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/textView_expiring"
                 app:layout_constraintTop_toBottomOf="@+id/textView_expiring" />
 
@@ -86,9 +90,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Coolgreen"
+                android:text="@string/store"
+                android:textStyle="bold"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="@+id/textView_store"
                 app:layout_constraintTop_toBottomOf="@+id/textView_store" />
+
+            <ImageButton
+                android:id="@+id/imageButton_info"
+                android:layout_width="47dp"
+                android:layout_height="51dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/ic_baseline_receipt_24"
+                android:contentDescription="@string/store"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
