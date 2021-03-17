@@ -61,16 +61,16 @@ public class HomeFragment extends Fragment {
                 Receipt receipt = documentSnapshot.toObject(Receipt.class);
                 //get variables using get methods from Receipt
                 String product = receipt.getProduct();
-                String edate = receipt.getDate();
-                String pdate = receipt.getPdate();
+                String expiration_date = receipt.getExpiration_date();
+                String purchase_date = receipt.getPurchase_date();
                 String duration = receipt.getDuration();
 
                 //create intent
                 Intent intent = new Intent(getActivity(), ReceiptInfo.class);
                 //give intent extra information
                 intent.putExtra("product", product);
-                intent.putExtra("edate", edate);
-                intent.putExtra("pdate", pdate);
+                intent.putExtra("expiration_date", expiration_date);
+                intent.putExtra("purchase_date", purchase_date);
                 intent.putExtra("duration", duration);
                 //start new activity (ReceiptInfo)
                 startActivity(intent);

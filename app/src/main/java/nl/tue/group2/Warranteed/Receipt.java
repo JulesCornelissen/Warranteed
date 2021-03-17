@@ -4,9 +4,9 @@ public class Receipt {
 
     //variables for holding results
     private String product;
-    private String date;
+    private String expiration_date;
     private String state;
-    private String pdate;
+    private String purchase_date;
     private String duration;
 
     // Mandatory empty constructor
@@ -22,13 +22,13 @@ public class Receipt {
     {
         this.product = name;
     }
-    public String getDate()
+    public String getExpiration_date()
     {
-        return date;
+        return expiration_date;
     }
-    public void setDate(String warranty_date)
+    public void setExpiration_date(String warranty_date)
     {
-        this.date = warranty_date;
+        this.expiration_date = warranty_date;
     }
     public String getState()
     {
@@ -38,13 +38,13 @@ public class Receipt {
     {
         this.state = warranty_state;
     }
-    public String getPdate()
+    public String getPurchase_date()
     {
-        return pdate;
+        return purchase_date;
     }
-    public void setPdate(String date)
+    public void setPurchase_date(String date)
     {
-        this.pdate = date;
+        this.purchase_date = date;
     }
 
     public String getDuration()

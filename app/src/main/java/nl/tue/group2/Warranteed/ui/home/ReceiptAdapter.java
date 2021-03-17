@@ -29,7 +29,7 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
         //Add product from Receipt class to appropriate view in card
         holder.view_product.setText(model.getProduct());
         //Add date from Receipt class to appropriate view in card
-        holder.view_date.setText(model.getDate());
+        holder.view_date.setText(model.getExpiration_date());
         //Add state from Receipt class to appropriate view in card
         holder.view_state.setText(model.getState());
     }
