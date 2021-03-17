@@ -10,7 +10,15 @@
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_nav"/>
+        android:layout_above="@id/bottom_nav"
+        android:layout_marginBottom="0dp" >
+
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="logout" />
+    </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
@@ -20,16 +28,10 @@
         android:background="?android:attr/windowBackground"
         app:itemIconTint="@color/purple_200"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+        app:menu="@menu/bottom_nav_menu" /><![CDATA[
 
 
-    <Button
-        android:id="@+id/buttonNotif"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="159dp"
-        tools:layout_editor_absoluteY="557dp"
-        android:onClick="sendNotification"/>/>
+    />
 
+]]>
 </RelativeLayout>

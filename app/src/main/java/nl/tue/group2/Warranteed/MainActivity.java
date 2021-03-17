@@ -1,12 +1,15 @@
 package nl.tue.group2.Warranteed;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Random;
 
@@ -17,12 +20,13 @@ import nl.tue.group2.Warranteed.notifications.NotificationHandler;
 import nl.tue.group2.Warranteed.ui.add.AddFragment;
 import nl.tue.group2.Warranteed.ui.chat.ChatFragment;
 import nl.tue.group2.Warranteed.ui.home.HomeFragment;
+import nl.tue.group2.Warranteed.ui.login.LoginActivity;
 import nl.tue.group2.Warranteed.ui.store.StoreFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private NotificationHandler notificationHandler;
-
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,15 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
         }
+
+        final Button logoutbutton = findViewById(R.id.logoutButton);
+        logoutbutton.setEnabled(true);
+        logoutbutton.setOnClickListener(v -> {
+            Intent intentLogout = new Intent(MainActivity.this, LoginActivity.class);
+            mAuth.getInstance().signOut();
+            startActivity(intentLogout);
+        });
+
 
 
         // Initialize notification channel for general notifications
@@ -83,5 +96,8 @@ public class MainActivity extends AppCompatActivity {
         Random r = new Random();
         int notifID = r.nextInt();
         this.notificationHandler.sendNotification("Warranteed", Integer.toString(notifID));
+
+
+
     }
 }

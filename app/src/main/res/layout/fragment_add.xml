@@ -68,13 +68,14 @@
         android:layout_height="0dp"
         android:text="Upload a receipt"
         android:textAlignment="viewStart"
-        android:textSize="30sp"
-        android:textStyle="bold"
         android:textColor="@color/white"
+        android:textSize="32sp"
+        android:textStyle="normal"
+        android:fontFamily="@font/worksans"
+        app:layout_constraintBottom_toTopOf="@id/horizontalGuideline5"
         app:layout_constraintLeft_toRightOf="@id/verticalGuideline5"
         app:layout_constraintRight_toLeftOf="@id/verticalGuideline2"
-        app:layout_constraintTop_toBottomOf="@id/horizontalGuideline19"
-        app:layout_constraintBottom_toTopOf="@id/horizontalGuideline5" />
+        app:layout_constraintTop_toBottomOf="@id/horizontalGuideline19" />
 
     <TextView
         android:layout_width="0dp"

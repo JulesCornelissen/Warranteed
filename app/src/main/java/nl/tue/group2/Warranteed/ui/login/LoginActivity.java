@@ -1,15 +1,12 @@
 package nl.tue.group2.Warranteed.ui.login;
 
 import android.app.Activity;
-
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -18,10 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
+import nl.tue.group2.Warranteed.HomeStore;
 import nl.tue.group2.Warranteed.MainActivity;
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.Register;
@@ -34,7 +33,9 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
@@ -45,92 +46,46 @@ public class LoginActivity extends AppCompatActivity {
         final Button registerButton = findViewById(R.id.register);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
 
-        loginViewModel.getLoginFormState().observe(this, loginFormState -> {
-            if (loginFormState == null) {
-                return;
-            }
-            loginButton.setEnabled(loginFormState.isDataValid());
-            if (loginFormState.getUsernameError() != null) {
-                usernameEditText.setError(getString(loginFormState.getUsernameError()));
-            }
-            if (loginFormState.getPasswordError() != null) {
-                passwordEditText.setError(getString(loginFormState.getPasswordError()));
-            }
-        });
-
-        loginViewModel.getLoginResult().observe(this, loginResult -> {
-            if (loginResult == null) {
-                return;
-            }
-            loadingProgressBar.setVisibility(View.GONE);
-            if (loginResult.getError() != null) {
-                showLoginFailed(loginResult.getError());
-            }
-            if (loginResult.getSuccess() != null) {
-                updateUiWithUser(loginResult.getSuccess());
-            }
-            setResult(Activity.RESULT_OK);
-
-            //Complete and destroy login activity once successful
-            finish();
-        });
-
-        TextWatcher afterTextChangedListener = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // ignore
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // ignore
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-            }
-        };
-        usernameEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-            }
-            return false;
-        });
-
-        loginButton.setOnClickListener(v -> {
-            loadingProgressBar.setVisibility(View.VISIBLE);
-            loginViewModel.login(usernameEditText.getText().toString(),
-                    passwordEditText.getText().toString());
-        });
-
         registerButton.setEnabled(true);
         registerButton.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, Register.class);
-            startActivity(intent);
+            Intent intentRegister = new Intent(LoginActivity.this, Register.class);
+            startActivity(intentRegister);
         });
-    }
 
-    private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
-        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(i);
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
-    }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+        loginButton.setEnabled(true);
+        loginButton.setOnClickListener(v -> {
+            Intent intentCustomer = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intentStore = new Intent(LoginActivity.this, HomeStore.class);
+            String Email = usernameEditText.getText().toString().trim();
+            String password1 = passwordEditText.getText().toString().trim();
+
+
+        mAuth.signInWithEmailAndPassword(Email, password1)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            startActivity(intentCustomer);
+                        } else {
+                            usernameEditText.setError("email or/and password is incorrect");
+                        }
+                    }
+                });
+        });
     }
     @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
+        FirebaseUser currentUser = mAuth.getInstance().getCurrentUser();
+        if (currentUser!= null){
+            Intent intentCustomer = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intentCustomer);
+        }
     }
 
 }
