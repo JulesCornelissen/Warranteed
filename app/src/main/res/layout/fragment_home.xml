@@ -36,15 +36,14 @@
         android:layout_marginTop="67dp" />
 
     <Spinner
-        android:id="@+id/spinner1"
-        android:layout_width="157dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_width="163dp"
+        android:layout_height="35dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="120dp"
-        android:background="@android:drawable/btn_dropdown"
-        android:entries="@array/spinner_options"
+        android:background="#f76f00"
         android:spinnerMode="dropdown" />
 
     <androidx.recyclerview.widget.RecyclerView
