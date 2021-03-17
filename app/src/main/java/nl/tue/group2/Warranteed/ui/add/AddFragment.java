@@ -10,14 +10,21 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -96,7 +103,7 @@ public class AddFragment extends Fragment {
         this.getActivity().findViewById(R.id.submitReceiptButton).setOnClickListener(
                 v -> {
                     if (this.validateFields())
-                        this.completeReceipt();
+                        new Thread(this::completeReceipt).start();
                 }
         );
     }
@@ -177,16 +184,36 @@ public class AddFragment extends Fragment {
         String item = ((EditText) this.getActivity().findViewById(R.id.itemField)).getText().toString();
         Bitmap image = this.receiptImage;
 
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy", Locale.US);
+        // get an id for the image
+        StorageReference storage = FirebaseStorage.getInstance().getReference();
+        UUID imageId;
+        while (true) {
+            imageId = UUID.randomUUID();
+            final AtomicBoolean success = new AtomicBoolean(false);
+            Task<?> task = storage.child("receipts/" + imageId).getDownloadUrl().addOnFailureListener(o -> success.set(true));
+            try {
+                Tasks.await(task);
+            } catch (Exception e) {
+                e.printStackTrace();
+                continue;
+            }
+            if (success.get())
+                break;
+        }
+
+        // upload the image
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        storage.child("receipt/" + imageId).putBytes(stream.toByteArray());
 
         // put the data into a map
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy", Locale.US);
         Map<String, String> data = new HashMap<>();
         data.put("name", name);
         data.put("purchase_date", dateFormatter.format(purchaseDate));
         data.put("expiration_date", dateFormatter.format(expirationDate));
         data.put("product", item);
-
-        // TODO send image data
+        data.put("image", "receipts/" + imageId);
 
         // create a new receipt in firebase
         FirebaseFirestore.getInstance().collection("Receipt").document().set(data).addOnCompleteListener(
