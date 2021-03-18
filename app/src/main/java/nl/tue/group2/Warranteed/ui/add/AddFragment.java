@@ -103,8 +103,9 @@ public class AddFragment extends Fragment {
         // submit button
         this.getActivity().findViewById(R.id.submitReceiptButton).setOnClickListener(
                 v -> {
-                    if (this.validateFields())
+                    if (this.validateFields()) {
                         new Thread(this::completeReceipt).start();
+                    }
                 }
         );
     }
@@ -209,11 +210,27 @@ public class AddFragment extends Fragment {
         image.compress(Bitmap.CompressFormat.PNG, 0, stream);
         storage.child("receipt/" + imageId).putBytes(stream.toByteArray());
 
+        //Calculate Duration (Mourad)
+        String duration = "";
+        long duration_in_ms = expirationDate.getTime() - purchaseDate.getTime();
+        System.out.println(duration_in_ms + " ms");
+        long duration_in_days = duration_in_ms / (1000 * 60 * 60 * 24);
+        long duration_in_years = duration_in_days / 365;
+        long duration_in_months = duration_in_days / 30;
+        if (duration_in_years <= 0) {
+            duration = Long.toString(duration_in_months) + " months";
+        } else {
+            duration = Long.toString(duration_in_years) + " years";
+
+        }
+
         // put the data into a map
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy", Locale.US);
         Map<String, String> data = new HashMap<>();
         data.put("name", name);
+        data.put("name_insensitive", name.toLowerCase());
         data.put("purchase_date", dateFormatter.format(purchaseDate));
+        data.put("duration", duration);
         data.put("expiration_date", dateFormatter.format(expirationDate));
         data.put("product", item);
         data.put("image", "receipts/" + imageId);

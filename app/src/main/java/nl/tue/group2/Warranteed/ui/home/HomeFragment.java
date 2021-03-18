@@ -120,7 +120,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
 
             @Override
             public void afterTextChanged(Editable s) {
-                search = s.toString();
+                search = s.toString().toLowerCase();
                 //check if s is empty
                 updateRecyclerView(search, state);
             }
