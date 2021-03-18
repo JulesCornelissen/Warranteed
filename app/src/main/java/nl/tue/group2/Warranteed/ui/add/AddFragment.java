@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.NonNull;
@@ -193,6 +194,8 @@ public class AddFragment extends Fragment {
             Task<?> task = storage.child("receipts/" + imageId).getDownloadUrl().addOnFailureListener(o -> success.set(true));
             try {
                 Tasks.await(task);
+            } catch (ExecutionException e) {
+                success.set(true);
             } catch (Exception e) {
                 e.printStackTrace();
                 continue;
