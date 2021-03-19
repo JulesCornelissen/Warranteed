@@ -38,11 +38,23 @@ public class Receipt {
     }
     public String getState()
     {
+        String duration = getDuration();
+        int time =  Integer.parseInt(duration.replaceAll("\\D+",""));
+        if (duration.contains("days")){
+            this.state = "Expiring";
+        } else if (time <= 0){
+            this.state = "Void";
+        } else {
+            this.state = "Valid";
+        }
+
         return state;
     }
     public void setState(String warranty_state)
     {
         this.state = warranty_state;
+
+
     }
     public String getPurchase_date()
     {

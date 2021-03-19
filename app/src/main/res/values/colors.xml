@@ -10,4 +10,9 @@
     <color name="blueish">#888dff</color>
     <color name="nearly_black">#222222</color>
     <color name="white">#ffffff</color>
+    <color name="green">#56D71A</color>
+    <color name="yelloworange">#FEBE1A</color>
+    <color name="red">#E70B0B</color>
+
+
 </resources>

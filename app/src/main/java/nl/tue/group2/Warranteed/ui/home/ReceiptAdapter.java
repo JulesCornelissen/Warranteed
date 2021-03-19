@@ -1,5 +1,6 @@
 package nl.tue.group2.Warranteed.ui.home;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import nl.tue.group2.Warranteed.Receipt;
 
 public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAdapter.Viewholder> {
     private OnItemClickListener listener;
+    private String color;
 
     public ReceiptAdapter(@NonNull FirestoreRecyclerOptions<Receipt> options) {
         super(options);
@@ -26,12 +28,22 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
     // Function to bind each view to appropriate card
     @Override
     protected void onBindViewHolder(@NonNull Viewholder holder, int position, @NonNull Receipt model) {
+        String state = model.getState();
+        if (state.equals("Valid")) {
+            color = "#56D71A";
+        } else if (state.equals("Expiring")){
+            color = "#FEBE1A";
+        } else {
+            color = "#E70B0B";
+        }
+
         //Add product from Receipt class to appropriate view in card
         holder.view_product.setText(model.getName());
         //Add date from Receipt class to appropriate view in card
         holder.view_date.setText(model.getExpiration_date());
         //Add state from Receipt class to appropriate view in card
         holder.view_state.setText(model.getState());
+        holder.view_state.setTextColor(Color.parseColor(color));
     }
 
     //Method to tell the class about the cardView
@@ -53,7 +65,7 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
             super(itemView);
             //link textview to appropriate id
             view_product = itemView.findViewById(R.id.receiptInfo_product);
-            view_state= itemView.findViewById(R.id.textView_warranty_filled);
+            view_state = itemView.findViewById(R.id.textView_warranty_filled);
             view_date = itemView.findViewById(R.id.textView_expiring_filled);
             bt_info = itemView.findViewById(R.id.imageButton_info);
 
