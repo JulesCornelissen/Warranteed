@@ -1,18 +1,19 @@
 package nl.tue.group2.Warranteed;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Register extends AppCompatActivity {
     CheckBox cb_cust, cb_store;
@@ -40,7 +41,7 @@ public class Register extends AppCompatActivity {
         signupButton.setEnabled(true);
         signupButton.setOnClickListener(v -> {
             Intent intentCustomer = new Intent(Register.this, MainActivity.class);
-            Intent intentStore = new Intent(Register.this, HomeStore.class);
+            Intent intentStore = new Intent(Register.this, MainStoreActivity.class);
             String Email = cb_Email.getText().toString().trim();
             String password1 = cb_Password.getText().toString().trim();
             String password2 = cb_Password2.getText().toString().trim();
