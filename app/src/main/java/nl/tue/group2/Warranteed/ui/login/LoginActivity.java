@@ -1,29 +1,24 @@
 package nl.tue.group2.Warranteed.ui.login;
 
-import android.app.Activity;
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import nl.tue.group2.Warranteed.HomeStore;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import nl.tue.group2.Warranteed.MainActivity;
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.Register;
+import nl.tue.group2.Warranteed.ui.store.StoreHomeFragment;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -56,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setEnabled(true);
         loginButton.setOnClickListener(v -> {
             Intent intentCustomer = new Intent(LoginActivity.this, MainActivity.class);
-            Intent intentStore = new Intent(LoginActivity.this, HomeStore.class);
+            Intent intentStore = new Intent(LoginActivity.this, StoreHomeFragment.class);
             String Email = usernameEditText.getText().toString().trim();
             String password1 = passwordEditText.getText().toString().trim();
 
