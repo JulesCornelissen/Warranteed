@@ -218,10 +218,13 @@ public class AddFragment extends Fragment {
         long duration_in_years = duration_in_days / 365;
         long duration_in_months = duration_in_days / 30;
         if (duration_in_years <= 0) {
-            duration = Long.toString(duration_in_months) + " months";
+            if(duration_in_months <= 0) {
+                duration = Long.toString(duration_in_days) + " days";
+            } else {
+                duration = Long.toString(duration_in_months) + " months";
+            }
         } else {
             duration = Long.toString(duration_in_years) + " years";
-
         }
 
         // put the data into a map

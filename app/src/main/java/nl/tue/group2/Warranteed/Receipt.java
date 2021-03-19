@@ -3,6 +3,8 @@ package nl.tue.group2.Warranteed;
 public class Receipt {
 
     //variables for holding results
+    private String name;
+    private String name_insensitive;
     private String product;
     private String expiration_date;
     private String state;
@@ -18,10 +20,14 @@ public class Receipt {
     {
         return product;
     }
-    public void setProduct(String name)
+    public void setProduct(String product)
     {
-        this.product = name;
+        this.product = product;
     }
+    public String getName() {return name;}
+    public void setName(String name) {this.name = name;}
+    public String getNameInsensitive() {return name_insensitive;}
+    public void setNameInsensitive(String name) {this.name_insensitive = name;}
     public String getExpiration_date()
     {
         return expiration_date;

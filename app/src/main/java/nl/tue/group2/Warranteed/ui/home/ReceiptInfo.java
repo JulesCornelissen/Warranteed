@@ -13,7 +13,7 @@ import nl.tue.group2.Warranteed.R;
 
 public class ReceiptInfo extends AppCompatActivity {
     Button bt_return;
-    TextView txt_product, txt_edate, txt_purchase_date, txt_duration;
+    TextView txt_name, txt_product, txt_edate, txt_purchase_date, txt_duration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,19 +22,20 @@ public class ReceiptInfo extends AppCompatActivity {
 
         //buttons and textviews matching
         bt_return = findViewById(R.id.button_return);
-        txt_product = findViewById(R.id.receiptInfo_product);
+        txt_name = findViewById(R.id.receiptInfo_name);
         txt_edate = findViewById(R.id.receiptInfo_edate_filled);
         txt_purchase_date = findViewById(R.id.receiptInfo_purchase_date_filled);
         txt_duration = findViewById(R.id.receiptInfo_duration_filled);
 
         //get information from Intent
+        String name = getIntent().getStringExtra("name");
         String product = getIntent().getStringExtra("product");
         String expiration_date = getIntent().getStringExtra("expiration_date");
         String purchase_date = getIntent().getStringExtra("purchase_date");
         String duration = getIntent().getStringExtra("duration");
 
         //set textviews to appropriate information
-        txt_product.setText(product);
+        txt_name.setText(name);
         txt_edate.setText(expiration_date);
         txt_duration.setText(duration);
         txt_purchase_date.setText(purchase_date);

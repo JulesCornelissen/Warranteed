@@ -27,7 +27,7 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
     @Override
     protected void onBindViewHolder(@NonNull Viewholder holder, int position, @NonNull Receipt model) {
         //Add product from Receipt class to appropriate view in card
-        holder.view_product.setText(model.getProduct());
+        holder.view_product.setText(model.getName());
         //Add date from Receipt class to appropriate view in card
         holder.view_date.setText(model.getExpiration_date());
         //Add state from Receipt class to appropriate view in card
@@ -43,7 +43,7 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
         return new Viewholder(view);
     }
 
-    // Sub Class to create references of the views in Crad
+    // Sub Class to create references of the views in Card.
     class Viewholder extends RecyclerView.ViewHolder {
         //create textviews
         TextView view_product, view_date, view_state;

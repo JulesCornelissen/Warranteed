@@ -133,8 +133,8 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
      */
     private void updateRecyclerView(String search, String state){
         //when state = All the query should ignore the state.
-        if (Objects.equals(state, "All")){
-            Query newQuery = receipts.orderBy("product").startAt(search).endAt(search + '\uf8ff');
+        if (Objects.equals(state, "All")) {
+            Query newQuery = receipts.orderBy("name_insensitive").startAt(search).endAt(search + '\uf8ff');
             //create new options
             FirestoreRecyclerOptions<Receipt> newOptions = new FirestoreRecyclerOptions.Builder<Receipt>()
                     .setQuery(newQuery, Receipt.class)
@@ -143,7 +143,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
             adapter.updateOptions(newOptions);
         } else {
             //new query that filters for products starting with search word s
-            Query newQuery = receipts.orderBy("product")
+            Query newQuery = receipts.orderBy("name_insensitive")
                     .startAt(search)
                     .endAt(search + '\uf8ff')
                     .whereEqualTo("state", state); //state equals state given
@@ -169,6 +169,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
                 Receipt receipt = documentSnapshot.toObject(Receipt.class);
                 //get variables using get methods from Receipt
                 assert receipt != null;
+                String name = receipt.getName();
                 String product = receipt.getProduct();
                 String expiration_date = receipt.getExpiration_date();
                 String purchase_date = receipt.getPurchase_date();
@@ -177,6 +178,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
                 //create intent
                 Intent intent = new Intent(getActivity(), ReceiptInfo.class);
                 //give intent extra information
+                intent.putExtra("name", name);
                 intent.putExtra("product", product);
                 intent.putExtra("expiration_date", expiration_date);
                 intent.putExtra("purchase_date", purchase_date);
