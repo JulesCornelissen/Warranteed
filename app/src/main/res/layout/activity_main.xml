@@ -11,13 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_nav"
-        android:layout_marginBottom="0dp" >
+        android:layout_marginBottom="0dp">
 
-        <Button
+        <ImageButton
             android:id="@+id/logoutButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="logout" />
+            android:layout_gravity="right"
+            android:contentDescription="setting"
+            android:translationZ="90dp"
+            android:src="@drawable/ic_baseline_settings_24" />
     </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

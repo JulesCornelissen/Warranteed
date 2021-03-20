@@ -2,7 +2,12 @@ package nl.tue.group2.Warranteed;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,13 +51,40 @@ public class MainStoreActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.store_fragment_container,
                     new StoreHomeFragment()).commit();
         }
+        Intent intentLogout = new Intent(this, LoginActivity.class);
+        final ImageButton popup_button = findViewById(R.id.logoutButton);
+        // Setting onClick behavior to the button
+        popup_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Initializing the popup menu and giving the reference as current context
+                PopupMenu popupMenu = new PopupMenu(MainStoreActivity.this, popup_button);
+                // Inflating popup menu from popup_menu.xml file
+                popupMenu.getMenuInflater().inflate(R.menu.settings_button, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
 
-        final Button logoutbutton = findViewById(R.id.logoutButton);
-        logoutbutton.setEnabled(true);
-        logoutbutton.setOnClickListener(v -> {
-            Intent intentLogout = new Intent(this, LoginActivity.class);
-            FirebaseAuth.getInstance().signOut();
-            startActivity(intentLogout);
+                        switch (menuItem.getItemId()) {
+                            case R.id.logout:
+                                FirebaseAuth.getInstance().signOut();
+                                Toast.makeText(MainStoreActivity.this, "you've been logged out", Toast.LENGTH_SHORT).show();
+                                startActivity(intentLogout);
+                                return true;
+                            case R.id.delete_account:
+                                FirebaseAuth.getInstance().getCurrentUser().delete();
+                                Toast.makeText(MainStoreActivity.this, "your account has been deleted", Toast.LENGTH_SHORT).show();
+                                startActivity(intentLogout);
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                // Showing the popup menu
+                popupMenu.show();
+            }
         });
+
     }
 }

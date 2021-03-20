@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -19,12 +20,13 @@ public class Register extends AppCompatActivity {
     CheckBox cb_cust, cb_store;
     EditText cb_Email, cb_Password, cb_Password2;
     private FirebaseAuth mAuth;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getSupportActionBar().hide();
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
@@ -97,6 +99,10 @@ public class Register extends AppCompatActivity {
             cb_Email.setError("email is incorrect");
             main = false;
         }
+        else if (cb_store.isChecked() && !(Email.endsWith("coolgreen.nl") || Email.endsWith("coolgreen.com"))) {
+            cb_Email.setError("must be your work email");
+            main = false;
+        }
         if (TextUtils.isEmpty(password)) {
             cb_Password.setError("password is required");
             main = false;
@@ -118,7 +124,6 @@ public class Register extends AppCompatActivity {
             cb_Password2.setError("passwords don't match");
             main = false;
         }
-
         return main;
     }
 }
