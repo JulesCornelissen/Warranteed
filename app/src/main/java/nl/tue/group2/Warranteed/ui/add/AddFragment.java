@@ -71,7 +71,6 @@ public class AddFragment extends Fragment {
                         ((EditText) v).setText(new SimpleDateFormat("dd/MM/yyyy", Locale.US).format(this.purchaseDate.getTime()));
                     };
                     DatePickerDialog dialog = new DatePickerDialog(this.getContext(), listener, this.purchaseDate.get(Calendar.YEAR), this.purchaseDate.get(Calendar.MONTH), this.purchaseDate.get(Calendar.DAY_OF_MONTH));
-                    dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                     dialog.show();
                 }
         );
