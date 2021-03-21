@@ -26,7 +26,7 @@ public class StoreHomeFragment extends Fragment {
     /**
      * The document id in firebase for the coolgreen store, since we only have one store right now
      */
-    private static final String COOLGREEN_STORE_ID = "G5Xas72YqtCHMQZoxxxS";
+    public static final String COOLGREEN_STORE_ID = "G5Xas72YqtCHMQZoxxxS";
 
     // keep track of store info for editing
     private String name, description, email, phoneNumber, addressStreet, addressHouseNumber, addressZipCode, addressCity, addressProvince;
