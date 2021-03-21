@@ -1,7 +1,5 @@
 package nl.tue.group2.Warranteed.ui.home;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +18,7 @@ import com.google.firebase.storage.StreamDownloadTask;
 import java.io.InputStream;
 import java.util.Objects;
 
+import androidx.appcompat.app.AppCompatActivity;
 import nl.tue.group2.Warranteed.MainActivity;
 import nl.tue.group2.Warranteed.R;
 
@@ -75,13 +74,11 @@ public class ReceiptInfo extends AppCompatActivity {
      * picture_path is the location of the picture in firebase storage
      */
     public void getReceiptImage(String picture_path){
-        //get the unique part of the path only (cut of "receipt/")
-        String imageId = picture_path.substring(9);
         //to prioritze downloading the stream
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         //get stream at the file location
-        FirebaseStorage.getInstance().getReference().child("receipt/").child(imageId).getStream()
+        FirebaseStorage.getInstance().getReference().child("receipt/").child(picture_path).getStream()
                 .addOnSuccessListener(new OnSuccessListener<StreamDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(StreamDownloadTask.TaskSnapshot taskSnapshot) {

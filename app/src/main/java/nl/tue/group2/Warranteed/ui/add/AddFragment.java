@@ -10,13 +10,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,13 +19,12 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import nl.tue.group2.Warranteed.R;
+import nl.tue.group2.Warranteed.firebase.FirebaseImageHandler;
 import nl.tue.group2.Warranteed.ui.home.HomeFragment;
 
 public class AddFragment extends Fragment {
@@ -180,34 +174,14 @@ public class AddFragment extends Fragment {
         String item = ((EditText) this.getActivity().findViewById(R.id.itemField)).getText().toString();
         Bitmap image = this.receiptImage;
 
-        // get an id for the image
-        StorageReference storage = FirebaseStorage.getInstance().getReference();
-        UUID imageId;
-        while (true) {
-            imageId = UUID.randomUUID();
-            final AtomicBoolean success = new AtomicBoolean(false);
-            Task<?> task = storage.child("receipts/" + imageId).getDownloadUrl().addOnFailureListener(o -> success.set(true));
-            try {
-                Tasks.await(task);
-            } catch (ExecutionException e) {
-                success.set(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-                continue;
-            }
-            if (success.get())
-                break;
-        }
-
-        // upload the image
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 0, stream);
-        storage.child("receipt/" + imageId).putBytes(stream.toByteArray());
+        // upload the image to firebase storage
+        UUID imageId = FirebaseImageHandler.uploadImage("receipt", image);
+        if(imageId == null)
+            return;
 
         //Calculate Duration (Mourad)
         String duration = "";
         long duration_in_ms = expirationDate.getTime() - purchaseDate.getTime();
-        System.out.println(duration_in_ms + " ms");
         long duration_in_days = duration_in_ms / (1000 * 60 * 60 * 24);
         long duration_in_years = duration_in_days / 365;
         long duration_in_months = duration_in_days / 30;
@@ -230,7 +204,7 @@ public class AddFragment extends Fragment {
         data.put("duration", duration);
         data.put("expiration_date", dateFormatter.format(expirationDate));
         data.put("product", item);
-        data.put("image", "receipts/" + imageId);
+        data.put("image", imageId.toString());
 
         // create a new receipt in firebase
         FirebaseFirestore.getInstance().collection("Receipt").document().set(data).addOnCompleteListener(
