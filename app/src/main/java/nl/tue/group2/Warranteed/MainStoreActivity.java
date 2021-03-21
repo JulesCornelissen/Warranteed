@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -51,6 +50,7 @@ public class MainStoreActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.store_fragment_container,
                     new StoreHomeFragment()).commit();
         }
+
         Intent intentLogout = new Intent(this, LoginActivity.class);
         final ImageButton popup_button = findViewById(R.id.logoutButton);
         // Setting onClick behavior to the button
