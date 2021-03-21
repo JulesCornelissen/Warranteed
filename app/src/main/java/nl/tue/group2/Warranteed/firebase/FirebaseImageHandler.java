@@ -8,8 +8,8 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -89,14 +89,8 @@ public class FirebaseImageHandler {
      * @param imageId the id of the image
      * @return the downloaded image, or null if no image was found
      */
-    public static Bitmap downloadImage(String folder, UUID imageId) {
-        try {
-            InputStream stream = Tasks.await(FirebaseStorage.getInstance().getReference().child(folder + "/" + imageId).getStream()).getStream();
-            return BitmapFactory.decodeStream(stream);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static Task<Bitmap> downloadImage(String folder, UUID imageId) {
+        return FirebaseStorage.getInstance().getReference().child(folder + "/" + imageId).getBytes(Long.MAX_VALUE).continueWith(result -> BitmapFactory.decodeStream(new ByteArrayInputStream(result.getResult())));
     }
 
 }

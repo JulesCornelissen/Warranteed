@@ -1,12 +1,15 @@
 package nl.tue.group2.Warranteed.ui.store;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,12 +17,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import nl.tue.group2.Warranteed.R;
+import nl.tue.group2.Warranteed.firebase.FirebaseImageHandler;
+import nl.tue.group2.Warranteed.ui.add.PhotoHandler;
 
 public class StoreHomeFragment extends Fragment {
 
@@ -30,6 +36,8 @@ public class StoreHomeFragment extends Fragment {
 
     // keep track of store info for editing
     private String name, description, email, phoneNumber, addressStreet, addressHouseNumber, addressZipCode, addressCity, addressProvince;
+
+    private String databaseImageKey = "";
 
     @Nullable
     @Override
@@ -44,9 +52,28 @@ public class StoreHomeFragment extends Fragment {
 
         // Get the initial store info
         this.updateStoreInfo();
+        this.updateStoreImages();
 
         // Set the edit button handler
         this.getActivity().findViewById(R.id.button_edit).setOnClickListener(button -> this.openEditDialog());
+
+        // Set the image press handlers
+        this.getActivity().findViewById(R.id.imageViewLogo).setOnClickListener(v -> {
+            this.databaseImageKey = "logo";
+            PhotoHandler.requestImageCapture(this);
+        });
+        this.getActivity().findViewById(R.id.imageViewPicture1).setOnClickListener(v -> {
+            this.databaseImageKey = "picture1";
+            PhotoHandler.requestImageCapture(this);
+        });
+        this.getActivity().findViewById(R.id.imageViewPicture2).setOnClickListener(v -> {
+            this.databaseImageKey = "picture2";
+            PhotoHandler.requestImageCapture(this);
+        });
+        this.getActivity().findViewById(R.id.imageViewPicture3).setOnClickListener(v -> {
+            this.databaseImageKey = "picture3";
+            PhotoHandler.requestImageCapture(this);
+        });
     }
 
     /**
@@ -77,6 +104,45 @@ public class StoreHomeFragment extends Fragment {
                     this.addressProvince = (String) addressProperties.get("province");
                     String address = this.addressStreet + " " + this.addressHouseNumber + ", " + this.addressZipCode + " " + this.addressCity + ", " + this.addressProvince;
                     ((TextView) this.getActivity().findViewById(R.id.textViewAddress)).setText(this.getResources().getString(R.string.shopAddress, address));
+                }
+        );
+    }
+
+    private void updateStoreImages() {
+        View logoView = this.getActivity().findViewById(R.id.imageViewLogo),
+                picture1View = this.getActivity().findViewById(R.id.imageViewPicture1),
+                picture2View = this.getActivity().findViewById(R.id.imageViewPicture2),
+                picture3View = this.getActivity().findViewById(R.id.imageViewPicture3);
+        FirebaseFirestore.getInstance().collection("Store").document(COOLGREEN_STORE_ID).get().addOnSuccessListener(
+                result -> {
+                    // logo
+                    String logoId = result.getString("logo");
+                    if (logoId != null && !logoId.isEmpty()) {
+                        FirebaseImageHandler.downloadImage("store", UUID.fromString(logoId)).addOnSuccessListener(
+                                ((ImageView) logoView)::setImageBitmap
+                        );
+                    }
+                    // picture 1
+                    String picture1Id = result.getString("picture1");
+                    if (picture1Id != null && !picture1Id.isEmpty()) {
+                        FirebaseImageHandler.downloadImage("store", UUID.fromString(picture1Id)).addOnSuccessListener(
+                                ((ImageView) picture1View)::setImageBitmap
+                        );
+                    }
+                    // picture 2
+                    String picture2Id = result.getString("picture2");
+                    if (picture2Id != null && !picture2Id.isEmpty()) {
+                        FirebaseImageHandler.downloadImage("store", UUID.fromString(picture2Id)).addOnSuccessListener(
+                                ((ImageView) picture2View)::setImageBitmap
+                        );
+                    }
+                    // picture 3
+                    String picture3Id = result.getString("picture3");
+                    if (picture3Id != null && !picture3Id.isEmpty()) {
+                        FirebaseImageHandler.downloadImage("store", UUID.fromString(picture3Id)).addOnSuccessListener(
+                                ((ImageView) picture3View)::setImageBitmap
+                        );
+                    }
                 }
         );
     }
@@ -243,6 +309,37 @@ public class StoreHomeFragment extends Fragment {
         FirebaseFirestore.getInstance().collection("Store").document(COOLGREEN_STORE_ID).update(data).addOnSuccessListener(
                 result -> this.updateStoreInfo() // refresh the store information
         );
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Bitmap image = null;
+
+        // capture taken photo
+        if (PhotoHandler.isImageCaptureRequest(requestCode))
+            image = PhotoHandler.getCapturedImageFromActivityResult(requestCode, resultCode, data);
+            // capture selected image
+        else if (PhotoHandler.isSelectPhotoRequest(requestCode))
+            image = PhotoHandler.getSelectedPhotoFromActivityResult(this.getActivity(), requestCode, resultCode, data);
+
+        if (image != null && !this.databaseImageKey.isEmpty()) {
+            Bitmap finalImage = image;
+            new Thread(() -> {
+                UUID imageId = FirebaseImageHandler.uploadImage("store", finalImage);
+                if (imageId != null) {
+                    // put all data into a map
+                    Map<String, Object> map = new HashMap<>();
+                    map.put(this.databaseImageKey, imageId.toString());
+
+                    // push the data to firebase
+                    FirebaseFirestore.getInstance().collection("Store").document(COOLGREEN_STORE_ID).update(map).addOnSuccessListener(
+                            result -> this.updateStoreImages() // refresh the store images
+                    );
+                }
+            }).start();
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
 
