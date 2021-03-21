@@ -4,16 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Map;
+import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import nl.tue.group2.Warranteed.R;
+import nl.tue.group2.Warranteed.firebase.FirebaseImageHandler;
 
 public class StoreFragment extends Fragment {
 
@@ -30,6 +33,7 @@ public class StoreFragment extends Fragment {
 
         // Get the store info from firebase
         this.updateStoreInfo();
+        this.updateStoreImages();
     }
 
     /**
@@ -60,6 +64,45 @@ public class StoreFragment extends Fragment {
                     String addressProvince = (String) addressProperties.get("province");
                     String address = addressStreet + " " + addressHouseNumber + ", " + addressZipCode + " " + addressCity + ", " + addressProvince;
                     ((TextView) this.getActivity().findViewById(R.id.textView)).setText(this.getResources().getString(R.string.shopAddress, address));
+                }
+        );
+    }
+
+    private void updateStoreImages() {
+        View logoView = this.getActivity().findViewById(R.id.imageViewLogo),
+                picture1View = this.getActivity().findViewById(R.id.imageView2),
+                picture2View = this.getActivity().findViewById(R.id.imageView3),
+                picture3View = this.getActivity().findViewById(R.id.imageView4);
+        FirebaseFirestore.getInstance().collection("Store").document(StoreHomeFragment.COOLGREEN_STORE_ID).get().addOnSuccessListener(
+                result -> {
+                    // logo
+                    String logoId = result.getString("logo");
+                    if (logoId != null && !logoId.isEmpty()) {
+                        FirebaseImageHandler.downloadImage("store", UUID.fromString(logoId)).addOnSuccessListener(
+                                ((ImageView) logoView)::setImageBitmap
+                        );
+                    }
+                    // picture 1
+                    String picture1Id = result.getString("picture1");
+                    if (picture1Id != null && !picture1Id.isEmpty()) {
+                        FirebaseImageHandler.downloadImage("store", UUID.fromString(picture1Id)).addOnSuccessListener(
+                                ((ImageView) picture1View)::setImageBitmap
+                        );
+                    }
+                    // picture 2
+                    String picture2Id = result.getString("picture2");
+                    if (picture2Id != null && !picture2Id.isEmpty()) {
+                        FirebaseImageHandler.downloadImage("store", UUID.fromString(picture2Id)).addOnSuccessListener(
+                                ((ImageView) picture2View)::setImageBitmap
+                        );
+                    }
+                    // picture 3
+                    String picture3Id = result.getString("picture3");
+                    if (picture3Id != null && !picture3Id.isEmpty()) {
+                        FirebaseImageHandler.downloadImage("store", UUID.fromString(picture3Id)).addOnSuccessListener(
+                                ((ImageView) picture3View)::setImageBitmap
+                        );
+                    }
                 }
         );
     }
