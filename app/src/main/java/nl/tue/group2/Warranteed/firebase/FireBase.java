@@ -19,6 +19,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class FireBase extends AppCompatActivity {
 
+    // Need to define URL for the Firebase database since it is not stored in the US
+    public static String FIREBASE_DATABASE_URL = "https://warrenteed-60226-default-rtdb.europe-west1.firebasedatabase.app/";
+
     // Access a Cloud Firestore instance from your Activity
     FirebaseFirestore db;
 

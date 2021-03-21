@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,24 +18,31 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.chat.ChatAdapter;
 import nl.tue.group2.Warranteed.chat.ChatMessage;
 import nl.tue.group2.Warranteed.chat.ChatMessageView;
+import nl.tue.group2.Warranteed.firebase.FireBase;
 
 public class ChatFragment extends Fragment {
 
-    RecyclerView recyclerViewChat;
-    ChatAdapter chatAdapter;
-    private FirebaseDatabase mDatabase; // The messages database
+    private RecyclerView recyclerViewChat;
+    private ChatAdapter chatAdapter;
+    private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance(FireBase.FIREBASE_DATABASE_URL); // The messages database
     private FirebaseRecyclerAdapter<ChatMessage, ChatMessageView> mFirebaseAdapter;
+    private String messagesPath;
+    private String UUID = "fj2893jf103j1";
 
+    // TODO get UUID from currently logged in Firebase user
+    // TODO create screen for store with list of all UUIDs in database that have sent a message
+    // TODO add second recycler view to differentiate between messages from user and store
+    // TODO add comments
+    // TODO implement image of user
+    // TODO clean up UI
+    // TODO scroll to bottom on new message
 
     @Nullable
     @Override
@@ -42,15 +50,17 @@ public class ChatFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        mDatabase = FirebaseDatabase.getInstance("https://warrenteed-60226-default-rtdb.europe-west1.firebasedatabase.app/");
-//        mDatabase.setPersistenceEnabled(true);
-
+//        mDatabase = FirebaseDatabase.getInstance(FireBase.FIREBASE_DATABASE_URL);
         this.recyclerViewChat = (RecyclerView) view.findViewById(R.id.recyclerViewChat);
 
-        String messagesPath = "messages/1234/";
-
+        this.messagesPath = "messages/" + this.UUID;
         DatabaseReference messagesRef = this.mDatabase.getReference().child(messagesPath);
-//        messagesRef.keepSynced(true);
+
+        /**
+         * DEBUG
+         */
+//        mDatabase.setPersistenceEnabled(true);
+        //        messagesRef.keepSynced(true);
 
 //        ChatMessage debugMessage = new ChatMessage();
 //        debugMessage.setText("Hello world123");
@@ -68,34 +78,40 @@ public class ChatFragment extends Fragment {
             }
         });
 
+        /**
+         * END OF DEBUG
+         */
+
 
         FirebaseRecyclerOptions<ChatMessage> options = new FirebaseRecyclerOptions.Builder<ChatMessage>()
                 .setQuery(messagesRef, ChatMessage.class)
                 .build();
         this.chatAdapter = new ChatAdapter(options);
-
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
+
+        // Let messages appear in reverse chronological order
         mLinearLayoutManager.setStackFromEnd(true);
         recyclerViewChat.setLayoutManager(mLinearLayoutManager);
         recyclerViewChat.setAdapter(chatAdapter);
 
-//        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://warrenteed-60226-default-rtdb.europe-west1.firebasedatabase.app/");
-//        DatabaseReference messagesRef = mDatabase.getReference().child("messages");
-//        messagesRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DataSnapshot> task) {
-//                if (!task.isSuccessful()) {
-//                    Log.v("firebase_failed", "Error getting data", task.getException());
-//                }
-//                else {
-//                    Log.v("firebase_successful", String.valueOf(task.getResult().getValue()));
-//                }
-//            }
-//        });
-
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        this.getActivity().findViewById(R.id.buttonSendChatMessage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText editText = ((EditText) getActivity().findViewById(R.id.textInputChatMessage));
+                String text = editText.getText().toString();
+                ChatMessage message = new ChatMessage(text, UUID);
+                mDatabase.getReference().child(messagesPath).push().setValue(message);
+                editText.getText().clear();
+            }
+        });
+    }
 
     //Method to tell the adapter to start monitoring for changes in database
     @Override
@@ -110,4 +126,5 @@ public class ChatFragment extends Fragment {
         super.onStop();
         chatAdapter.stopListening();
     }
+
 }

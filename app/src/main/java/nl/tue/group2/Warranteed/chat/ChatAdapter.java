@@ -9,6 +9,9 @@ import androidx.annotation.NonNull;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+
 import nl.tue.group2.Warranteed.R;
 
 public class ChatAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMessageView> {
@@ -17,13 +20,13 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMessag
         super(options);
     }
 
+    private final Format timeFormatter = new SimpleDateFormat("HH:mm");
+
     @Override
     protected void onBindViewHolder(@NonNull ChatMessageView holder, int position,
                                     @NonNull ChatMessage model) {
         holder.messageTextView.setText(model.getText());
-        holder.messageTimeTextView.setText(model.getTimestamp());
-//        holder.messengerImageView.set
-        // TODO implement image
+        holder.messageTimeTextView.setText(timeFormatter.format(model.getTimestamp()));
     }
 
     @NonNull

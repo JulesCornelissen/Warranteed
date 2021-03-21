@@ -1,25 +1,20 @@
 package nl.tue.group2.Warranteed.chat;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ChatMessage {
 
-    public String text;
+    private String text;
     private long timestamp;
-//    public String timestamp;
-    private final Format timeFormatter = new SimpleDateFormat("HH:mm");
-//    private String sender;
+    private String sender;
 
     public ChatMessage() {
-
     }
 
-    public ChatMessage(String text) {
+    public ChatMessage(String text, String sender) {
         this.timestamp = new Date().getTime();
-//        this.timestamp = "dummydata";
         this.text = text;
+        this.sender = sender;
     }
 
     /**
@@ -29,16 +24,24 @@ public class ChatMessage {
     public void setText(String text) {
         this.timestamp = new Date().getTime();
         this.text = text;
-//        this.timestamp = "dummydata";
     }
 
     public String getText() {
         return this.text;
     }
 
-    public String getTimestamp() {
-        return this.timeFormatter.format(this.timestamp);
-//        return this.timestamp;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
+
+    public String getSender() {
+        return this.sender;
+    }
+
+    public long getTimestamp() {
+        return this.timestamp;
+    }
+
+
 
 }
