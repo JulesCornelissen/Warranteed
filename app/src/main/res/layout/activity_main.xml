@@ -31,10 +31,5 @@
         android:background="?android:attr/windowBackground"
         app:itemIconTint="@color/purple_200"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_nav_menu" /><![CDATA[
-
-
-    />
-
-]]>
+        app:menu="@menu/bottom_nav_menu" />
 </RelativeLayout>
