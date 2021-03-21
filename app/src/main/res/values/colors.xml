@@ -10,4 +10,5 @@
     <color name="blueish">#888dff</color>
     <color name="nearly_black">#222222</color>
     <color name="white">#ffffff</color>
+    <color name="backgroundGrey">#F2F3FF</color>
 </resources>
