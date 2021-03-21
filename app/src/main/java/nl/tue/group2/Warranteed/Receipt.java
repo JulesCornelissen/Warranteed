@@ -10,6 +10,7 @@ public class Receipt {
     private String state;
     private String purchase_date;
     private String duration;
+    private String image;
 
     // Mandatory empty constructor
     // for use of FirebaseUI
@@ -64,7 +65,6 @@ public class Receipt {
     {
         this.purchase_date = date;
     }
-
     public String getDuration()
     {
         return duration;
@@ -72,5 +72,13 @@ public class Receipt {
     public void setDuration(String years)
     {
         this.duration = years;
+    }
+    public String getImage()
+    {
+        return image;
+    }
+    public void setImage(String picture)
+    {
+        this.image = picture;
     }
 }

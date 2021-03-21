@@ -174,6 +174,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
                 String expiration_date = receipt.getExpiration_date();
                 String purchase_date = receipt.getPurchase_date();
                 String duration = receipt.getDuration();
+                String image = receipt.getImage();
 
                 //create intent
                 Intent intent = new Intent(getActivity(), ReceiptInfo.class);
@@ -183,6 +184,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
                 intent.putExtra("expiration_date", expiration_date);
                 intent.putExtra("purchase_date", purchase_date);
                 intent.putExtra("duration", duration);
+                intent.putExtra("image", image);
                 //start new activity (ReceiptInfo)
                 startActivity(intent);
             }
