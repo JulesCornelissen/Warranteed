@@ -12,6 +12,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,6 +61,15 @@ public class Register extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
+
+                        // push user data to the database
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("uid", user.getUid());
+                        data.put("display_name", user.getDisplayName());
+                        data.put("email", user.getEmail());
+                        FirebaseFirestore.getInstance().collection("Customers").document(user.getUid()).set(data);
+
                         if (cb_cust.isChecked()) {
                             startActivity(intentCustomer);
                         } else {
