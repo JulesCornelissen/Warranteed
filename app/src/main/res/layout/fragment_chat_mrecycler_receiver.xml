@@ -16,7 +16,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <ImageView
-            android:id="@+id/messengerImageReceiver"
+            android:id="@+id/messengerImage"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="16dp"
@@ -26,12 +26,12 @@
             app:srcCompat="@drawable/logo" />
 
         <TextView
-            android:id="@+id/messageTimeReceiver"
+            android:id="@+id/messageTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="17:32"
-            app:layout_constraintStart_toEndOf="@+id/messengerImageReceiver"
+            app:layout_constraintStart_toEndOf="@+id/messengerImage"
             app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
         <androidx.cardview.widget.CardView
@@ -43,11 +43,11 @@
             app:cardBackgroundColor="@color/blueish"
             app:cardCornerRadius="15dp"
             app:contentPadding="10dp"
-            app:layout_constraintStart_toEndOf="@+id/messengerImageReceiver"
+            app:layout_constraintStart_toEndOf="@+id/messengerImage"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/messageTextReceiver"
+                android:id="@+id/messageText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Lorem ipsum dolor sit amet" />

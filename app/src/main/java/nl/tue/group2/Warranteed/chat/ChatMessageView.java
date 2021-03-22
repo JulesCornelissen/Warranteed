@@ -19,9 +19,9 @@ public class ChatMessageView extends RecyclerView.ViewHolder {
 
     public ChatMessageView(@NonNull View itemView) {
         super(itemView);
-        this.messageTextView = (TextView) itemView.findViewById(R.id.messageTextReceiver);
-        this.messageTimeTextView = (TextView) itemView.findViewById(R.id.messageTimeReceiver);
-        this.messengerImageView = (ImageView) itemView.findViewById(R.id.messengerImageReceiver);
+        this.messageTextView = (TextView) itemView.findViewById(R.id.messageText);
+        this.messageTimeTextView = (TextView) itemView.findViewById(R.id.messageTime);
+        this.messengerImageView = (ImageView) itemView.findViewById(R.id.messengerImage);
     }
 
 }

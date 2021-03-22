@@ -35,9 +35,10 @@ public class ChatFragment extends Fragment {
 
     // TODO get UUID from currently logged in Firebase user
     // TODO create screen for store with list of all UUIDs in database that have sent a message
-    // TODO add second recycler view to differentiate between messages from user and store
+    // Done add second recycler view to differentiate between messages from user and store
+    // TODO message view who sent message lags one behind (i.e. if store sends a message only from the second message will it show as the store)
     // TODO add comments
-    // TODO implement image of user
+    // TODO implement image of user - partially done, need reference to where user image is stored
     // TODO clean up UI
     // TODO scroll to bottom on new message
     // TODO chat notification - Likely not possible due to needing server side component
@@ -47,6 +48,7 @@ public class ChatFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        // Split adapter in to receiver and sender
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
 //        mDatabase = FirebaseDatabase.getInstance(FireBase.FIREBASE_DATABASE_URL);
@@ -54,7 +56,6 @@ public class ChatFragment extends Fragment {
 
         this.messagesPath = "messages/" + this.UUID;
         DatabaseReference messagesRef = this.mDatabase.getReference().child(messagesPath);
-
         /**
          * DEBUG
          */
@@ -86,6 +87,7 @@ public class ChatFragment extends Fragment {
                 .setQuery(messagesRef, ChatMessage.class)
                 .build();
         this.chatAdapter = new ChatAdapter(options);
+        this.chatAdapter.setSenderUUID(this.UUID);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
 
         // Let messages appear in reverse chronological order
