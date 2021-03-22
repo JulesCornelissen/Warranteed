@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -59,7 +60,7 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
     class Viewholder extends RecyclerView.ViewHolder {
         //create textviews
         TextView view_product, view_date, view_state;
-        ImageButton bt_info;
+        CardView cardview;
 
         public Viewholder(View itemView) {
             super(itemView);
@@ -67,9 +68,9 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
             view_product = itemView.findViewById(R.id.receiptInfo_product);
             view_state = itemView.findViewById(R.id.textView_warranty_filled);
             view_date = itemView.findViewById(R.id.textView_expiring_filled);
-            bt_info = itemView.findViewById(R.id.imageButton_info);
+            cardview = itemView.findViewById(R.id.cardView_receipt);
 
-            bt_info.setOnClickListener(new View.OnClickListener() {
+            cardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
