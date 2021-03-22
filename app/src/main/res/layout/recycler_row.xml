@@ -46,7 +46,7 @@
             <TextView
                 android:id="@+id/textView_warranty_filled"
                 android:layout_width="62dp"
-                android:layout_height="17dp"
+                android:layout_height="21dp"
                 android:layout_marginTop="8dp"
                 android:text="expiring"
                 android:textColor="@color/black"
