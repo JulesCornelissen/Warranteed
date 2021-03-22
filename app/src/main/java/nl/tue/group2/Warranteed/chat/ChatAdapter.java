@@ -3,18 +3,21 @@ package nl.tue.group2.Warranteed.chat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
+import android.widget.LinearLayout;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
+import androidx.annotation.NonNull;
 import nl.tue.group2.Warranteed.R;
 
 public class ChatAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMessageView> {
+
+    private static final Format TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.US);
 
     public ChatAdapter(@NonNull FirebaseRecyclerOptions<ChatMessage> options) {
         super(options);
@@ -22,27 +25,29 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMessag
 
     private final Format timeFormatter = new SimpleDateFormat("HH:mm");
     private String senderUUID;
-    private boolean sender = false;
 
     @Override
     protected void onBindViewHolder(@NonNull ChatMessageView holder, int position,
                                     @NonNull ChatMessage model) {
-        holder.messageTextView.setText(model.getText());
-        holder.messageTimeTextView.setText(timeFormatter.format(model.getTimestamp()));
 
-        this.sender = this.senderUUID.equals(model.getSender());
+        boolean sender = this.senderUUID.equals(model.getSender());
+
+        View view;
+        if (sender) {
+            view = LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.fragment_chat_mrecycler_sender, holder.itemView, false);
+        } else {
+            view = LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.fragment_chat_mrecycler_receiver, holder.itemView, false);
+        }
+        holder.setView(view);
+
+        holder.messageTextView.setText(model.getText());
+        holder.messageTimeTextView.setText(TIME_FORMAT.format(model.getTimestamp()));
     }
 
     @NonNull
     @Override
     public ChatMessageView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view;
-        if (sender) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_chat_mrecycler_sender, parent, false);
-        } else {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_chat_mrecycler_receiver, parent, false);
-        }
-        return new ChatMessageView(view);
+        return new ChatMessageView(new LinearLayout(parent.getContext()));
     }
     // first oncreate, then onbind gets executed
 
