@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,11 +31,12 @@ public class ChatFragment extends Fragment {
 
     private RecyclerView recyclerViewChat;
     private ChatAdapter chatAdapter;
-    private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance(FireBase.FIREBASE_DATABASE_URL); // The messages database
+    private FirebaseDatabase mDatabase; // The messages database
     private String messagesPath;
-    private String UUID = "fj2893jf103j1";
+    private String UUIDreceiver;
+    private String UUIDsender; // Only to be used when the current user is the store
 
-    // TODO get UUID from currently logged in Firebase user
+    // Done get UUID from currently logged in Firebase user
     // TODO create screen for store with list of all UUIDs in database that have sent a message
     // Done add second recycler view to differentiate between messages from user and store
     // TODO message view who sent message lags one behind (i.e. if store sends a message only from the second message will it show as the store)
@@ -43,6 +46,8 @@ public class ChatFragment extends Fragment {
     // TODO scroll to bottom on new message
     // TODO chat notification - Likely not possible due to needing server side component
     // TODO chat background updating - Likely not possible due to needing server side component
+    // Done Create slightly different ChatFragment for store, with two UUIDs. One for the receiver and one for the sender.
+    //      Something like if store then sender UUID = "CoolGreen".
 
     @Nullable
     @Override
@@ -51,10 +56,30 @@ public class ChatFragment extends Fragment {
         // Split adapter in to receiver and sender
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
-//        mDatabase = FirebaseDatabase.getInstance(FireBase.FIREBASE_DATABASE_URL);
+        /**
+         * Initialize the instance variables
+         */
+        // Connect to the database
+        this.mDatabase = FirebaseDatabase.getInstance(FireBase.FIREBASE_DATABASE_URL);
         this.recyclerViewChat = (RecyclerView) view.findViewById(R.id.recyclerViewChat);
 
-        this.messagesPath = "messages/" + this.UUID;
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser!= null) {
+            String email = currentUser.getEmail().trim();
+            if (email.endsWith("coolgreen.nl")){
+                // TODO add code that gets the UUID of the customer that the store wants to talk to
+                // update UUIDreceiver to the UUID of the customer
+                this.UUIDsender = "CoolGreen";
+            } else {
+                this.UUIDreceiver = currentUser.getUid();
+                this.UUIDsender = currentUser.getUid();
+            }
+        }
+        this.messagesPath = "messages/" + this.UUIDreceiver;
+
+        /**
+         * Get the database reference and build the query
+         */
         DatabaseReference messagesRef = this.mDatabase.getReference().child(messagesPath);
         /**
          * DEBUG
@@ -82,14 +107,16 @@ public class ChatFragment extends Fragment {
          * END OF DEBUG
          */
 
-
         FirebaseRecyclerOptions<ChatMessage> options = new FirebaseRecyclerOptions.Builder<ChatMessage>()
                 .setQuery(messagesRef, ChatMessage.class)
                 .build();
         this.chatAdapter = new ChatAdapter(options);
-        this.chatAdapter.setSenderUUID(this.UUID);
-        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        this.chatAdapter.setSenderUUID(this.UUIDsender);
 
+        /**
+         * Create the UI
+         */
+        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
         // Let messages appear in reverse chronological order
         mLinearLayoutManager.setStackFromEnd(true);
         recyclerViewChat.setLayoutManager(mLinearLayoutManager);
@@ -107,7 +134,7 @@ public class ChatFragment extends Fragment {
             public void onClick(View view) {
                 EditText editText = ((EditText) getActivity().findViewById(R.id.textInputChatMessage));
                 String text = editText.getText().toString();
-                ChatMessage message = new ChatMessage(text, UUID);
+                ChatMessage message = new ChatMessage(text, UUIDreceiver);
                 mDatabase.getReference().child(messagesPath).push().setValue(message);
                 editText.getText().clear();
             }
