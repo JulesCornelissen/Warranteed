@@ -7,12 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +16,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Collections;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.chat.ChatAdapter;
 import nl.tue.group2.Warranteed.chat.ChatMessage;
@@ -136,6 +137,7 @@ public class ChatFragment extends Fragment {
                 String text = editText.getText().toString();
                 ChatMessage message = new ChatMessage(text, UUIDreceiver);
                 mDatabase.getReference().child(messagesPath).push().setValue(message);
+                mDatabase.getReference().child("conversations").child(UUIDreceiver).updateChildren(Collections.singletonMap("customerid", UUIDreceiver));
                 editText.getText().clear();
             }
         });
