@@ -50,6 +50,14 @@ public class ChatFragment extends Fragment {
     // Done Create slightly different ChatFragment for store, with two UUIDs. One for the receiver and one for the sender.
     //      Something like if store then sender UUID = "CoolGreen".
 
+    public ChatFragment(){
+
+    }
+
+    public ChatFragment(String uid){
+        this.UUIDreceiver = uid;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
