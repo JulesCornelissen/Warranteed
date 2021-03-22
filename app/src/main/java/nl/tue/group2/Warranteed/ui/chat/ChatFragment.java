@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,7 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.chat.ChatAdapter;
 import nl.tue.group2.Warranteed.chat.ChatMessage;
-import nl.tue.group2.Warranteed.chat.ChatMessageView;
 import nl.tue.group2.Warranteed.firebase.FireBase;
 
 public class ChatFragment extends Fragment {
@@ -32,7 +30,6 @@ public class ChatFragment extends Fragment {
     private RecyclerView recyclerViewChat;
     private ChatAdapter chatAdapter;
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance(FireBase.FIREBASE_DATABASE_URL); // The messages database
-    private FirebaseRecyclerAdapter<ChatMessage, ChatMessageView> mFirebaseAdapter;
     private String messagesPath;
     private String UUID = "fj2893jf103j1";
 
@@ -43,6 +40,8 @@ public class ChatFragment extends Fragment {
     // TODO implement image of user
     // TODO clean up UI
     // TODO scroll to bottom on new message
+    // TODO chat notification - Likely not possible due to needing server side component
+    // TODO chat background updating - Likely not possible due to needing server side component
 
     @Nullable
     @Override

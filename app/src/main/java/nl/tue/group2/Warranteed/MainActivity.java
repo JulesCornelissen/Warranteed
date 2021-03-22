@@ -14,15 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import nl.tue.group2.Warranteed.firebase.FireBase;
 import nl.tue.group2.Warranteed.notifications.NotificationHandler;
+import nl.tue.group2.Warranteed.notifications.NotificationManager;
 import nl.tue.group2.Warranteed.ui.add.AddFragment;
 import nl.tue.group2.Warranteed.ui.chat.ChatFragment;
 import nl.tue.group2.Warranteed.ui.home.HomeFragment;
 import nl.tue.group2.Warranteed.ui.store.StoreFragment;
 
 public class MainActivity extends AppCompatActivity {
-
-    private NotificationHandler notificationHandler;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +39,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Initialize notification channel for general notifications
-        this.notificationHandler = new NotificationHandler(
+        NotificationHandler notificationHandler = new NotificationHandler(
                 getString(R.string.chan_general_app),
                 getString(R.string.channel_name),
                 getString(R.string.channel_description),
                 this);
+        NotificationManager.setNotificationHandler(notificationHandler);
+
+
 
 
         getSupportActionBar().hide();
@@ -82,6 +83,6 @@ public class MainActivity extends AppCompatActivity {
     public void sendNotification(View view) {
         Random r = new Random();
         int notifID = r.nextInt();
-        this.notificationHandler.sendNotification("Warranteed", Integer.toString(notifID));
+        NotificationManager.getNotificationHandler().sendNotification("Warranteed", Integer.toString(notifID));
     }
 }

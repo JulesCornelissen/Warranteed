@@ -32,7 +32,7 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMessag
     @NonNull
     @Override
     public ChatMessageView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_chat_mrecycler, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_chat_mrecycler_receiver, parent, false);
         return new ChatMessageView(view);
     }
 
