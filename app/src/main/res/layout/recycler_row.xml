@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_receipt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,7 +24,7 @@
                 android:id="@+id/receiptInfo_product"
                 android:layout_width="148dp"
                 android:layout_height="26dp"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:text="Product"
                 android:textColor="@color/black"
@@ -95,17 +96,6 @@
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="@+id/textView_store"
                 app:layout_constraintTop_toBottomOf="@+id/textView_store" />
-
-            <ImageButton
-                android:id="@+id/imageButton_info"
-                android:layout_width="47dp"
-                android:layout_height="51dp"
-                android:layout_marginEnd="24dp"
-                android:background="@drawable/ic_baseline_receipt_24"
-                android:contentDescription="@string/store"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
