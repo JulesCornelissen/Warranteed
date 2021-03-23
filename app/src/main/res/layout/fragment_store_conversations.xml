@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.store.StoreConversationFragment"
+    android:backgroundTint="@color/backgroundGrey" >
+
+    <View
+        android:id="@+id/imageTop"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/store_conversations_screen_top"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:text="Chats"
+        android:textSize="30sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/imageTop"
+        app:layout_constraintBottom_toBottomOf="@id/imageTop"
+        app:layout_constraintStart_toStartOf="@id/imageTop"
+        app:layout_constraintEnd_toEndOf="@id/imageTop"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <EditText
+        android:id="@+id/search_bar"
+        android:layout_width="276dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:hint="Search receipts"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintBottom_toBottomOf="@id/imageTop"
+        app:layout_constraintStart_toStartOf="@id/imageTop"
+        app:layout_constraintEnd_toEndOf="@id/imageTop"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintVertical_bias="0" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewConversations"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbars="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageTop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:stackFromEnd="false" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
