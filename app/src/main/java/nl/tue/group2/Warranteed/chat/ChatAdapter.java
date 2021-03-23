@@ -17,8 +17,6 @@ import nl.tue.group2.Warranteed.R;
 
 public class ChatAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMessageView> {
 
-    private static final Format TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.US);
-
     public ChatAdapter(@NonNull FirebaseRecyclerOptions<ChatMessage> options) {
         super(options);
     }
@@ -41,7 +39,7 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMessag
         holder.setView(view);
 
         holder.messageTextView.setText(model.getText());
-        holder.messageTimeTextView.setText(TIME_FORMAT.format(model.getTimestamp()));
+        holder.messageTimeTextView.setText(timeFormatter.format(model.getTimestamp()));
     }
 
     @NonNull

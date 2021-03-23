@@ -8,7 +8,6 @@ import android.widget.EditText;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -47,6 +46,7 @@ public class ChatFragment extends Fragment {
     // TODO chat background updating - Likely not possible due to needing server side component
     // Done Create slightly different ChatFragment for store, with two UUIDs. One for the
     //      receiver and one for the sender. Something like if store then sender UUID = "CoolGreen".
+    // Done add code that gets the UUID of the customer that the store wants to talk to
 
     public ChatFragment() {
 
@@ -76,18 +76,16 @@ public class ChatFragment extends Fragment {
         this.mDatabase = FirebaseDatabase.getInstance(FireBase.FIREBASE_DATABASE_URL);
         this.recyclerViewChat = (RecyclerView) view.findViewById(R.id.recyclerViewChat);
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            String email = currentUser.getEmail().trim();
-            if (email.endsWith("coolgreen.nl")) {
-                // Done add code that gets the UUID of the customer that the store wants to talk to
-                // The UUID of the receiver is given in the constructer when logged in as the store
-                this.UUIDSender = "CoolGreen";
-            } else {
-                this.UUIDReceiver = currentUser.getUid();
-                this.UUIDSender = currentUser.getUid();
-            }
+        if (this.UUIDReceiver != null) {
+            // If UUIDReceiver is not null then the ChatFragment is being used by the store
+            // The UUID of the receiver is given in the constructor when logged in as the store
+            this.UUIDSender = "CoolGreen";
+        } else {
+            // A customer is using the ChatFragment
+            this.UUIDReceiver = FirebaseAuth.getInstance().getUid();
+            this.UUIDSender = this.UUIDReceiver;
         }
+
         this.messagesPath = "messages/" + this.UUIDReceiver;
 
         /**
