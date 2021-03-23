@@ -75,12 +75,11 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser currentUser = mAuth.getInstance().getCurrentUser();
-                            String email = currentUser.getEmail().trim();
                             Intent intentCustomer = new Intent(LoginActivity.this, MainActivity.class);
                             Intent intentStore = new Intent(LoginActivity.this, MainStoreActivity.class);
 
                             // it gets checked if the user was a customer or store owner
-                            db.collection("Customers").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            db.collection("Customers").document(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.isSuccessful()){
@@ -112,11 +111,10 @@ public class LoginActivity extends AppCompatActivity {
         // Check if user is already signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getInstance().getCurrentUser();
         if (currentUser!= null){
-            String email = currentUser.getEmail().trim();
             Intent intentCustomer = new Intent(LoginActivity.this, MainActivity.class);
             Intent intentStore = new Intent(LoginActivity.this, MainStoreActivity.class);
             // it gets checked if the user was a customer or store owner
-            db.collection("Customers").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            db.collection("Customers").document(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()){
