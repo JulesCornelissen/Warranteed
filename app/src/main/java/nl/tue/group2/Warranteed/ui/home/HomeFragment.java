@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,6 +31,7 @@ import java.util.Objects;
 
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.Receipt;
+import nl.tue.group2.Warranteed.data.LoginRepository;
 
 public class HomeFragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
@@ -41,9 +44,11 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
     //global variables for keeping track of which receipts to display
     String state = "All";
     String search = "";
-
+    private FirebaseAuth mAuth;
     //get receipts from firestore
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser currentUser = mAuth.getInstance().getCurrentUser();
+    String email = currentUser.getEmail().trim();
     CollectionReference receipts = db.collection("Receipt");
 
     @Nullable
@@ -57,8 +62,12 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
         //specific query to get detailed receipts
         //for now this is all receipts
         Query query = receipts;
+
+        Query queryPersonal= query.whereEqualTo("email", email);
+
+
         FirestoreRecyclerOptions<Receipt> options = new FirestoreRecyclerOptions.Builder<Receipt>()
-                .setQuery(query, Receipt.class)
+                .setQuery(queryPersonal, Receipt.class)
                 .build();
         //assign adapter to the recyclerView
         adapter = new ReceiptAdapter(options);
@@ -134,7 +143,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
     private void updateRecyclerView(String search, String state){
         //when state = All the query should ignore the state.
         if (Objects.equals(state, "All")) {
-            Query newQuery = receipts.orderBy("name_insensitive").startAt(search).endAt(search + '\uf8ff');
+            Query newQuery = receipts.whereEqualTo("email", email).orderBy("name_insensitive").startAt(search).endAt(search + '\uf8ff');
             //create new options
             FirestoreRecyclerOptions<Receipt> newOptions = new FirestoreRecyclerOptions.Builder<Receipt>()
                     .setQuery(newQuery, Receipt.class)
@@ -143,7 +152,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
             adapter.updateOptions(newOptions);
         } else {
             //new query that filters for products starting with search word s
-            Query newQuery = receipts.orderBy("name_insensitive")
+            Query newQuery = receipts.whereEqualTo("email", email).orderBy("name_insensitive")
                     .startAt(search)
                     .endAt(search + '\uf8ff')
                     .whereEqualTo("state", state); //state equals state given

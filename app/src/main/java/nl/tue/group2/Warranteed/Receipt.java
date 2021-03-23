@@ -1,5 +1,8 @@
 package nl.tue.group2.Warranteed;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class Receipt {
 
     //variables for holding results
@@ -17,10 +20,7 @@ public class Receipt {
     public Receipt() {}
 
     // Getter and setter method
-    public String getProduct()
-    {
-        return product;
-    }
+    public String getProduct() { return product; }
     public void setProduct(String product)
     {
         this.product = product;
@@ -33,10 +33,7 @@ public class Receipt {
     {
         return expiration_date;
     }
-    public void setExpiration_date(String warranty_date)
-    {
-        this.expiration_date = warranty_date;
-    }
+    public void setExpiration_date(String warranty_date) { this.expiration_date = warranty_date; }
     public String getState()
     {
         String duration = getDuration();
@@ -54,8 +51,6 @@ public class Receipt {
     public void setState(String warranty_state)
     {
         this.state = warranty_state;
-
-
     }
     public String getPurchase_date()
     {

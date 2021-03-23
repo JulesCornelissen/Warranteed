@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Random;
 
@@ -72,7 +73,9 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(intentLogout);
                                 return true;
                             case R.id.delete_account:
-                                FirebaseAuth.getInstance().getCurrentUser().delete();
+                                FirebaseUser currentuser = firebaseAuth.getInstance().getCurrentUser();
+                                FirebaseAuth.getInstance().signOut();
+                                currentuser.delete();
                                 Toast.makeText(MainActivity.this, "your account has been deleted", Toast.LENGTH_SHORT).show();
                                 startActivity(intentLogout);
                                 return true;
