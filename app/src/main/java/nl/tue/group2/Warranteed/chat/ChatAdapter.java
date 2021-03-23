@@ -3,16 +3,16 @@ package nl.tue.group2.Warranteed.chat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import nl.tue.group2.Warranteed.R;
 
 public class ChatAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMessageView> {
@@ -23,6 +23,8 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMessag
 
     private final Format timeFormatter = new SimpleDateFormat("HH:mm");
     private String senderUUID;
+    private ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(100, 0);
+    ;
 
     @Override
     protected void onBindViewHolder(@NonNull ChatMessageView holder, int position,
@@ -36,7 +38,7 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMessag
         } else {
             view = LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.fragment_chat_mrecycler_receiver, holder.itemView, false);
         }
-        holder.setView(view);
+        holder.setView(view, this.params);
 
         holder.messageTextView.setText(model.getText());
         holder.messageTimeTextView.setText(timeFormatter.format(model.getTimestamp()));
@@ -45,12 +47,26 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMessag
     @NonNull
     @Override
     public ChatMessageView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ChatMessageView(new LinearLayout(parent.getContext()));
+        return new ChatMessageView(new ConstraintLayout(parent.getContext()));
     }
     // first oncreate, then onbind gets executed
 
+    /**
+     * Sets the sender UUID which determines where the message should be displayed.
+     *
+     * @param senderUUID The UUID of the sender.
+     */
     public void setSenderUUID(String senderUUID) {
         this.senderUUID = senderUUID;
+    }
+
+    /**
+     * Set the width of the chat messages in the view, should be set to width of the display.
+     *
+     * @param width The desired width.
+     */
+    public void setWidth(int width) {
+        this.params.width = width;
     }
 
 }

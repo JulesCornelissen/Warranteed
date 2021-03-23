@@ -1,6 +1,7 @@
 package nl.tue.group2.Warranteed.ui.chat;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class ChatFragment extends Fragment {
     // Done add second recycler view to differentiate between messages from user and store
     // Done message view who sent message lags one behind (i.e. if store sends a message only
     //      from the second message will it show as the store)
+    // Done fix message view not aligned to right side
     // Done add comments
     // TODO implement image of user - partially done, need reference to where user image is stored
     // TODO clean up UI
@@ -94,10 +96,15 @@ public class ChatFragment extends Fragment {
         DatabaseReference messagesRef = this.mDatabase.getReference().child(messagesPath);
         FirebaseRecyclerOptions<ChatMessage> options =
                 new FirebaseRecyclerOptions.Builder<ChatMessage>()
-                .setQuery(messagesRef, ChatMessage.class)
-                .build();
+                        .setQuery(messagesRef, ChatMessage.class)
+                        .build();
         this.chatAdapter = new ChatAdapter(options);
         this.chatAdapter.setSenderUUID(this.UUIDSender);
+
+        // Get the width of the display and pass it to the view adapter
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        this.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        this.chatAdapter.setWidth(displayMetrics.widthPixels);
 
         /**
          * Create the UI
