@@ -60,9 +60,9 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
         //Create and set adapter to appropriate card id
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         //specific query to get detailed receipts
-        //for now this is all receipts
+        // this is all receipts
         Query query = receipts;
-
+        //these are the personal receipts
         Query queryPersonal= query.whereEqualTo("email", email);
 
 

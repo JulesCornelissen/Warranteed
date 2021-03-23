@@ -1,39 +1,35 @@
 package nl.tue.group2.Warranteed;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.auth.FirebaseUser;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Register extends AppCompatActivity {
+    //initialize the variables
     CheckBox cb_cust, cb_store;
     EditText cb_Email, cb_Password, cb_Password2;
     private FirebaseAuth mAuth;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //set up the register page
         getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        //set up the variables in the register page
         cb_cust = findViewById(R.id.checkBox_cust);
         cb_store = findViewById(R.id.checkBox_store);
         cb_Email = findViewById(R.id.username);
@@ -41,8 +37,8 @@ public class Register extends AppCompatActivity {
         cb_Password2 = findViewById(R.id.reg_password2);
         mAuth = FirebaseAuth.getInstance();
 
+        //when signup is pressed data is retrieved from the server
         final Button signupButton = findViewById(R.id.signup);
-
         signupButton.setEnabled(true);
         signupButton.setOnClickListener(v -> {
             Intent intentCustomer = new Intent(Register.this, MainActivity.class);
@@ -50,21 +46,20 @@ public class Register extends AppCompatActivity {
             String Email = cb_Email.getText().toString().trim();
             String password1 = cb_Password.getText().toString().trim();
             String password2 = cb_Password2.getText().toString().trim();
-
+            //checks if email and password are valid
             if (!isDetailsValid(Email,password1,password2)) {
                 return;
             }
-
+            // a new user is made with the email and the password
             mAuth.createUserWithEmailAndPassword(Email,password1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-
+                        // checks the status of the user.
                         boolean status=true;
                         if (cb_cust.isChecked()) {
                             status=false;
                         }
-
 
                         // push user data to the database
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -75,16 +70,7 @@ public class Register extends AppCompatActivity {
                         data.put("is store owner", status);
                         FirebaseFirestore.getInstance().collection("Customers").document(user.getEmail()).set(data);
 
-                        Map<String, Object> reg_entry = new HashMap<>();
-                        reg_entry.put("email", Email);
-                        reg_entry.put("is store owner", status);
-                        db.collection("Customers").document(Email).set(reg_entry).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                            }
-                        });
-
-
+                        // sends the user to the customer or store screen
                         if (cb_cust.isChecked()) {
                             startActivity(intentCustomer);
                         } else {
@@ -97,7 +83,7 @@ public class Register extends AppCompatActivity {
                 }
             });
         });
-
+        //checks if the user checks the customer or store button
         cb_cust.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 cb_store.setChecked(false);
@@ -111,7 +97,7 @@ public class Register extends AppCompatActivity {
         });
 
     }
-
+    //checks if the details comply to our requirements
     public boolean isDetailsValid(String Email,String password,String password2) {
         boolean main = true;
 

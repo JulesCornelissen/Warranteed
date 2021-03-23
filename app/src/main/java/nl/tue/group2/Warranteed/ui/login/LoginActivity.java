@@ -36,10 +36,13 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+        //set up the login page
         getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
+
+        //sets up variables
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
         mAuth = FirebaseAuth.getInstance();
@@ -49,24 +52,23 @@ public class LoginActivity extends AppCompatActivity {
         final Button registerButton = findViewById(R.id.register);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
 
+        //if register button is clicked, the page changes to register
         registerButton.setEnabled(true);
         registerButton.setOnClickListener(v -> {
             Intent intentRegister = new Intent(LoginActivity.this, Register.class);
             startActivity(intentRegister);
         });
 
-
+        //if login is clicked the data that is given will be checked
         loginButton.setEnabled(true);
         loginButton.setOnClickListener(v -> {
-            Intent intentCustomer = new Intent(LoginActivity.this, MainActivity.class);
-            Intent intentStore = new Intent(LoginActivity.this, MainStoreActivity.class);
             String Email = usernameEditText.getText().toString().trim();
             String password1 = passwordEditText.getText().toString().trim();
 
             if (!isDetailsValid(Email,password1)) {
                 return;
             }
-
+            //if data is correct user can log in
             mAuth.signInWithEmailAndPassword(Email, password1)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -77,14 +79,15 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intentCustomer = new Intent(LoginActivity.this, MainActivity.class);
                             Intent intentStore = new Intent(LoginActivity.this, MainStoreActivity.class);
 
+                            // it gets checked if the user was a customer or store owner
                             db.collection("Customers").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.isSuccessful()){
-
                                         DocumentSnapshot document = task.getResult();
                                         boolean usertype= document.getBoolean("is store owner");
                                         System.out.println(usertype);
+                                        //user gets send to the right screen.
                                         if (usertype){
                                             Toast.makeText(LoginActivity.this, "store", Toast.LENGTH_SHORT).show();
                                             startActivity(intentStore);
@@ -106,13 +109,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
+        // Check if user is already signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getInstance().getCurrentUser();
         if (currentUser!= null){
             String email = currentUser.getEmail().trim();
             Intent intentCustomer = new Intent(LoginActivity.this, MainActivity.class);
             Intent intentStore = new Intent(LoginActivity.this, MainStoreActivity.class);
-
+            // it gets checked if the user was a customer or store owner
             db.collection("Customers").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -120,6 +123,7 @@ public class LoginActivity extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         boolean usertype= document.getBoolean("is store owner");
                         System.out.println(usertype);
+                        //user gets send to the right screen.
                         if (usertype){
                             Toast.makeText(LoginActivity.this, "store", Toast.LENGTH_SHORT).show();
                             startActivity(intentStore);

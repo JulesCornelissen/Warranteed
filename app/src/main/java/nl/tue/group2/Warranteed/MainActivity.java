@@ -33,7 +33,7 @@ import nl.tue.group2.Warranteed.ui.login.LoginActivity;
 import nl.tue.group2.Warranteed.ui.store.StoreFragment;
 
 public class MainActivity extends AppCompatActivity {
-
+    //initialize the variables
     private FirebaseAuth mAuth;
     private FirebaseAuth firebaseAuth;
     @Override
