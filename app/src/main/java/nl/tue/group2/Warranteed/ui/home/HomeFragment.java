@@ -2,17 +2,23 @@ package nl.tue.group2.Warranteed.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Spinner;
+
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,20 +26,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-
-import java.util.Objects;
-
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.Receipt;
-import nl.tue.group2.Warranteed.data.LoginRepository;
 
 public class HomeFragment extends Fragment implements AdapterView.OnItemSelectedListener, SearchView.OnQueryTextListener{
 
@@ -46,10 +40,9 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
     //global variables for keeping track of which receipts to display
     String state = "All";
     String search = "";
-    private FirebaseAuth mAuth;
     //get receipts from firestore
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseUser currentUser = mAuth.getInstance().getCurrentUser();
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     String email = currentUser.getEmail().trim();
     CollectionReference receipts = db.collection("Receipt");
 
