@@ -17,7 +17,6 @@ import java.util.Collections;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.chat.ChatAdapter;
@@ -105,13 +104,6 @@ public class ChatFragment extends Fragment {
         this.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         this.chatAdapter.setWidth(displayMetrics.widthPixels);
 
-        /**
-         * Create the UI
-         */
-        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        // Let messages appear in reverse chronological order
-        mLinearLayoutManager.setStackFromEnd(true);
-        recyclerViewChat.setLayoutManager(mLinearLayoutManager);
         recyclerViewChat.setAdapter(chatAdapter);
 
         return view;
