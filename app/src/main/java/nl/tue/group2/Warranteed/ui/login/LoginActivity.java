@@ -19,7 +19,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-
 import nl.tue.group2.Warranteed.MainActivity;
 import nl.tue.group2.Warranteed.MainStoreActivity;
 import nl.tue.group2.Warranteed.R;
@@ -28,7 +27,6 @@ import nl.tue.group2.Warranteed.Register;
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
-    private FirebaseAuth mAuth;
     EditText usernameEditText, passwordEditText;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -43,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
         //sets up variables
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
-        mAuth = FirebaseAuth.getInstance();
         usernameEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.login);
@@ -67,12 +64,12 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
             //if data is correct user can log in
-            mAuth.signInWithEmailAndPassword(Email, password1)
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(Email, password1)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                FirebaseUser currentUser = mAuth.getInstance().getCurrentUser();
+                                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                                 Intent intentCustomer = new Intent(LoginActivity.this,
                                         MainActivity.class);
                                 Intent intentStore = new Intent(LoginActivity.this,
@@ -114,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is already signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             Intent intentCustomer = new Intent(LoginActivity.this, MainActivity.class);
             Intent intentStore = new Intent(LoginActivity.this, MainStoreActivity.class);
