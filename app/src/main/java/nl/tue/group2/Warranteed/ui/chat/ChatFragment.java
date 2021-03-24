@@ -125,7 +125,12 @@ public class ChatFragment extends Fragment {
                 mDatabase.getReference().child(messagesPath).push().setValue(message);
                 FirebaseFirestore.getInstance().collection("Customers").document(UUIDReceiver).get().addOnSuccessListener(result -> {
                     mDatabase.getReference().child("conversations").child(UUIDReceiver).updateChildren(
-                            Stream.of(new Pair<>("customerid", UUIDReceiver), new Pair<>("email", result.getString("email"))).collect(Collectors.toMap(pair -> pair.first, pair -> pair.second))
+                            Stream.of(
+                                    new Pair<>("customerid", UUIDReceiver),
+                                    new Pair<>("email", result.getString("email")),
+                                    new Pair<>("timestamp", System.currentTimeMillis()),
+                                    new Pair<>("negative_timestamp", -System.currentTimeMillis())
+                            ).collect(Collectors.toMap(pair -> pair.first, pair -> pair.second))
                     );
                 });
                 editText.getText().clear();

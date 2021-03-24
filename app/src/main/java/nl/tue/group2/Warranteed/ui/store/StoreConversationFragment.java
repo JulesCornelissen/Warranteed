@@ -1,9 +1,12 @@
 package nl.tue.group2.Warranteed.ui.store;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +35,19 @@ public class StoreConversationFragment extends Fragment {
 
         this.adapter = new ConversationAdapter(this.getActivity().getSupportFragmentManager());
         ((RecyclerView) this.getActivity().findViewById(R.id.recyclerViewConversations)).setAdapter(this.adapter);
+
+        // add a listener for the search bar
+        ((EditText) this.getActivity().findViewById(R.id.search_bar)).addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                StoreConversationFragment.this.adapter.setSearchText(charSequence.toString());
+            }
+
+            public void afterTextChanged(Editable editable) {
+            }
+        });
     }
 
     @Override

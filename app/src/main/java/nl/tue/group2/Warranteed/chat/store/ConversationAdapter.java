@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -21,13 +22,14 @@ public class ConversationAdapter extends FirebaseRecyclerAdapter<ConversationAda
     private final FragmentManager fragmentManager;
 
     public ConversationAdapter(FragmentManager fragmentManager) {
-        super(new FirebaseRecyclerOptions.Builder<Conversation>().setQuery(FirebaseDatabase.getInstance(FireBase.FIREBASE_DATABASE_URL).getReference().child("conversations"), Conversation.class).build());
+        super(createOptions(null));
         this.fragmentManager = fragmentManager;
     }
 
     @Override
     protected void onBindViewHolder(@NonNull ConversationView holder, int position, @NonNull Conversation model) {
         holder.setCustomerId(model.customerId);
+        holder.setMessageTime(model.timestamp);
     }
 
     @NonNull
@@ -37,16 +39,53 @@ public class ConversationAdapter extends FirebaseRecyclerAdapter<ConversationAda
         return new ConversationView(view, this.fragmentManager);
     }
 
+    public void setSearchText(String searchText) {
+        this.updateOptions(createOptions(searchText));
+    }
+
+    public static FirebaseRecyclerOptions<Conversation> createOptions(String searchText) {
+        Query query = FirebaseDatabase.getInstance(FireBase.FIREBASE_DATABASE_URL).getReference().child("conversations");
+        if (searchText != null && !searchText.trim().isEmpty())
+            query = query.orderByChild("email").startAt(searchText.trim()).endAt(searchText.trim() + '\uf8ff');
+        query = query.orderByChild("negative_timestamp");
+        return new FirebaseRecyclerOptions.Builder<Conversation>().setQuery(query, Conversation.class).build();
+    }
+
     public static class Conversation {
 
-        private String customerId;
+        private String customerId, email;
+        private long timestamp, negativeTimestamp;
 
         public void setCustomerid(String customerId) {
             this.customerId = customerId;
         }
 
         public String getCustomerid() {
-            return customerId;
+            return this.customerId;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getEmail() {
+            return this.email;
+        }
+
+        public void setTimestamp(long timestamp) {
+            this.timestamp = timestamp;
+        }
+
+        public long getTimestamp() {
+            return this.timestamp;
+        }
+
+        public void setNegative_timestamp(long negativeTimestamp) {
+            this.negativeTimestamp = negativeTimestamp;
+        }
+
+        public long getNegative_timestamp() {
+            return this.negativeTimestamp;
         }
     }
 }
