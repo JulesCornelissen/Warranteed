@@ -197,7 +197,7 @@
         android:layout_height="0dp"
         android:fontFamily="@font/worksans"
         android:text="Submit receipt"
-        android:textFontWeight="1100"
+        android:textFontWeight="900"
         android:textSize="17dp"
         app:layout_constraintBottom_toTopOf="@id/horizontalGuideline18"
         app:layout_constraintLeft_toRightOf="@id/verticalGuideline1"
