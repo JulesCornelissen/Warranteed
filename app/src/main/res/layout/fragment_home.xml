@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/warrenties"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/homescreen_bg"
     tools:context=".ui.home.HomeFragment"
     tools:ignore="ExtraText">
 
@@ -14,37 +15,42 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="137dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="135dp"
         android:fontFamily="@font/worksans"
         android:text="@string/warranties"
-        android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="40sp" />
 
-    <EditText
+    <SearchView
         android:id="@+id/search_bar"
-        android:layout_width="276dp"
-        android:layout_height="wrap_content"
+        android:layout_width="320dp"
+        android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="42dp"
-        android:layout_marginTop="67dp"
+        android:layout_marginStart="43dp"
+        android:layout_marginTop="75dp"
         android:autofillHints="Search receipts"
+        android:background="@drawable/searchbar_bg"
         android:hint="Search receipts"
-        android:inputType="text" />
+        android:iconifiedByDefault="false">
+
+    </SearchView>
 
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="110dp"
         android:layout_height="40dp"
+        android:layout_below="@+id/search_bar"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="41dp"
-        android:layout_marginTop="122dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        android:textColor="@color/white"
         android:background="@drawable/spinner_background"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar"
         android:spinnerMode="dropdown" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -55,8 +61,13 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="113dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="-13dp"
         android:background="@color/white"
+
+        android:backgroundTint="@color/purple_bg"
         android:padding="10dp"
         android:scrollbars="vertical" />
 

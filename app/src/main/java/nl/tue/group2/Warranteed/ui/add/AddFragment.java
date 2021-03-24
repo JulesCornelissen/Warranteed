@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -84,9 +85,7 @@ public class AddFragment extends Fragment {
         );
 
         // clear button
-        this.getActivity().findViewById(R.id.clearButton).setOnClickListener(
-                v -> ((EditText) this.getActivity().findViewById(R.id.itemField)).setText("")
-        );
+
 
         // submit button
         this.getActivity().findViewById(R.id.submitReceiptButton).setOnClickListener(
@@ -182,6 +181,7 @@ public class AddFragment extends Fragment {
         //Calculate Duration (Mourad)
         String duration = "";
         long duration_in_ms = expirationDate.getTime() - purchaseDate.getTime();
+
         long duration_in_days = duration_in_ms / (1000 * 60 * 60 * 24);
         long duration_in_years = duration_in_days / 365;
         long duration_in_months = duration_in_days / 30;

@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -30,13 +32,13 @@ import java.util.Objects;
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.Receipt;
 
-public class HomeFragment extends Fragment implements AdapterView.OnItemSelectedListener{
+public class HomeFragment extends Fragment implements AdapterView.OnItemSelectedListener, SearchView.OnQueryTextListener{
 
     //Initialize adapter and recycleView
     RecyclerView recyclerView;
     ReceiptAdapter adapter;
     //initialize searchbar and spinner
-    EditText searchbar;
+    SearchView searchbar;
     Spinner spinner;
     //global variables for keeping track of which receipts to display
     String state = "All";
@@ -84,7 +86,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
     private void setSpinner(View view){
         spinner = view.findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> spinner_adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.spinner_options, android.R.layout.simple_spinner_item);
+                R.array.spinner_options, R.layout.spinner);
         spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinner_adapter);
         spinner.setOnItemSelectedListener(this);
@@ -107,25 +109,25 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
      * initializes searchbar and
      * adds text listener to searchbar
      */
-    public void setSearchbar(View view){
-        searchbar = view.findViewById(R.id.search_bar);
+    public void setSearchbar(View view) {
+        //find searchbar
+        searchbar = (SearchView) view.findViewById(R.id.search_bar);
         //add listener
-        searchbar.addTextChangedListener(new TextWatcher() {
-            //not implemented
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            //not implemented
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                search = s.toString().toLowerCase();
-                //check if s is empty
-                updateRecyclerView(search, state);
-            }
-        });
+        searchbar.setOnQueryTextListener(this);
     }
+    //to satisfy implementation of SearchView
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        updateRecyclerView(newText, state);
+        return false;
+    };
+
 
     /*
      * Method to filter query with search word s

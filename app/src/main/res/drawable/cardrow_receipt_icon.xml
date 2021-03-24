@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--    redesign with your own drawables to fit your taste-->
+    <item>
+        <shape
+            android:shape="rectangle">
+            <!--            replace with your own colors-->
+            <gradient
+                android:type="linear"
+                android:angle="45"
+                android:startColor="#7521FF"
+                android:endColor="#888DFF"  />
+            <corners
+                android:radius="5dp">
+
+            </corners>
+            <padding android:right="8dp" android:left="8dp" android:bottom="10dp" android:top="10dp"/>
+
+            <size
+                android:width="24dp"
+                android:height="24dp" />
+        </shape>
+    </item>
+
+    <item android:drawable="@drawable/ic_receipt_icon"
+       />
+
+</layer-list>
