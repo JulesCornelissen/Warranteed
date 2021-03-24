@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -33,7 +35,7 @@ public class AddFragment extends Fragment {
     private Bitmap receiptImage;
     private Calendar purchaseDate;
     private Calendar expirationDate;
-
+    private FirebaseAuth mAuth;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -172,6 +174,8 @@ public class AddFragment extends Fragment {
         Date expirationDate = this.expirationDate.getTime();
         String item = ((EditText) this.getActivity().findViewById(R.id.itemField)).getText().toString();
         Bitmap image = this.receiptImage;
+        FirebaseUser currentUser = mAuth.getInstance().getCurrentUser();
+        String email = currentUser.getEmail().trim();
 
         // upload the image to firebase storage
         UUID imageId = FirebaseImageHandler.uploadImage("receipt", image);
@@ -205,7 +209,7 @@ public class AddFragment extends Fragment {
         data.put("expiration_date", dateFormatter.format(expirationDate));
         data.put("product", item);
         data.put("image", imageId.toString());
-
+        data.put("email", email);
         // create a new receipt in firebase
         FirebaseFirestore.getInstance().collection("Receipt").document().set(data).addOnCompleteListener(
                 task -> this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit()
