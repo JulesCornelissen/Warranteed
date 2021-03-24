@@ -61,14 +61,14 @@ public class MainActivity extends AppCompatActivity {
                         switch (menuItem.getItemId()) {
                             case R.id.logout:
                                 FirebaseAuth.getInstance().signOut();
-                                Toast.makeText(MainActivity.this, "you've been logged out", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, getString(R.string.msgLoggedOut), Toast.LENGTH_SHORT).show();
                                 startActivity(intentLogout);
                                 return true;
                             case R.id.delete_account:
                                 FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                                 FirebaseAuth.getInstance().signOut();
                                 currentUser.delete();
-                                Toast.makeText(MainActivity.this, "your account has been deleted", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, getString(R.string.msgAccountDeleted), Toast.LENGTH_SHORT).show();
                                 startActivity(intentLogout);
                                 return true;
                             default:
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     public void sendNotification(View view) {
         Random r = new Random();
         int notifID = r.nextInt();
-        NotificationManager.getNotificationHandler().sendNotification("Warranteed", Integer.toString(notifID));
+        NotificationManager.getNotificationHandler().sendNotification(getString(R.string.app_name), Integer.toString(notifID));
     }
 }
 

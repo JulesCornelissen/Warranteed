@@ -58,4 +58,11 @@
         <item> Expiring </item>
         <item> Void </item>
     </string-array>
+    <string name="msgLoggedOut">You have been logged out.</string>
+    <string name="msgAccountDeleted">Your account has been deleted.</string>
+    <string name="msgCustomerLogin">You have successfully logged in as a customer.</string>
+    <string name="msgStoreLogin">You have successfully logged in as an employee of CoolGreen.</string>
+    <string name="msgWrongCredentials">The email and/or password you entered is incorrect</string>
+    <string name="msgNoEmail">An email address is required.</string>
+    <string name="msgNoPassword">A password is required.</string>
 </resources>
