@@ -28,7 +28,7 @@
         android:id="@+id/textInputChatMessage"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:hint="hint"
+        android:hint="@string/hintChatMessageField"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/buttonSendChatMessage"
         app:layout_constraintStart_toStartOf="parent" />
@@ -44,10 +44,9 @@
         android:insetBottom="0dp"
         app:icon="@drawable/ic_baseline_add_circle_24"
         app:iconPadding="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/textInputChatMessage"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textInputChatMessage"
-        app:layout_constraintHorizontal_bias="1"/>
+        app:layout_constraintStart_toEndOf="@+id/textInputChatMessage" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
