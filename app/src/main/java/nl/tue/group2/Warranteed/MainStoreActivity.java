@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import nl.tue.group2.Warranteed.ui.login.LoginActivity;
-import nl.tue.group2.Warranteed.ui.store.StoreChatFragment;
+import nl.tue.group2.Warranteed.ui.store.StoreConversationFragment;
 import nl.tue.group2.Warranteed.ui.store.StoreHomeFragment;
 
 /**
@@ -37,7 +37,7 @@ public class MainStoreActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.navigation_home)
                 selectedFragment = new StoreHomeFragment();
             else if (item.getItemId() == R.id.navigation_chat)
-                selectedFragment = new StoreChatFragment();
+                selectedFragment = new StoreConversationFragment();
 
             //Display the selected fragment
             getSupportFragmentManager().beginTransaction().replace(R.id.store_fragment_container,
