@@ -2,6 +2,7 @@ package nl.tue.group2.Warranteed.ui.chat;
 
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,10 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Collections;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,7 +58,6 @@ public class ChatFragment extends Fragment {
     /**
      * Constructor for when the logged in user is the store, sets the UUID of the customer that the
      * store is chatting with.
-     *
      * @param customerUUID The UUID of the customer.
      */
     public ChatFragment(String customerUUID) {
@@ -121,7 +123,11 @@ public class ChatFragment extends Fragment {
                 String text = editText.getText().toString();
                 ChatMessage message = new ChatMessage(text, UUIDReceiver);
                 mDatabase.getReference().child(messagesPath).push().setValue(message);
-                mDatabase.getReference().child("conversations").child(UUIDReceiver).updateChildren(Collections.singletonMap("customerid", UUIDReceiver));
+                FirebaseFirestore.getInstance().collection("Customers").document(UUIDReceiver).get().addOnSuccessListener(result -> {
+                    mDatabase.getReference().child("conversations").child(UUIDReceiver).updateChildren(
+                            Stream.of(new Pair<>("customerid", UUIDReceiver), new Pair<>("email", result.getString("email"))).collect(Collectors.toMap(pair -> pair.first, pair -> pair.second))
+                    );
+                });
                 editText.getText().clear();
             }
         });
