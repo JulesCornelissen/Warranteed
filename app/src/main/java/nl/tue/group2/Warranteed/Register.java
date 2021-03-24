@@ -1,18 +1,22 @@
 package nl.tue.group2.Warranteed;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,7 +24,6 @@ public class Register extends AppCompatActivity {
     //initialize the variables
     CheckBox cb_cust, cb_store;
     EditText cb_Email, cb_Password, cb_Password2;
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,6 @@ public class Register extends AppCompatActivity {
         cb_Email = findViewById(R.id.username);
         cb_Password = findViewById(R.id.reg_password1);
         cb_Password2 = findViewById(R.id.reg_password2);
-        mAuth = FirebaseAuth.getInstance();
 
         //when signup is pressed data is retrieved from the server
         final Button signupButton = findViewById(R.id.signup);
@@ -51,7 +53,7 @@ public class Register extends AppCompatActivity {
                 return;
             }
             // a new user is made with the email and the password
-            mAuth.createUserWithEmailAndPassword(Email,password1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(Email,password1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){

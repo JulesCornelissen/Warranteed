@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,7 +34,7 @@ public class AddFragment extends Fragment {
     private Bitmap receiptImage;
     private Calendar purchaseDate;
     private Calendar expirationDate;
-    private FirebaseAuth mAuth;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -174,7 +173,7 @@ public class AddFragment extends Fragment {
         Date expirationDate = this.expirationDate.getTime();
         String item = ((EditText) this.getActivity().findViewById(R.id.itemField)).getText().toString();
         Bitmap image = this.receiptImage;
-        FirebaseUser currentUser = mAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         String email = currentUser.getEmail().trim();
 
         // upload the image to firebase storage
