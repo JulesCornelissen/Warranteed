@@ -26,10 +26,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import nl.tue.group2.Warranteed.MainActivity;
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.Receipt;
 
-public class HomeFragment extends Fragment implements AdapterView.OnItemSelectedListener, SearchView.OnQueryTextListener{
+public class HomeFragment extends Fragment implements AdapterView.OnItemSelectedListener, SearchView.OnQueryTextListener {
 
     //Initialize adapter and recycleView
     RecyclerView recyclerView;
@@ -58,7 +59,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
         // this is all receipts
         Query query = receipts;
         //these are the personal receipts
-        Query queryPersonal= query.whereEqualTo("email", email);
+        Query queryPersonal = query.whereEqualTo("email", email);
 
 
         FirestoreRecyclerOptions<Receipt> options = new FirestoreRecyclerOptions.Builder<Receipt>()
@@ -78,6 +79,8 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
         //start monitoring buttons in each cardview
         openReceiptInfo();
 
+        MainActivity.updateReceiptStates();
+
         return view;
     }
 
@@ -85,7 +88,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
      * initializes spinner
      * and sets creates and sets adapter on spinner
      */
-    private void setSpinner(View view){
+    private void setSpinner(View view) {
         spinner = view.findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> spinner_adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.spinner_options, R.layout.spinner);
@@ -102,9 +105,11 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
         //update the recyclerView
         updateRecyclerView(search, state);
     }
+
     //not implemented, must be included
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {}
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
 
 
     /*
@@ -117,6 +122,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
         //add listener
         searchbar.setOnQueryTextListener(this);
     }
+
     //to satisfy implementation of SearchView
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -128,14 +134,16 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
     public boolean onQueryTextChange(String newText) {
         updateRecyclerView(newText, state);
         return false;
-    };
+    }
+
+    ;
 
 
     /*
      * Method to filter query with search word s
      * and notify adapter of change in dataset
      */
-    private void updateRecyclerView(String search, String state){
+    private void updateRecyclerView(String search, String state) {
         //when state = All the query should ignore the state.
         if (Objects.equals(state, "All")) {
             Query newQuery = receipts.whereEqualTo("email", email).orderBy("name_insensitive").startAt(search).endAt(search + '\uf8ff');
@@ -147,10 +155,11 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
             adapter.updateOptions(newOptions);
         } else {
             //new query that filters for products starting with search word s
-            Query newQuery = receipts.whereEqualTo("email", email).orderBy("name_insensitive")
+            Query newQuery = receipts.whereEqualTo("email", email)
+                    .orderBy("name_insensitive")
                     .startAt(search)
                     .endAt(search + '\uf8ff')
-                    .whereEqualTo("state", state); //state equals state given
+                    .whereEqualTo("state", state);
             //create new options
             FirestoreRecyclerOptions<Receipt> newOptions = new FirestoreRecyclerOptions.Builder<Receipt>()
                     .setQuery(newQuery, Receipt.class)
@@ -165,7 +174,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
      * Passes data from specific card to ReceiptInfo
      * and starts this activity
      */
-    private void openReceiptInfo(){
+    private void openReceiptInfo() {
         adapter.setOnItemClickListener(new ReceiptAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
@@ -197,7 +206,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
 
     //Method to create a TouchHelper
     //Detects swipes to the left in order to delete a specific receipt
-    private void createTouchHelper(){
+    private void createTouchHelper() {
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             //detect move, not used
             @Override
@@ -205,6 +214,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
                     RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
+
             //detect swipes
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
