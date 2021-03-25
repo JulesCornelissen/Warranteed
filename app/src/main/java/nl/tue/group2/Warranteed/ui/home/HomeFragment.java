@@ -162,6 +162,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
             Query newQuery = receipts.whereEqualTo("email", email).orderBy("name_insensitive")
                     .startAt(search)
                     .endAt(search + '\uf8ff')
+                    .orderBy("expiration_date_timestamp")
                     .whereGreaterThan("expiration_date_timestamp", startDate)
                     .whereLessThan("expiration_date_timestamp", endDate);
             //create new options
