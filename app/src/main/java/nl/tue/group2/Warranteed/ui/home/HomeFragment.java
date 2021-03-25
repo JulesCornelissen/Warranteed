@@ -159,12 +159,11 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
                     state.equalsIgnoreCase("valid") ? Long.MAX_VALUE :
                             state.equalsIgnoreCase("expiring") ? current + 30L * 24 * 60 * 60 * 1000 : 0;
             //new query that filters for products starting with search word s
-            Query newQuery = receipts.whereEqualTo("email", email).orderBy("name_insensitive")
-                    .startAt(search)
-                    .endAt(search + '\uf8ff')
+            Query newQuery = receipts.whereEqualTo("email", email)
                     .orderBy("expiration_date_timestamp")
-                    .whereGreaterThan("expiration_date_timestamp", startDate)
-                    .whereLessThan("expiration_date_timestamp", endDate);
+                    .orderBy("name_insensitive")
+                    .startAt(startDate, search)
+                    .endAt(endDate, search + '\uf8ff');
             //create new options
             FirestoreRecyclerOptions<Receipt> newOptions = new FirestoreRecyclerOptions.Builder<Receipt>()
                     .setQuery(newQuery, Receipt.class)
