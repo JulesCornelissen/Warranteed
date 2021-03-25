@@ -19,8 +19,6 @@
             android:id="@+id/messengerImage"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/logo" />
@@ -30,7 +28,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:fontFamily="@font/worksans"
             android:text="17:32"
+            android:textColor="@color/textGrey"
             app:layout_constraintStart_toEndOf="@+id/messengerImage"
             app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="8dp"
             app:cardBackgroundColor="@color/blueish"
             app:cardCornerRadius="15dp"
             app:contentPadding="10dp"
@@ -50,7 +50,9 @@
                 android:id="@+id/messageText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lorem ipsum dolor sit amet" />
+                android:fontFamily="@font/worksans"
+                android:text="Lorem ipsum dolor sit amet"
+                android:textColor="@color/white" />
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

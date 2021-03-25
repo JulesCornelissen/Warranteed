@@ -15,4 +15,6 @@
     <color name="green">#56D71A</color>
     <color name="yelloworange">#FEBE1A</color>
     <color name="red">#E70B0B</color>
+    <color name="textGrey">#ACACAC</color>
+    <color name="chatBluePurple">#C6C9FD</color>
 </resources>

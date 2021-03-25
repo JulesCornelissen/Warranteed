@@ -70,7 +70,7 @@ public class ChatFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         // Split adapter in to receiver and sender
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
-
+//        this.getActivity().getWindow().setBackgroundDrawableResource(R.drawable.ic_chat_top);
         /**
          * Initialize the instance variables
          */
