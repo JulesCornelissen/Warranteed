@@ -9,6 +9,7 @@
     <color name="black">#FF000000</color>
     <color name="orange">#f76f00</color>
     <color name="blueish">#888dff</color>
+    <color name="blueish_transparent">#8AFCFCFC</color>
     <color name="nearly_black">#222222</color>
     <color name="white">#ffffff</color>
     <color name="backgroundGrey">#F2F3FF</color>

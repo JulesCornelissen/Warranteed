@@ -5,12 +5,25 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_bg"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="#bd96ff"
     tools:context=".ui.login.LoginActivity">
+
+    <TextView
+        android:id="@+id/emaillabel"
+        android:layout_width="141dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/worksans"
+        android:text="@string/label_email"
+        android:textColor="#F1EBEB"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/username"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/username"
@@ -20,36 +33,51 @@
         android:layout_marginTop="152dp"
         android:layout_marginEnd="24dp"
         android:autofillHints="@string/prompt_email"
-        android:hint="@string/prompt_email"
+        android:background="@drawable/edittext_bg"
         android:inputType="textEmailAddress"
+        android:drawableStart="@drawable/ic_email"
+        android:paddingStart="15dp"
         android:selectAllOnFocus="true"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.238"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/password_label"
+        android:layout_width="141dp"
+        android:layout_height="25dp"
+        android:fontFamily="@font/worksans"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/label_password"
+        android:textColor="#F1EBEB"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/password"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <EditText
         android:id="@+id/password"
-        android:layout_width="340dp"
-        android:layout_height="47dp"
+        android:layout_width="342dp"
+        android:layout_height="53dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="24dp"
-        android:autofillHints="@string/prompt_password"
-        android:hint="@string/prompt_password"
+        android:paddingStart="15dp"
+        android:background="@drawable/edittext_bg"
+        android:drawableStart="@drawable/ic_key"
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.608"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
     <Button
         android:id="@+id/login"
+        style="@style/Button"
         android:layout_width="143dp"
         android:layout_height="49dp"
         android:layout_gravity="start"
@@ -57,9 +85,9 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="64dp"
-        android:backgroundTint="#f76f00"
         android:enabled="false"
         android:text="@string/action_sign_in_short"
+        android:textFontWeight="700"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,6 +96,7 @@
 
     <Button
         android:id="@+id/register"
+        style="@style/Button"
         android:layout_width="143dp"
         android:layout_height="49dp"
         android:layout_gravity="start"
@@ -78,6 +107,7 @@
         android:backgroundTint="#f76f00"
         android:enabled="true"
         android:text="@string/action_register"
+        android:textFontWeight="700"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,27 +134,30 @@
         android:id="@+id/noAccount"
         android:layout_width="wrap_content"
         android:layout_height="28dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/worksans"
         android:text="@string/text_noAccount"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/register"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login"
-        app:layout_constraintVertical_bias="0.555" />
+         />
 
     <TextView
         android:id="@+id/ForgetPassword"
         android:layout_width="141dp"
         android:layout_height="25dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="18.5dp"
+        android:fontFamily="@font/worksans"
         android:text="@string/text_forgotPass"
         android:textColor="#F1EBEB"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
@@ -133,12 +166,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:fontFamily="sans-serif-medium"
+        android:fontFamily="@font/worksans"
         android:text="@string/text_login"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
+        android:textFontWeight="700"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

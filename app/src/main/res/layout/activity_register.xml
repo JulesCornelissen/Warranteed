@@ -5,76 +5,123 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_bg"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="#bd96ff"
     tools:context=".ui.login.LoginActivity">
+
 
     <EditText
         android:id="@+id/username"
         android:layout_width="342dp"
         android:layout_height="53dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="260dp"
         android:layout_marginEnd="24dp"
         android:autofillHints="@string/prompt_email"
-        android:hint="@string/prompt_email"
+        android:background="@drawable/edittext_bg"
+        android:drawableStart="@drawable/ic_email"
         android:inputType="textEmailAddress"
+        android:paddingStart="15dp"
         android:selectAllOnFocus="true"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.238"
+        app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/emaillabel"
+        android:layout_width="141dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/worksans"
+        android:text="@string/label_email"
+        android:textColor="#F1EBEB"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/username"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <EditText
         android:id="@+id/reg_password1"
-        android:layout_width="340dp"
-        android:layout_height="47dp"
+        android:layout_width="342dp"
+        android:layout_height="53dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="24dp"
-        android:autofillHints="@string/prompt_password"
-        android:hint="@string/prompt_password"
+        android:background="@drawable/edittext_bg"
+        android:drawableStart="@drawable/ic_key"
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
+        android:paddingStart="15dp"
         android:selectAllOnFocus="true"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.608"
+        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
+    <TextView
+        android:id="@+id/label_password2"
+        android:layout_width="141dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/worksans"
+        android:text="@string/label_password"
+        android:textColor="#F1EBEB"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/reg_password2"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <EditText
         android:id="@+id/reg_password2"
-        android:layout_width="340dp"
-        android:layout_height="47dp"
+        android:layout_width="342dp"
+        android:layout_height="53dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="24dp"
-        android:autofillHints="@string/prompt_password"
-        android:hint="@string/prompt_password"
+        android:background="@drawable/edittext_bg"
+        android:drawableStart="@drawable/ic_key"
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
+        android:paddingStart="15dp"
         android:selectAllOnFocus="true"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reg_password1" />
 
+    <TextView
+        android:id="@+id/password1_label"
+        android:layout_width="141dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="6dp"
+        android:fontFamily="@font/worksans"
+        android:text="@string/label_password"
+        android:textColor="#F1EBEB"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/reg_password1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:layout_constraintVertical_bias="1.0" />
+
     <Button
         android:id="@+id/signup"
+        style="@style/Button"
         android:layout_width="143dp"
         android:layout_height="49dp"
         android:layout_gravity="start"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="48dp"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="64dp"
         android:backgroundTint="#f76f00"
         android:enabled="false"
@@ -83,7 +130,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reg_password2"
-        app:layout_constraintVertical_bias="0.42" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <ProgressBar
         android:id="@+id/loading"
@@ -115,13 +162,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView_checkBox"
+        android:fontFamily="@font/worksans"
+        android:layout_width="108dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/checkbox"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/checkBox_cust"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <CheckBox
         android:id="@+id/checkBox_cust"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="72dp"
+        android:fontFamily="@font/worksans"
         android:text="@string/cust"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/username"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -129,21 +191,11 @@
         android:id="@+id/checkBox_store"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/worksans"
         android:text="@string/store_owner"
+        android:textColor="@color/white"
         app:layout_constraintBaseline_toBaselineOf="@+id/checkBox_cust"
         app:layout_constraintStart_toEndOf="@+id/checkBox_cust" />
-
-    <TextView
-        android:id="@+id/textView_checkBox"
-        android:layout_width="108dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="13dp"
-        android:text="@string/checkbox"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox_cust"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
