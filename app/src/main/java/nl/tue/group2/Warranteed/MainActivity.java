@@ -12,12 +12,14 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Collections;
 import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
 import nl.tue.group2.Warranteed.notifications.NotificationHandler;
 import nl.tue.group2.Warranteed.notifications.NotificationManager;
 import nl.tue.group2.Warranteed.ui.add.AddFragment;
@@ -120,13 +122,29 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * A small sample notification sender/tester. Linked to a button on the mainview.
-     *
      * @param view The view that gets passed from the button, required for the button.
      */
     public void sendNotification(View view) {
         Random r = new Random();
         int notifID = r.nextInt();
         NotificationManager.getNotificationHandler().sendNotification(getString(R.string.app_name), Integer.toString(notifID));
+    }
+
+    public static void updateReceiptStates() {
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        FirebaseFirestore.getInstance().collection("Receipt").whereEqualTo("email", email).get().addOnSuccessListener(
+                result -> {
+                    for (DocumentSnapshot snapshot : result.getDocuments()) {
+                        Long expirationDate = snapshot.getLong("expiration_date_timestamp");
+                        if (expirationDate == null)
+                            continue;
+                        long current = System.currentTimeMillis();
+                        String state = expirationDate < current ? "Void" :
+                                expirationDate < current + 30L * 24 * 60 * 60 * 1000 ? "Expiring" : "Valid";
+                        FirebaseFirestore.getInstance().collection("Receipt").document(snapshot.getId()).update(Collections.singletonMap("state", state));
+                    }
+                }
+        );
     }
 }
 

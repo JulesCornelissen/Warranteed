@@ -26,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import nl.tue.group2.Warranteed.MainActivity;
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.Receipt;
 
@@ -77,6 +78,8 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
         createTouchHelper();
         //start monitoring buttons in each cardview
         openReceiptInfo();
+
+        MainActivity.updateReceiptStates();
 
         return view;
     }
@@ -151,19 +154,12 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
             //update adapter with the new options
             adapter.updateOptions(newOptions);
         } else {
-            long current = System.currentTimeMillis();
-            long startDate = state.equalsIgnoreCase("void") ? 0 :
-                    state.equalsIgnoreCase("valid") ? current + 30L * 24 * 60 * 60 * 1000 :
-                            state.equalsIgnoreCase("expiring") ? current : 0;
-            long endDate = state.equalsIgnoreCase("void") ? current :
-                    state.equalsIgnoreCase("valid") ? Long.MAX_VALUE :
-                            state.equalsIgnoreCase("expiring") ? current + 30L * 24 * 60 * 60 * 1000 : 0;
             //new query that filters for products starting with search word s
             Query newQuery = receipts.whereEqualTo("email", email)
-                    .orderBy("expiration_date_timestamp")
                     .orderBy("name_insensitive")
-                    .startAt(startDate, search)
-                    .endAt(endDate, search + '\uf8ff');
+                    .startAt(search)
+                    .endAt(search + '\uf8ff')
+                    .whereEqualTo("state", state);
             //create new options
             FirestoreRecyclerOptions<Receipt> newOptions = new FirestoreRecyclerOptions.Builder<Receipt>()
                     .setQuery(newQuery, Receipt.class)
