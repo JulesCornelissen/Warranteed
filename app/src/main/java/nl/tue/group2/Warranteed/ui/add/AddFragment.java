@@ -178,7 +178,7 @@ public class AddFragment extends Fragment {
 
         // upload the image to firebase storage
         UUID imageId = FirebaseImageHandler.uploadImage("receipt", image);
-        if(imageId == null)
+        if (imageId == null)
             return;
 
         //Calculate Duration (Mourad)
@@ -189,7 +189,7 @@ public class AddFragment extends Fragment {
         long duration_in_years = duration_in_days / 365;
         long duration_in_months = duration_in_days / 30;
         if (duration_in_years <= 0) {
-            if(duration_in_months <= 0) {
+            if (duration_in_months <= 0) {
                 duration = Long.toString(duration_in_days) + " days";
             } else {
                 duration = Long.toString(duration_in_months) + " months";
@@ -200,12 +200,14 @@ public class AddFragment extends Fragment {
 
         // put the data into a map
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy", Locale.US);
-        Map<String, String> data = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
         data.put("name", name);
         data.put("name_insensitive", name.toLowerCase());
         data.put("purchase_date", dateFormatter.format(purchaseDate));
+        data.put("purchase_date_timestamp", purchaseDate.getTime());
         data.put("duration", duration);
         data.put("expiration_date", dateFormatter.format(expirationDate));
+        data.put("expiration_date_timestamp", expirationDate.getTime());
         data.put("product", item);
         data.put("image", imageId.toString());
         data.put("email", email);
