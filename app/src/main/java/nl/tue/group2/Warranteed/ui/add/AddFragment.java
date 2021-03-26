@@ -25,6 +25,8 @@ import java.util.UUID;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import nl.tue.group2.Warranteed.MainActivity;
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.firebase.FirebaseImageHandler;
 import nl.tue.group2.Warranteed.ui.home.HomeFragment;
@@ -215,5 +217,6 @@ public class AddFragment extends Fragment {
         FirebaseFirestore.getInstance().collection("Receipt").document().set(data).addOnCompleteListener(
                 task -> this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit()
         );
+        MainActivity.updateReceiptStates();
     }
 }

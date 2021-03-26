@@ -61,6 +61,7 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
         //create textviews
         TextView view_product, view_date, view_state;
         CardView cardview;
+        ImageButton imageButton;
 
         public Viewholder(View itemView) {
             super(itemView);
@@ -69,8 +70,19 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
             view_state = itemView.findViewById(R.id.textView_warranty_filled);
             view_date = itemView.findViewById(R.id.textView_expiring_filled);
             cardview = itemView.findViewById(R.id.cardView_receipt);
+            imageButton = itemView.findViewById(R.id.imageButton_info);
 
             cardview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    //check if position is not -1 and if listener is non empty
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick(getSnapshots().getSnapshot(position), position);
+                    }
+                }
+            });
+            imageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();

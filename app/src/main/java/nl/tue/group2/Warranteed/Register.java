@@ -70,6 +70,7 @@ public class Register extends AppCompatActivity {
                         data.put("display_name", user.getDisplayName());
                         data.put("email", user.getEmail());
                         data.put("is store owner", status);
+                        data.put("notif", "14");
                         FirebaseFirestore.getInstance().collection("Customers").document(user.getUid()).set(data);
 
                         // sends the user to the customer or store screen

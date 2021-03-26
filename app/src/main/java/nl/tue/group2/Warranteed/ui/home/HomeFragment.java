@@ -10,6 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,12 +27,6 @@ import com.google.firebase.firestore.Query;
 
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import nl.tue.group2.Warranteed.MainActivity;
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.Receipt;
@@ -53,6 +54,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
                              @Nullable Bundle savedInstanceState) {
         //create view object
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        MainActivity.updateReceiptStates();
         //Create and set adapter to appropriate card id
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         //specific query to get detailed receipts
@@ -60,7 +62,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
         Query query = receipts;
         //these are the personal receipts
         Query queryPersonal = query.whereEqualTo("email", email);
-
 
         FirestoreRecyclerOptions<Receipt> options = new FirestoreRecyclerOptions.Builder<Receipt>()
                 .setQuery(queryPersonal, Receipt.class)
@@ -78,8 +79,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
         createTouchHelper();
         //start monitoring buttons in each cardview
         openReceiptInfo();
-
-        MainActivity.updateReceiptStates();
 
         return view;
     }
@@ -125,10 +124,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
 
     //to satisfy implementation of SearchView
     @Override
-    public boolean onQueryTextSubmit(String query) {
-
-        return false;
-    }
+    public boolean onQueryTextSubmit(String query) { return false; }
 
     @Override
     public boolean onQueryTextChange(String newText) {
@@ -136,14 +132,13 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
         return false;
     }
 
-    ;
-
 
     /*
      * Method to filter query with search word s
      * and notify adapter of change in dataset
      */
     private void updateRecyclerView(String search, String state) {
+        search = search.toLowerCase();
         //when state = All the query should ignore the state.
         if (Objects.equals(state, "All")) {
             Query newQuery = receipts.whereEqualTo("email", email).orderBy("name_insensitive").startAt(search).endAt(search + '\uf8ff');

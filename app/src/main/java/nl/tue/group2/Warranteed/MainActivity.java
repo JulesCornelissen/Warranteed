@@ -1,25 +1,38 @@
 package nl.tue.group2.Warranteed;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.PopupMenu;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Collections;
-import java.util.Random;
+import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import nl.tue.group2.Warranteed.notifications.Alarm;
 import nl.tue.group2.Warranteed.notifications.NotificationHandler;
 import nl.tue.group2.Warranteed.notifications.NotificationManager;
 import nl.tue.group2.Warranteed.ui.add.AddFragment;
@@ -29,6 +42,15 @@ import nl.tue.group2.Warranteed.ui.login.LoginActivity;
 import nl.tue.group2.Warranteed.ui.store.StoreFragment;
 
 public class MainActivity extends AppCompatActivity {
+    //initialize the variables
+    private FirebaseAuth mAuth;
+    private FirebaseAuth firebaseAuth;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser currentuser = FirebaseAuth.getInstance().getCurrentUser();
+    String email = currentuser.getEmail().trim();
+    int days;
+    Long date_quickest = Long.MAX_VALUE;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,44 +68,6 @@ public class MainActivity extends AppCompatActivity {
                     new HomeFragment()).commit();
         }
 
-
-        final ImageButton popup_button = findViewById(R.id.logoutButton);
-        // Setting onClick behavior to the button
-        popup_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Initializing the popup menu and giving the reference as current context
-                PopupMenu popupMenu = new PopupMenu(MainActivity.this, popup_button);
-                // Inflating popup menu from popup_menu.xml file
-                popupMenu.getMenuInflater().inflate(R.menu.settings_button, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-
-                        switch (menuItem.getItemId()) {
-                            case R.id.logout:
-                                FirebaseAuth.getInstance().signOut();
-                                Toast.makeText(MainActivity.this, getString(R.string.msgLoggedOut), Toast.LENGTH_SHORT).show();
-                                startActivity(intentLogout);
-                                return true;
-                            case R.id.delete_account:
-                                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                                FirebaseAuth.getInstance().signOut();
-                                currentUser.delete();
-                                Toast.makeText(MainActivity.this, getString(R.string.msgAccountDeleted), Toast.LENGTH_SHORT).show();
-                                startActivity(intentLogout);
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-                });
-                // Showing the popup menu
-                popupMenu.show();
-            }
-        });
-
-
         // Initialize notification channel for general notifications
         NotificationHandler notificationHandler = new NotificationHandler(
                 getString(R.string.chan_general_app),
@@ -92,7 +76,106 @@ public class MainActivity extends AppCompatActivity {
                 this);
         NotificationManager.setNotificationHandler(notificationHandler);
 
+        //get notification days from server
+        db.collection("Customers").document(currentuser.getUid()).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                days = Integer.parseInt(documentSnapshot.getString("notif"));
+            }
+        });
 
+        deleteAlarm();
+        calculateAlarm();
+
+        final ImageButton popup_button = findViewById(R.id.logoutButton);
+        // Setting onClick behavior to the button
+        popup_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //initialize alert dialog
+                AlertDialog.Builder dialogbuilder;
+                AlertDialog dialog;
+                //create buttons
+                Button bt_logout, bt_delete;
+                dialogbuilder = new AlertDialog.Builder(MainActivity.this);
+                final View popup_view = getLayoutInflater().inflate(R.layout.popup_settings, null);
+                //match buttons
+                bt_logout = popup_view.findViewById(R.id.Button_popup_logout);
+                bt_delete = popup_view.findViewById(R.id.Button_popup_delete);
+                //show the popup_settings layout at the top of the screen
+                dialogbuilder.setView(popup_view);
+                dialog = dialogbuilder.create();
+                dialog.show();
+                dialog.getWindow().setGravity(Gravity.TOP);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                //make spinner
+                Spinner spinner;
+                spinner = popup_view.findViewById(R.id.spinner2);
+                ArrayAdapter<CharSequence> spinner_adapter = ArrayAdapter.createFromResource(MainActivity.this,
+                        R.array.notif_options, android.R.layout.simple_spinner_item);
+                spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(spinner_adapter);
+                //set default value to notif stored in firestore
+                if (days == 14){
+                    spinner.setSelection(1);
+                } else if (days == 21){
+                    spinner.setSelection(2);
+                } else if (days == 28){
+                    spinner.setSelection(3);
+                }
+
+                //when an item is selected:
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        //get selected item
+                        String new_notif = parent.getItemAtPosition(position).toString();
+                        //update firestore
+                        db.collection("Customers")
+                                .document(currentuser.getUid())
+                                .update("notif", new_notif);
+                        //locally update variable
+                        days = Integer.parseInt(new_notif);
+
+                        //update alarms
+                        deleteAlarm();
+                        calculateAlarm();
+
+                    }
+                    //not implemented
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {}
+                });
+
+                bt_delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //get the current user
+                        FirebaseUser currentuser = firebaseAuth.getInstance().getCurrentUser();
+                        //sign the user out
+                        FirebaseAuth.getInstance().signOut();
+                        //delete the account of the user
+                        currentuser.delete();
+                        Toast.makeText(MainActivity.this, "your account has been deleted", Toast.LENGTH_SHORT).show();
+                        //go back to the login page
+                        startActivity(intentLogout);
+                    }
+                });
+
+                bt_logout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        FirebaseAuth.getInstance().signOut();
+                        Toast.makeText(MainActivity.this, "you've been logged out", Toast.LENGTH_SHORT).show();
+                        //go back to the login page
+                        startActivity(intentLogout);
+                    }
+                });
+            }
+        });
+        //hide the top bar from view
         getSupportActionBar().hide();
     }
 
@@ -103,6 +186,8 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {     //get the current fragment id
                     case R.id.navigation_home:
                         selectedFragment = new HomeFragment();
+                        deleteAlarm();
+                        calculateAlarm();
                         break;
                     case R.id.navigation_add:
                         selectedFragment = new AddFragment();
@@ -120,14 +205,49 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             };
 
-    /**
-     * A small sample notification sender/tester. Linked to a button on the mainview.
-     * @param view The view that gets passed from the button, required for the button.
+    /*
+     * calculates the date on which the first receipt is expiring and
+     * sets an alarm to go of x days before
      */
-    public void sendNotification(View view) {
-        Random r = new Random();
-        int notifID = r.nextInt();
-        NotificationManager.getNotificationHandler().sendNotification(getString(R.string.app_name), Integer.toString(notifID));
+    public void calculateAlarm(){
+        db.collection("Receipt").whereEqualTo("email", email).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                        for (DocumentSnapshot document : list) {
+                            //get expiration date from each receipt
+                            Long date_expiration = (Long) document.get("expiration_date_timestamp");
+                            //if the expiration date is void
+                            if (date_expiration < System.currentTimeMillis()) {
+                                date_expiration = Long.MAX_VALUE;
+                            } //if the expected notification date has already passed
+                            else if (date_expiration - days * 86400000 < System.currentTimeMillis() - 100000000) {
+                                date_expiration = Long.MAX_VALUE;
+                            } else if (date_expiration < date_quickest) {
+                                date_quickest = date_expiration;
+                            }
+                        }
+                        //set alarm with stored date and 60000 added (1 minute)
+                        setAlarm(date_quickest + 60000 - days * 86400000);
+                    }
+                });
+    }
+
+    //set alarm with date given
+    public void setAlarm(long date){
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, Alarm.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        alarmManager.set(AlarmManager.RTC, date  ,pendingIntent);
+    }
+
+    //delete all alarms currently set
+    public void deleteAlarm(){
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, Alarm.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        alarmManager.cancel(pendingIntent);
     }
 
     public static void updateReceiptStates() {
