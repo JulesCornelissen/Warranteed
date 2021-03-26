@@ -1,37 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="100dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:clickable="true" >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true">
 
     <TextView
         android:id="@+id/textViewCustomerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="@font/worksans"
+        android:textColor="@color/black"
+        android:textFontWeight="700"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.1"
+        tools:text="example@example.com" />
 
     <TextView
         android:id="@+id/textViewTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintVertical_bias="0"
+        android:fontFamily="@font/worksans"
+        android:textColor="@color/textGrey"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewCustomerName"
+        app:layout_constraintEnd_toEndOf="@+id/view"
         app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-    
+        app:layout_constraintTop_toTopOf="@+id/textViewCustomerName"
+        app:layout_constraintVertical_bias="0"
+        tools:text="10:08" />
+
+    <TextView
+        android:id="@+id/textViewMessagePreview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/worksans"
+        android:lines="3"
+        android:scrollHorizontally="true"
+        android:textColor="@color/textGrey"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@+id/textViewCustomerName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCustomerName"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dui lorem, accumsan vitae rutrum eu, maximus et dolor. Curabitur imperdiet mauris sed tincidunt lacinia. Sed ullamcorper diam nisl, sit amet fermentum nibh egestas id. In dictum lacus sed metus blandit, nec dapibus risus sollicitudin. In hac habitasse platea dictumst. Morbi bibendum elit magna, vitae mollis eros venenatis sed. Vestibulum ultrices, dui et tempor ornare, risus metus venenatis mauris, vel tristique neque mi vehicula quam. Aliquam mattis nisi aliquet leo venenatis commodo. Morbi pretium mauris sem, a porta dolor commodo ut. Fusce facilisis ante ligula. Sed vel lacus commodo, varius nunc et, ultricies purus. Nunc non eleifend purus. Aliquam nec turpis lobortis, eleifend diam vitae, fringilla velit. Vestibulum feugiat eget quam sit amet vulputate. Vestibulum nec urna lorem. Vestibulum dictum elit dui, ac luctus eros consequat in. " />
+
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@drawable/conversation_separator"
         android:layout_marginHorizontal="16dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:background="@drawable/conversation_separator"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -138,7 +138,8 @@ public class ChatFragment extends Fragment {
                                     new Pair<>("customerid", UUIDReceiver),
                                     new Pair<>("email", result.getString("email")),
                                     new Pair<>("timestamp", System.currentTimeMillis()),
-                                    new Pair<>("negative_timestamp", -System.currentTimeMillis())
+                                    new Pair<>("negative_timestamp", -System.currentTimeMillis()),
+                                    new Pair<>("lastmessage", message.getText())
                             ).collect(Collectors.toMap(pair -> pair.first, pair -> pair.second))
                     );
                 });

@@ -41,8 +41,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/worksans"
-                android:text="Lorem ipsum dolor sit amet"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dui lorem, accumsan vitae rutrum eu, maximus et dolor. Curabitur imperdiet mauris sed tincidunt lacinia. Sed ullamcorper diam nisl, sit amet fermentum nibh egestas id. In dictum lacus sed metus blandit, nec dapibus risus sollicitudin. In hac habitasse platea dictumst. Morbi bibendum elit magna, vitae mollis eros venenatis sed. Vestibulum ultrices, dui et tempor ornare, risus metus venenatis mauris, vel tristique neque mi vehicula quam. Aliquam mattis nisi aliquet leo venenatis commodo. Morbi pretium mauris sem, a porta dolor commodo ut. Fusce facilisis ante ligula. Sed vel lacus commodo, varius nunc et, ultricies purus. Nunc non eleifend purus. Aliquam nec turpis lobortis, eleifend diam vitae, fringilla velit. Vestibulum feugiat eget quam sit amet vulputate. Vestibulum nec urna lorem. Vestibulum dictum elit dui, ac luctus eros consequat in. " />
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

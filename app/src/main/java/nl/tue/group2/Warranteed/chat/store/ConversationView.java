@@ -14,6 +14,7 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.ui.chat.ChatFragment;
 
@@ -27,12 +28,14 @@ public class ConversationView extends RecyclerView.ViewHolder {
 
     private final TextView nameField;
     private final TextView timeField;
+    private final TextView previewField;
     private String customerId;
 
     public ConversationView(@NonNull View itemView, FragmentManager fragmentManager) {
         super(itemView);
         this.nameField = itemView.findViewById(R.id.textViewCustomerName);
         this.timeField = itemView.findViewById(R.id.textViewTime);
+        this.previewField = itemView.findViewById(R.id.textViewMessagePreview);
         this.itemView.setOnClickListener(view -> fragmentManager.beginTransaction().replace(R.id.store_fragment_container, new ChatFragment(this.customerId)).commit());
     }
 
@@ -59,5 +62,13 @@ public class ConversationView extends RecyclerView.ViewHolder {
             this.nameField.setTypeface(this.nameField.getTypeface(), Typeface.ITALIC);
         } else
             this.nameField.setText(name);
+    }
+
+    public void setLastMessage(String message) {
+        if (message == null) {
+            this.previewField.setText("No messages");
+        } else {
+            this.previewField.setText(message);
+        }
     }
 }
