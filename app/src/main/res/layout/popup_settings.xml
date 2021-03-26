@@ -8,14 +8,15 @@
 
     <Button
         android:id="@+id/Button_popup_logout"
-        android:layout_width="317dp"
-        android:layout_height="37dp"
+        style="@style/Button"
+        android:layout_width="316dp"
+        android:layout_height="41dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
+        android:paddingTop="-10dp"
+        android:paddingBottom="-10dp"
         android:text="Logout"
-        style="@style/Button"
-        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,6 +28,8 @@
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
         android:text="Delete account"
+        android:paddingBottom="-10dp"
+        android:paddingTop="-10dp"
         app:layout_constraintEnd_toEndOf="@+id/Button_popup_logout"
         app:layout_constraintStart_toStartOf="@+id/Button_popup_logout"
         app:layout_constraintTop_toBottomOf="@+id/Button_popup_logout" />
