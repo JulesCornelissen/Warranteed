@@ -30,6 +30,7 @@ public class ConversationAdapter extends FirebaseRecyclerAdapter<ConversationAda
     protected void onBindViewHolder(@NonNull ConversationView holder, int position, @NonNull Conversation model) {
         holder.setCustomerId(model.customerId);
         holder.setMessageTime(model.timestamp);
+        holder.setLastMessage(model.getLastmessage());
     }
 
     @NonNull
@@ -53,7 +54,7 @@ public class ConversationAdapter extends FirebaseRecyclerAdapter<ConversationAda
 
     public static class Conversation {
 
-        private String customerId, email;
+        private String customerId, email, lastmessage;
         private long timestamp, negativeTimestamp;
 
         public void setCustomerid(String customerId) {
@@ -70,6 +71,14 @@ public class ConversationAdapter extends FirebaseRecyclerAdapter<ConversationAda
 
         public String getEmail() {
             return this.email;
+        }
+
+        public void setLastmessage(String lastmessage) {
+            this.lastmessage = lastmessage;
+        }
+
+        public String getLastmessage() {
+            return this.lastmessage;
         }
 
         public void setTimestamp(long timestamp) {
