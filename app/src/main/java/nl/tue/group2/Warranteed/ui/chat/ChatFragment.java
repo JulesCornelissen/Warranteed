@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.chat.ChatAdapter;
 import nl.tue.group2.Warranteed.chat.ChatMessage;
@@ -36,14 +37,14 @@ public class ChatFragment extends Fragment {
     private String UUIDSender; // Only to be used when the current user is the store
 
     // Done get UUID from currently logged in Firebase user
-    // TODO create screen for store with list of all UUIDs in database that have sent a message
+    // Done create screen for store with list of all UUIDs in database that have sent a message
     // Done add second recycler view to differentiate between messages from user and store
     // Done message view who sent message lags one behind (i.e. if store sends a message only
     //      from the second message will it show as the store)
     // Done fix message view not aligned to right side
     // Done add comments
-    // TODO implement image of user - partially done, need reference to where user image is stored
-    // TODO clean up UI
+    // Scrapped implement image of user - partially done, need reference to where user image is stored
+    // Done clean up UI
     // TODO scroll to bottom on new message
     // TODO chat notification - Likely not possible due to needing server side component
     // TODO chat background updating - Likely not possible due to needing server side component
@@ -58,6 +59,7 @@ public class ChatFragment extends Fragment {
     /**
      * Constructor for when the logged in user is the store, sets the UUID of the customer that the
      * store is chatting with.
+     *
      * @param customerUUID The UUID of the customer.
      */
     public ChatFragment(String customerUUID) {
@@ -102,9 +104,16 @@ public class ChatFragment extends Fragment {
         this.chatAdapter.setSenderUUID(this.UUIDSender);
 
         // Get the width of the display and pass it to the view adapter
+        // Unfortunately this has to be done here as there is no reliable way to get the activity
+        // from a view only. For some reason the margin as configured converted to pixels is
+        // slightly smaller than the actual margin, thus times 4 divided by 3 gives a very close
+        // approximation.
         DisplayMetrics displayMetrics = new DisplayMetrics();
         this.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        this.chatAdapter.setWidth(displayMetrics.widthPixels);
+        int screenWidth = displayMetrics.widthPixels;
+        int activityMargin =
+                Math.round(4 * getResources().getDimension(R.dimen.activity_horizontal_margin) / 3);
+        this.chatAdapter.setWidth(screenWidth - activityMargin);
 
         recyclerViewChat.setAdapter(chatAdapter);
 
