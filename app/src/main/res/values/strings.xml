@@ -33,9 +33,9 @@
     <string name="picture">Pictures CoolGreen:</string>
     <string name="information">Information CoolGreen:</string>
     <string name="shopinfo">Electronics shop based in the Netherlands</string>
-    <string name="contactinfo1">E-mail       - example@coolgreen.com</string>
-    <string name="contactinfo2">Phone number - +31 6 1234 5678</string>
-    <string name="contactinfo3">Address - CoolGreenstreet 12, 0000CG Rotterdam, Netherlands</string>
+    <string name="contactinfo1">example@coolgreen.com</string>
+    <string name="contactinfo2">+31 6 1234 5678</string>
+    <string name="contactinfo3">CoolGreenstreet 12, 0000CG Rotterdam, Netherlands</string>
     <string name="shopEmail">E-mail - %s</string>
     <string name="shopPhoneNumber">Phone number - +%s</string>
     <string name="shopAddress">Address - %s</string>
