@@ -51,10 +51,10 @@ public class StoreFragment extends Fragment {
                     ((TextView) this.getActivity().findViewById(R.id.textView4)).setText(description);
                     // email
                     String email = result.getString("email");
-                    ((TextView) this.getActivity().findViewById(R.id.textView5)).setText(this.getResources().getString(R.string.shopEmail, email));
+                    ((TextView) this.getActivity().findViewById(R.id.textView7)).setText(email);
                     // phone number
                     String phoneNumber = result.getString("phonenumber");
-                    ((TextView) this.getActivity().findViewById(R.id.textView6)).setText(this.getResources().getString(R.string.shopPhoneNumber, phoneNumber));
+                    ((TextView) this.getActivity().findViewById(R.id.textView8)).setText("+" + phoneNumber);
                     // address
                     Map<String, Object> addressProperties = (Map<String, Object>) result.get("address");
                     String addressStreet = (String) addressProperties.get("streetName");
@@ -63,7 +63,7 @@ public class StoreFragment extends Fragment {
                     String addressCity = (String) addressProperties.get("city");
                     String addressProvince = (String) addressProperties.get("province");
                     String address = addressStreet + " " + addressHouseNumber + ", " + addressZipCode + " " + addressCity + ", " + addressProvince;
-                    ((TextView) this.getActivity().findViewById(R.id.textView)).setText(this.getResources().getString(R.string.shopAddress, address));
+                    ((TextView) this.getActivity().findViewById(R.id.textView9)).setText(address);
                 }
         );
     }
