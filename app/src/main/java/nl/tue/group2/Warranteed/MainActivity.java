@@ -18,9 +18,6 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +29,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import nl.tue.group2.Warranteed.notifications.Alarm;
 import nl.tue.group2.Warranteed.notifications.NotificationHandler;
 import nl.tue.group2.Warranteed.notifications.NotificationManager;
@@ -81,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                days = Integer.parseInt(documentSnapshot.getString("notif"));
+                String notif = documentSnapshot.getString("notif");
+                days = notif == null ? 1 : Integer.parseInt(notif);
             }
         });
 
