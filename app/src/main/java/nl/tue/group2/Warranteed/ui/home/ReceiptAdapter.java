@@ -7,14 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.Receipt;
 
@@ -30,7 +29,7 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
     @Override
     protected void onBindViewHolder(@NonNull Viewholder holder, int position, @NonNull Receipt model) {
         String state = model.getState();
-        if (state.equals("Valid")) {
+        if (state == null || state.equals("Valid")) {
             color = "#56D71A";
         } else if (state.equals("Expiring")){
             color = "#FEBE1A";
