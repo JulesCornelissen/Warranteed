@@ -45,8 +45,11 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth firebaseAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    //get current user
     FirebaseUser currentuser = FirebaseAuth.getInstance().getCurrentUser();
+    //get email of curent user
     String email = currentuser.getEmail().trim();
+    //variable to store the notification days in
     int days;
     Long date_quickest = Long.MAX_VALUE;
 
@@ -57,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intentLogout = new Intent(this, LoginActivity.class);
-//        FireBase instance = new FireBase(); // Creating Firebase instance
-//        instance.readData(); // Own class that calls data from database as test. to be changed.
         BottomNavigationView navView = findViewById(R.id.bottom_nav);
         navView.setOnNavigationItemSelectedListener(navListener);
         //rotate device
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //on start: delete alarm and set new alarm with correct days and receipt
         deleteAlarm();
         calculateAlarm();
 
@@ -113,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 //make spinner
                 Spinner spinner;
                 spinner = popup_view.findViewById(R.id.spinner2);
+                //set spinner adapter
                 ArrayAdapter<CharSequence> spinner_adapter = ArrayAdapter.createFromResource(MainActivity.this,
                         R.array.notif_options, android.R.layout.simple_spinner_item);
                 spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -142,13 +145,14 @@ public class MainActivity extends AppCompatActivity {
                         //update alarms
                         deleteAlarm();
                         calculateAlarm();
-
                     }
+
                     //not implemented
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {}
                 });
 
+                //when delete button is clicked
                 bt_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -164,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+                //when logout button is clicked
                 bt_logout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -221,14 +226,19 @@ public class MainActivity extends AppCompatActivity {
                             //if the expiration date is void
                             if (date_expiration < System.currentTimeMillis()) {
                                 date_expiration = Long.MAX_VALUE;
-                            } //if the expected notification date has already passed
+                            }
+                            //if the expected notification date has already passed
+                            //Offset used to counter loading times between upload and alarm creation
                             else if (date_expiration - days * 86400000 < System.currentTimeMillis() - 100000000) {
                                 date_expiration = Long.MAX_VALUE;
-                            } else if (date_expiration < date_quickest) {
+                            }
+                            //the date is valid, check if there already is a shorter date
+                            //if there is not, the date_expiration becomes the shortest date
+                            else if (date_expiration < date_quickest) {
                                 date_quickest = date_expiration;
                             }
                         }
-                        //set alarm with stored date and 60000 added (1 minute)
+                        //set alarm with stored date and 60000ms added (1 minute)
                         setAlarm(date_quickest + 60000 - days * 86400000);
                     }
                 });
@@ -236,9 +246,12 @@ public class MainActivity extends AppCompatActivity {
 
     //set alarm with date given
     public void setAlarm(long date){
+        //make new alarmManager
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        //create intents
         Intent intent = new Intent(this, Alarm.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        //set alarm for the specific date
         alarmManager.set(AlarmManager.RTC, date  ,pendingIntent);
     }
 
@@ -246,6 +259,7 @@ public class MainActivity extends AppCompatActivity {
     public void deleteAlarm(){
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, Alarm.class);
+        //pending intent is must be the same as for setAlarm
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         alarmManager.cancel(pendingIntent);
     }

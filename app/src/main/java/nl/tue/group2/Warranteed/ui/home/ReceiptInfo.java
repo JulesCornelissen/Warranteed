@@ -23,6 +23,7 @@ import nl.tue.group2.Warranteed.MainActivity;
 import nl.tue.group2.Warranteed.R;
 
 public class ReceiptInfo extends AppCompatActivity {
+    //create variables for buttons and views
     Button bt_return;
     TextView txt_name, txt_product, txt_edate, txt_purchase_date, txt_duration;
     ImageView img_expanded;

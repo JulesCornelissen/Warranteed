@@ -58,11 +58,10 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
         //Create and set adapter to appropriate card id
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         //specific query to get detailed receipts
-        // this is all receipts
         Query query = receipts;
         //these are the personal receipts
         Query queryPersonal = query.whereEqualTo("email", email);
-
+        //create options for FireStoreRecyclerAdapter
         FirestoreRecyclerOptions<Receipt> options = new FirestoreRecyclerOptions.Builder<Receipt>()
                 .setQuery(queryPersonal, Receipt.class)
                 .build();
@@ -85,13 +84,15 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
 
     /*
      * initializes spinner
-     * and sets creates and sets adapter on spinner
+     * and creates and sets adapter on spinner
      */
     private void setSpinner(View view) {
         spinner = view.findViewById(R.id.spinner);
+        //create adapter
         ArrayAdapter<CharSequence> spinner_adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.spinner_options, R.layout.spinner);
         spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //set adapter to spinner
         spinner.setAdapter(spinner_adapter);
         spinner.setOnItemSelectedListener(this);
     }
@@ -126,12 +127,13 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
     @Override
     public boolean onQueryTextSubmit(String query) { return false; }
 
+    //monitor searchbar for text changes
     @Override
     public boolean onQueryTextChange(String newText) {
+        //call updateRecyclerView with new search
         updateRecyclerView(newText, state);
         return false;
     }
-
 
     /*
      * Method to filter query with search word s
@@ -141,7 +143,8 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
         search = search.toLowerCase();
         //when state = All the query should ignore the state.
         if (Objects.equals(state, "All")) {
-            Query newQuery = receipts.whereEqualTo("email", email).orderBy("name_insensitive").startAt(search).endAt(search + '\uf8ff');
+            Query newQuery = receipts.whereEqualTo("email", email).orderBy("name_insensitive")
+                    .startAt(search).endAt(search + '\uf8ff');
             //create new options
             FirestoreRecyclerOptions<Receipt> newOptions = new FirestoreRecyclerOptions.Builder<Receipt>()
                     .setQuery(newQuery, Receipt.class)

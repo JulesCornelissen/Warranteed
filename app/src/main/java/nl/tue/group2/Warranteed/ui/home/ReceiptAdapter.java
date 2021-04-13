@@ -57,23 +57,25 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
 
     // Sub Class to create references of the views in Card.
     class Viewholder extends RecyclerView.ViewHolder {
-        //create textviews
+        //create textviews, cardview and imageButton
         TextView view_product, view_date, view_state;
         CardView cardview;
         ImageButton imageButton;
 
         public Viewholder(View itemView) {
             super(itemView);
-            //link textview to appropriate id
+            //link views to appropriate id
             view_product = itemView.findViewById(R.id.receiptInfo_product);
             view_state = itemView.findViewById(R.id.textView_warranty_filled);
             view_date = itemView.findViewById(R.id.textView_expiring_filled);
             cardview = itemView.findViewById(R.id.cardView_receipt);
             imageButton = itemView.findViewById(R.id.imageButton_info);
 
+            //when a receipt is clicked
             cardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //get the position of the receipt
                     int position = getAdapterPosition();
                     //check if position is not -1 and if listener is non empty
                     if (position != RecyclerView.NO_POSITION && listener != null) {
@@ -81,6 +83,8 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
                     }
                 }
             });
+
+            //when the button on a receipt is clicked
             imageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -94,6 +98,7 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
         }
     }
 
+    //interface to be implemented
     public interface OnItemClickListener{
         void onItemClick(DocumentSnapshot documentSnapshot, int position);
     }
@@ -102,6 +107,7 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
         this.listener = onItemClickListener;
     }
 
+    //delete the receipt at the current position
     public void delete(int position){
         getSnapshots().getSnapshot(position).getReference().delete();
     }
