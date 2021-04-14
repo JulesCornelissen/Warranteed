@@ -34,8 +34,7 @@ public class NotificationHandler extends AppCompatActivity {
      * @param mContext           The context in which this notification handler should exist
      *                           (should be same context as MainActivity).
      */
-    public NotificationHandler(String channelID, String channelName, String channelDescription,
-                               Context mContext) {
+    public NotificationHandler(String channelID, String channelName, String channelDescription, Context mContext) {
         this.channelID = channelID;
         this.channelName = channelName;
         this.channelDescription = channelDescription;
@@ -52,13 +51,11 @@ public class NotificationHandler extends AppCompatActivity {
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(channelID, channelName,
-                    importance);
+            NotificationChannel channel = new NotificationChannel(channelID, channelName, importance);
             channel.setDescription(this.channelDescription);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
-            NotificationManager notificationManager =
-                    this.mContext.getSystemService(NotificationManager.class);
+            NotificationManager notificationManager = this.mContext.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
     }
@@ -82,12 +79,10 @@ public class NotificationHandler extends AppCompatActivity {
      */
     public void sendNotification(String notificationTitle, String notificationMessage) {
         // Build the notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this.mContext,
-                this.channelID)
-                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                .setContentTitle(notificationTitle)
-                .setContentText(notificationMessage)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this.mContext, this.channelID).setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                                                                                                          .setContentTitle(notificationTitle)
+                                                                                                          .setContentText(notificationMessage)
+                                                                                                          .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         // Send the notification
         this.notificationManager.notify(++notifID, builder.build());
     }
@@ -100,15 +95,12 @@ public class NotificationHandler extends AppCompatActivity {
      * @param notifID             The ID of the notification, if the same ID is used twice then
      *                            the previously sent notification gets overwritten.
      */
-    public void sendNotification(String notificationTitle, String notificationMessage,
-                                 int notifID) {
+    public void sendNotification(String notificationTitle, String notificationMessage, int notifID) {
         // Build the notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this.mContext,
-                this.channelID)
-                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                .setContentTitle(notificationTitle)
-                .setContentText(notificationMessage)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this.mContext, this.channelID).setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                                                                                                          .setContentTitle(notificationTitle)
+                                                                                                          .setContentText(notificationMessage)
+                                                                                                          .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         // Send the notification with the specified ID
         this.notificationManager.notify(notifID, builder.build());
     }

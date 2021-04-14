@@ -4,14 +4,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
-
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import nl.tue.group2.Warranteed.R;
 
@@ -27,8 +27,7 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMessag
     ;
 
     @Override
-    protected void onBindViewHolder(@NonNull ChatMessageView holder, int position,
-                                    @NonNull ChatMessage model) {
+    protected void onBindViewHolder(@NonNull ChatMessageView holder, int position, @NonNull ChatMessage model) {
 
         boolean sender = this.senderUUID.equals(model.getSender());
 

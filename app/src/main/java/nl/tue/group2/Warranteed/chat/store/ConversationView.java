@@ -4,16 +4,16 @@ import android.graphics.Typeface;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.ui.chat.ChatFragment;
@@ -36,32 +36,40 @@ public class ConversationView extends RecyclerView.ViewHolder {
         this.nameField = itemView.findViewById(R.id.textViewCustomerName);
         this.timeField = itemView.findViewById(R.id.textViewTime);
         this.previewField = itemView.findViewById(R.id.textViewMessagePreview);
-        this.itemView.setOnClickListener(view -> fragmentManager.beginTransaction().replace(R.id.store_fragment_container, new ChatFragment(this.customerId)).commit());
+        this.itemView.setOnClickListener(view -> fragmentManager.beginTransaction()
+                                                                .replace(R.id.store_fragment_container, new ChatFragment(this.customerId))
+                                                                .commit());
     }
 
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
-        FirebaseFirestore.getInstance().collection("Customers").document(customerId).get().addOnSuccessListener(result -> this.setDisplayName(result.getString("email"), customerId));
+        FirebaseFirestore.getInstance().collection("Customers").document(customerId).get().addOnSuccessListener(result -> this.setDisplayName(result.getString(
+                "email"), customerId));
     }
 
     public void setMessageTime(long time) {
         Date date = new Date(time);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        if (calendar.get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR) && calendar.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR))
+        if (calendar.get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR) && calendar.get(Calendar.YEAR) == Calendar.getInstance().get(
+                Calendar.YEAR)) {
             this.timeField.setText(TIME_FORMAT.format(new Date(time)));
-        else if (calendar.get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - 1 && calendar.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR))
+        } else if (calendar.get(Calendar.DAY_OF_YEAR) == Calendar.getInstance()
+                                                                 .get(Calendar.DAY_OF_YEAR) - 1 && calendar.get(Calendar.YEAR) == Calendar.getInstance().get(
+                Calendar.YEAR)) {
             this.timeField.setText("Yesterday");
-        else
+        } else {
             this.timeField.setText(DATE_FORMAT.format(date));
+        }
     }
 
     private void setDisplayName(String name, String customerId) {
         if (name == null || name.isEmpty()) {
             this.nameField.setText("Email not specified, " + customerId);
             this.nameField.setTypeface(this.nameField.getTypeface(), Typeface.ITALIC);
-        } else
+        } else {
             this.nameField.setText(name);
+        }
     }
 
     public void setLastMessage(String message) {

@@ -9,7 +9,6 @@ public class Alarm extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         //make notification
-        NotificationManager.getNotificationHandler().sendNotification("Warranteed",
-                "There is a receipt expiring soon");
+        NotificationManager.getNotificationHandler().sendNotification("Warranteed", "There is a receipt expiring soon");
     }
 }

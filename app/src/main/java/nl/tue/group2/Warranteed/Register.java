@@ -7,6 +7,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -16,9 +19,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class Register extends AppCompatActivity {
     //initialize the variables
@@ -49,18 +49,18 @@ public class Register extends AppCompatActivity {
             String password1 = cb_Password.getText().toString().trim();
             String password2 = cb_Password2.getText().toString().trim();
             //checks if email and password are valid
-            if (!isDetailsValid(Email,password1,password2)) {
+            if (!isDetailsValid(Email, password1, password2)) {
                 return;
             }
             // a new user is made with the email and the password
-            FirebaseAuth.getInstance().createUserWithEmailAndPassword(Email,password1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(Email, password1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         // checks the status of the user.
-                        boolean status=true;
+                        boolean status = true;
                         if (cb_cust.isChecked()) {
-                            status=false;
+                            status = false;
                         }
 
                         // push user data to the database
@@ -79,8 +79,7 @@ public class Register extends AppCompatActivity {
                         } else {
                             startActivity(intentStore);
                         }
-                    }
-                    else{
+                    } else {
                         cb_Email.setError("email is not unique");
                     }
                 }
@@ -100,19 +99,18 @@ public class Register extends AppCompatActivity {
         });
 
     }
+
     //checks if the details comply to our requirements
-    public boolean isDetailsValid(String Email,String password,String password2) {
+    public boolean isDetailsValid(String Email, String password, String password2) {
         boolean main = true;
 
         if (TextUtils.isEmpty(Email)) {
             cb_Email.setError("email is required");
             main = false;
-        }
-        else if (!Email.contains("@") || !(Email.endsWith(".nl") || (Email.endsWith(".com")))) {
+        } else if (!Email.contains("@") || !(Email.endsWith(".nl") || (Email.endsWith(".com")))) {
             cb_Email.setError("email is incorrect");
             main = false;
-        }
-        else if (Email.indexOf("@")==0  || (Email.indexOf("@")+1==Email.indexOf("."))) {
+        } else if (Email.indexOf("@") == 0 || (Email.indexOf("@") + 1 == Email.indexOf("."))) {
             cb_Email.setError("email is incorrect");
             main = false;
         }
@@ -120,12 +118,10 @@ public class Register extends AppCompatActivity {
         if (TextUtils.isEmpty(password)) {
             cb_Password.setError("password is required");
             main = false;
-        }
-        else if(TextUtils.getTrimmedLength(password) <6){
+        } else if (TextUtils.getTrimmedLength(password) < 6) {
             cb_Password.setError("password requires 6 characters");
             main = false;
-        }
-        else if(TextUtils.getTrimmedLength(password) >15){
+        } else if (TextUtils.getTrimmedLength(password) > 15) {
             cb_Password.setError("password requires less than 15 characters");
             main = false;
         }
@@ -133,8 +129,7 @@ public class Register extends AppCompatActivity {
         if (TextUtils.isEmpty(password2)) {
             cb_Password2.setError("password is required");
             main = false;
-        }
-        else if (!TextUtils.equals(password,password2)) {
+        } else if (!TextUtils.equals(password, password2)) {
             cb_Password2.setError("passwords don't match");
             main = false;
         }

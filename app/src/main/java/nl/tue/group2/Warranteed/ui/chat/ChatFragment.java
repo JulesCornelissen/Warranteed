@@ -8,6 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -16,11 +21,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.chat.ChatAdapter;
@@ -68,11 +68,10 @@ public class ChatFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Split adapter in to receiver and sender
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
-//        this.getActivity().getWindow().setBackgroundDrawableResource(R.drawable.ic_chat_top);
+        //        this.getActivity().getWindow().setBackgroundDrawableResource(R.drawable.ic_chat_top);
         /**
          * Initialize the instance variables
          */
@@ -96,10 +95,7 @@ public class ChatFragment extends Fragment {
          * Get the database reference and build the query
          */
         DatabaseReference messagesRef = this.mDatabase.getReference().child(messagesPath);
-        FirebaseRecyclerOptions<ChatMessage> options =
-                new FirebaseRecyclerOptions.Builder<ChatMessage>()
-                        .setQuery(messagesRef, ChatMessage.class)
-                        .build();
+        FirebaseRecyclerOptions<ChatMessage> options = new FirebaseRecyclerOptions.Builder<ChatMessage>().setQuery(messagesRef, ChatMessage.class).build();
         this.chatAdapter = new ChatAdapter(options);
         this.chatAdapter.setSenderUUID(this.UUIDSender);
 
@@ -111,8 +107,7 @@ public class ChatFragment extends Fragment {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         this.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int screenWidth = displayMetrics.widthPixels;
-        int activityMargin =
-                Math.round(4 * getResources().getDimension(R.dimen.activity_horizontal_margin) / 3);
+        int activityMargin = Math.round(4 * getResources().getDimension(R.dimen.activity_horizontal_margin) / 3);
         this.chatAdapter.setWidth(screenWidth - activityMargin);
 
         recyclerViewChat.setAdapter(chatAdapter);
@@ -127,21 +122,17 @@ public class ChatFragment extends Fragment {
         this.getActivity().findViewById(R.id.buttonSendChatMessage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText editText =
-                        ((EditText) getActivity().findViewById(R.id.textInputChatMessage));
+                EditText editText = ((EditText) getActivity().findViewById(R.id.textInputChatMessage));
                 String text = editText.getText().toString();
                 ChatMessage message = new ChatMessage(text, UUIDReceiver);
                 mDatabase.getReference().child(messagesPath).push().setValue(message);
                 FirebaseFirestore.getInstance().collection("Customers").document(UUIDReceiver).get().addOnSuccessListener(result -> {
-                    mDatabase.getReference().child("conversations").child(UUIDReceiver).updateChildren(
-                            Stream.of(
-                                    new Pair<>("customerid", UUIDReceiver),
-                                    new Pair<>("email", result.getString("email")),
-                                    new Pair<>("timestamp", System.currentTimeMillis()),
-                                    new Pair<>("negative_timestamp", -System.currentTimeMillis()),
-                                    new Pair<>("lastmessage", message.getText())
-                            ).collect(Collectors.toMap(pair -> pair.first, pair -> pair.second))
-                    );
+                    mDatabase.getReference().child("conversations").child(UUIDReceiver).updateChildren(Stream.of(
+                            new Pair<>("customerid", UUIDReceiver),
+                            new Pair<>("email", result.getString("email")),
+                            new Pair<>("timestamp", System.currentTimeMillis()),
+                            new Pair<>("negative_timestamp", -System.currentTimeMillis()),
+                            new Pair<>("lastmessage", message.getText())).collect(Collectors.toMap(pair -> pair.first, pair -> pair.second)));
                 });
                 editText.getText().clear();
             }

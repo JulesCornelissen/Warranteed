@@ -8,11 +8,12 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import nl.tue.group2.Warranteed.ui.login.LoginActivity;
 import nl.tue.group2.Warranteed.ui.store.StoreConversationFragment;
 import nl.tue.group2.Warranteed.ui.store.StoreHomeFragment;
@@ -34,21 +35,20 @@ public class MainStoreActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.store_bottom_nav);
         navView.setOnNavigationItemSelectedListener(item -> {
             Fragment selectedFragment = null;
-            if (item.getItemId() == R.id.navigation_home)
+            if (item.getItemId() == R.id.navigation_home) {
                 selectedFragment = new StoreHomeFragment();
-            else if (item.getItemId() == R.id.navigation_chat)
+            } else if (item.getItemId() == R.id.navigation_chat) {
                 selectedFragment = new StoreConversationFragment();
+            }
 
             //Display the selected fragment
-            getSupportFragmentManager().beginTransaction().replace(R.id.store_fragment_container,
-                    selectedFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.store_fragment_container, selectedFragment).commit();
 
             return true;
         });
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.store_fragment_container,
-                    new StoreHomeFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.store_fragment_container, new StoreHomeFragment()).commit();
         }
 
         Intent intentLogout = new Intent(this, LoginActivity.class);

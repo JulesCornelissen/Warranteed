@@ -1,15 +1,15 @@
 package nl.tue.group2.Warranteed.ui.login;
 
+import android.util.Patterns;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import android.util.Patterns;
-
+import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.data.LoginRepository;
 import nl.tue.group2.Warranteed.data.Result;
 import nl.tue.group2.Warranteed.data.model.LoggedInUser;
-import nl.tue.group2.Warranteed.R;
 
 public class LoginViewModel extends ViewModel {
 

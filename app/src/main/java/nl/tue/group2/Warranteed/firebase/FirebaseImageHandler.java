@@ -22,6 +22,7 @@ public class FirebaseImageHandler {
     /**
      * Creates a unique id for an image in the given folder.
      * Should not be called on the main thread.
+     *
      * @param folder the folder to check for existing id
      * @return the found unique id, or null if an error occurred
      */
@@ -42,8 +43,9 @@ public class FirebaseImageHandler {
                 e.printStackTrace();
                 return null;
             }
-            if (success.get())
+            if (success.get()) {
                 break;
+            }
         }
         return imageId;
     }
@@ -51,20 +53,23 @@ public class FirebaseImageHandler {
     /**
      * Uploads an image to firebase in the given folder.
      * Should not be called on the main thread.
+     *
      * @param folder folder to put the image into
      * @param image  image to be uploaded
      * @return the id of the uploaded image
      */
     public static UUID uploadImage(String folder, Bitmap image) {
         UUID imageId = createImageId(folder);
-        if (imageId != null)
+        if (imageId != null) {
             return uploadImage(folder, imageId, image);
+        }
         return null;
     }
 
     /**
      * Uploads an image to firebase in the given folder with the given id.
      * Should not be called on the main thread.
+     *
      * @param folder  folder to put the image into
      * @param imageId id to use for the image
      * @param image   image to be uploaded
@@ -85,12 +90,17 @@ public class FirebaseImageHandler {
     /**
      * Downloads the image with the given id in the given folder from firebase.
      * Should not be called on the main thread.
+     *
      * @param folder  folder the image is in
      * @param imageId the id of the image
      * @return the downloaded image, or null if no image was found
      */
     public static Task<Bitmap> downloadImage(String folder, UUID imageId) {
-        return FirebaseStorage.getInstance().getReference().child(folder + "/" + imageId).getBytes(Long.MAX_VALUE).continueWith(result -> BitmapFactory.decodeStream(new ByteArrayInputStream(result.getResult())));
+        return FirebaseStorage.getInstance()
+                              .getReference()
+                              .child(folder + "/" + imageId)
+                              .getBytes(Long.MAX_VALUE)
+                              .continueWith(result -> BitmapFactory.decodeStream(new ByteArrayInputStream(result.getResult())));
     }
 
 }

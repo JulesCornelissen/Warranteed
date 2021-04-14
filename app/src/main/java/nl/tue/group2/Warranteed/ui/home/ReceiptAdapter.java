@@ -7,13 +7,14 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.Receipt;
 
@@ -31,7 +32,7 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
         String state = model.getState();
         if (state == null || state.equals("Valid")) {
             color = "#56D71A";
-        } else if (state.equals("Expiring")){
+        } else if (state.equals("Expiring")) {
             color = "#FEBE1A";
         } else {
             color = "#E70B0B";
@@ -50,8 +51,7 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
     @NonNull
     @Override
     public Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_row,
-                parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_row, parent, false);
         return new Viewholder(view);
     }
 
@@ -99,7 +99,7 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
     }
 
     //interface to be implemented
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(DocumentSnapshot documentSnapshot, int position);
     }
 
@@ -108,7 +108,7 @@ public class ReceiptAdapter extends FirestoreRecyclerAdapter<Receipt, ReceiptAda
     }
 
     //delete the receipt at the current position
-    public void delete(int position){
+    public void delete(int position) {
         getSnapshots().getSnapshot(position).getReference().delete();
     }
 }

@@ -1,8 +1,8 @@
 package nl.tue.group2.Warranteed.ui.login;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.annotation.NonNull;
 
 import nl.tue.group2.Warranteed.data.LoginDataSource;
 import nl.tue.group2.Warranteed.data.LoginRepository;

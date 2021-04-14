@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -21,10 +25,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import nl.tue.group2.Warranteed.MainActivity;
 import nl.tue.group2.Warranteed.R;
@@ -39,8 +39,7 @@ public class AddFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_add, container, false);
     }
 
@@ -51,53 +50,53 @@ public class AddFragment extends Fragment {
         this.receiptImage = null;
 
         // set the listeners for the 'take a picture' and 'upload from gallery' buttons
-        this.getActivity().findViewById(R.id.takeImageButton).setOnClickListener(
-                v -> PhotoHandler.requestImageCapture(this)
-        );
-        this.getActivity().findViewById(R.id.selectImageButton).setOnClickListener(
-                v -> PhotoHandler.requestSelectPhoto(this)
-        );
+        this.getActivity().findViewById(R.id.takeImageButton).setOnClickListener(v -> PhotoHandler.requestImageCapture(this));
+        this.getActivity().findViewById(R.id.selectImageButton).setOnClickListener(v -> PhotoHandler.requestSelectPhoto(this));
 
         // purchase and expiration date fields
         this.purchaseDate = Calendar.getInstance();
-        this.getActivity().findViewById(R.id.purchaseDateField).setOnClickListener(
-                v -> {
-                    DatePickerDialog.OnDateSetListener listener = (v2, year, month, day) -> {
-                        this.purchaseDate.set(Calendar.YEAR, year);
-                        this.purchaseDate.set(Calendar.MONTH, month);
-                        this.purchaseDate.set(Calendar.DAY_OF_MONTH, day);
-                        ((EditText) v).setText(new SimpleDateFormat("dd/MM/yyyy", Locale.US).format(this.purchaseDate.getTime()));
-                    };
-                    DatePickerDialog dialog = new DatePickerDialog(this.getContext(), listener, this.purchaseDate.get(Calendar.YEAR), this.purchaseDate.get(Calendar.MONTH), this.purchaseDate.get(Calendar.DAY_OF_MONTH));
-                    dialog.show();
-                }
-        );
+        this.getActivity().findViewById(R.id.purchaseDateField).setOnClickListener(v -> {
+            DatePickerDialog.OnDateSetListener listener = (v2, year, month, day) -> {
+                this.purchaseDate.set(Calendar.YEAR, year);
+                this.purchaseDate.set(Calendar.MONTH, month);
+                this.purchaseDate.set(Calendar.DAY_OF_MONTH, day);
+                ((EditText) v).setText(new SimpleDateFormat("dd/MM/yyyy", Locale.US).format(this.purchaseDate.getTime()));
+            };
+            DatePickerDialog dialog = new DatePickerDialog(
+                    this.getContext(),
+                    listener,
+                    this.purchaseDate.get(Calendar.YEAR),
+                    this.purchaseDate.get(Calendar.MONTH),
+                    this.purchaseDate.get(Calendar.DAY_OF_MONTH));
+            dialog.show();
+        });
         this.expirationDate = Calendar.getInstance();
-        this.getActivity().findViewById(R.id.expirationDateField).setOnClickListener(
-                v -> {
-                    DatePickerDialog.OnDateSetListener listener = (v2, year, month, day) -> {
-                        this.expirationDate.set(Calendar.YEAR, year);
-                        this.expirationDate.set(Calendar.MONTH, month);
-                        this.expirationDate.set(Calendar.DAY_OF_MONTH, day);
-                        ((EditText) v).setText(new SimpleDateFormat("dd/MM/yyyy", Locale.US).format(this.expirationDate.getTime()));
-                    };
-                    DatePickerDialog dialog = new DatePickerDialog(this.getContext(), listener, this.expirationDate.get(Calendar.YEAR), this.expirationDate.get(Calendar.MONTH), this.expirationDate.get(Calendar.DAY_OF_MONTH));
-                    dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-                    dialog.show();
-                }
-        );
+        this.getActivity().findViewById(R.id.expirationDateField).setOnClickListener(v -> {
+            DatePickerDialog.OnDateSetListener listener = (v2, year, month, day) -> {
+                this.expirationDate.set(Calendar.YEAR, year);
+                this.expirationDate.set(Calendar.MONTH, month);
+                this.expirationDate.set(Calendar.DAY_OF_MONTH, day);
+                ((EditText) v).setText(new SimpleDateFormat("dd/MM/yyyy", Locale.US).format(this.expirationDate.getTime()));
+            };
+            DatePickerDialog dialog = new DatePickerDialog(
+                    this.getContext(),
+                    listener,
+                    this.expirationDate.get(Calendar.YEAR),
+                    this.expirationDate.get(Calendar.MONTH),
+                    this.expirationDate.get(Calendar.DAY_OF_MONTH));
+            dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            dialog.show();
+        });
 
         // clear button
 
 
         // submit button
-        this.getActivity().findViewById(R.id.submitReceiptButton).setOnClickListener(
-                v -> {
-                    if (this.validateFields()) {
-                        new Thread(this::completeReceipt).start();
-                    }
-                }
-        );
+        this.getActivity().findViewById(R.id.submitReceiptButton).setOnClickListener(v -> {
+            if (this.validateFields()) {
+                new Thread(this::completeReceipt).start();
+            }
+        });
     }
 
     @Override
@@ -105,17 +104,20 @@ public class AddFragment extends Fragment {
         Bitmap image = null;
 
         // capture taken photo
-        if (PhotoHandler.isImageCaptureRequest(requestCode))
+        if (PhotoHandler.isImageCaptureRequest(requestCode)) {
             image = PhotoHandler.getCapturedImageFromActivityResult(requestCode, resultCode, data);
-            // capture selected image
-        else if (PhotoHandler.isSelectPhotoRequest(requestCode))
+        }
+        // capture selected image
+        else if (PhotoHandler.isSelectPhotoRequest(requestCode)) {
             image = PhotoHandler.getSelectedPhotoFromActivityResult(this.getActivity(), requestCode, resultCode, data);
+        }
 
         if (image != null) {
             this.setReceiptImage(image);
             View view = this.getActivity().findViewById(R.id.imageView);
-            if (view instanceof ImageView)
+            if (view instanceof ImageView) {
                 ((ImageView) view).setImageBitmap(image);
+            }
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -127,6 +129,7 @@ public class AddFragment extends Fragment {
 
     /**
      * Checks that all fields have valid data, otherwise it displays an error
+     *
      * @return true if all fields are valid
      */
     private boolean validateFields() {
@@ -160,8 +163,9 @@ public class AddFragment extends Fragment {
             valid = false;
         }
         // image
-        if (this.receiptImage == null)
+        if (this.receiptImage == null) {
             valid = false;
+        }
 
         return valid;
     }
@@ -180,8 +184,9 @@ public class AddFragment extends Fragment {
 
         // upload the image to firebase storage
         UUID imageId = FirebaseImageHandler.uploadImage("receipt", image);
-        if (imageId == null)
+        if (imageId == null) {
             return;
+        }
 
         //Calculate Duration (Mourad)
         String duration = "";
@@ -214,9 +219,13 @@ public class AddFragment extends Fragment {
         data.put("image", imageId.toString());
         data.put("email", email);
         // create a new receipt in firebase
-        FirebaseFirestore.getInstance().collection("Receipt").document().set(data).addOnCompleteListener(
-                task -> this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit()
-        );
+        FirebaseFirestore.getInstance().collection("Receipt").document().set(data).addOnCompleteListener(task -> this.getActivity()
+                                                                                                                     .getSupportFragmentManager()
+                                                                                                                     .beginTransaction()
+                                                                                                                     .replace(
+                                                                                                                             R.id.fragment_container,
+                                                                                                                             new HomeFragment())
+                                                                                                                     .commit());
         MainActivity.updateReceiptStates();
     }
 }

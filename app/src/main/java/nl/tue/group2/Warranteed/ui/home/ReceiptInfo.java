@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StreamDownloadTask;
@@ -18,7 +20,6 @@ import com.google.firebase.storage.StreamDownloadTask;
 import java.io.InputStream;
 import java.util.Objects;
 
-import androidx.appcompat.app.AppCompatActivity;
 import nl.tue.group2.Warranteed.MainActivity;
 import nl.tue.group2.Warranteed.R;
 
@@ -74,30 +75,34 @@ public class ReceiptInfo extends AppCompatActivity {
      * sets the image of the receipt to the image view
      * picture_path is the location of the picture in firebase storage
      */
-    public void getReceiptImage(String picture_path){
+    public void getReceiptImage(String picture_path) {
         //to prioritze downloading the stream
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         //get stream at the file location
-        FirebaseStorage.getInstance().getReference().child("receipt/").child(picture_path).getStream()
-                .addOnSuccessListener(new OnSuccessListener<StreamDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(StreamDownloadTask.TaskSnapshot taskSnapshot) {
-                        //when successful an InputStream is returned
-                        InputStream stream = taskSnapshot.getStream();
-                        //make a bitmap of this sream
-                        Bitmap bitmap = BitmapFactory.decodeStream(stream);
-                        //set the bitmap as image to the button and image view
-                        bt_expand_image.setImageBitmap(bitmap);
-                        img_expanded.setImageBitmap(bitmap);
-                    }
-                });
+        FirebaseStorage.getInstance()
+                       .getReference()
+                       .child("receipt/")
+                       .child(picture_path)
+                       .getStream()
+                       .addOnSuccessListener(new OnSuccessListener<StreamDownloadTask.TaskSnapshot>() {
+                           @Override
+                           public void onSuccess(StreamDownloadTask.TaskSnapshot taskSnapshot) {
+                               //when successful an InputStream is returned
+                               InputStream stream = taskSnapshot.getStream();
+                               //make a bitmap of this sream
+                               Bitmap bitmap = BitmapFactory.decodeStream(stream);
+                               //set the bitmap as image to the button and image view
+                               bt_expand_image.setImageBitmap(bitmap);
+                               img_expanded.setImageBitmap(bitmap);
+                           }
+                       });
     }
 
     /*
      * Sets OnClickListeners to bt_expand_image, img_expanded and bt_return
      */
-    public void setListeners(){
+    public void setListeners() {
         //click on the picture to enlarge it
         bt_expand_image.setOnClickListener(new View.OnClickListener() {
             @Override

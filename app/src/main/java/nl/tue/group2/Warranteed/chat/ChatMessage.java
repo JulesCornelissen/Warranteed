@@ -19,6 +19,7 @@ public class ChatMessage {
 
     /**
      * Set the text of this chat message, automatically updates the time.
+     *
      * @param text The text of the message.
      */
     public void setText(String text) {
@@ -41,7 +42,6 @@ public class ChatMessage {
     public long getTimestamp() {
         return this.timestamp;
     }
-
 
 
 }

@@ -8,6 +8,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -16,9 +20,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import nl.tue.group2.Warranteed.MainActivity;
 import nl.tue.group2.Warranteed.MainStoreActivity;
 import nl.tue.group2.Warranteed.R;
@@ -39,8 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         //sets up variables
-        loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
-                .get(LoginViewModel.class);
+        loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory()).get(LoginViewModel.class);
         usernameEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.login);
@@ -64,46 +64,38 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
             //if data is correct user can log in
-            FirebaseAuth.getInstance().signInWithEmailAndPassword(Email, password1)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                                Intent intentCustomer = new Intent(LoginActivity.this,
-                                        MainActivity.class);
-                                Intent intentStore = new Intent(LoginActivity.this,
-                                        MainStoreActivity.class);
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(Email, password1).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                        Intent intentCustomer = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intentStore = new Intent(LoginActivity.this, MainStoreActivity.class);
 
-                                // it gets checked if the user was a customer or store owner
-                                db.collection("Customers").document(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            DocumentSnapshot document = task.getResult();
-                                            boolean usertype = document.getBoolean("is store " +
-                                                    "owner");
-                                            System.out.println(usertype);
-                                            //user gets send to the right screen.
-                                            if (usertype) {
-                                                Toast.makeText(LoginActivity.this,
-                                                        getString(R.string.msgStoreLogin),
-                                                        Toast.LENGTH_SHORT).show();
-                                                startActivity(intentStore);
-                                            } else {
-                                                Toast.makeText(LoginActivity.this,
-                                                        getString(R.string.msgCustomerLogin),
-                                                        Toast.LENGTH_SHORT).show();
-                                                startActivity(intentCustomer);
-                                            }
-                                        }
+                        // it gets checked if the user was a customer or store owner
+                        db.collection("Customers").document(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    boolean usertype = document.getBoolean("is store " + "owner");
+                                    System.out.println(usertype);
+                                    //user gets send to the right screen.
+                                    if (usertype) {
+                                        Toast.makeText(LoginActivity.this, getString(R.string.msgStoreLogin), Toast.LENGTH_SHORT).show();
+                                        startActivity(intentStore);
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, getString(R.string.msgCustomerLogin), Toast.LENGTH_SHORT).show();
+                                        startActivity(intentCustomer);
                                     }
-                                });
-                            } else {
-                                usernameEditText.setError(getString(R.string.msgWrongCredentials));
+                                }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        usernameEditText.setError(getString(R.string.msgWrongCredentials));
+                    }
+                }
+            });
         });
     }
 
@@ -125,12 +117,10 @@ public class LoginActivity extends AppCompatActivity {
                         System.out.println(usertype);
                         //user gets send to the right screen.
                         if (usertype) {
-                            Toast.makeText(LoginActivity.this, getString(R.string.msgStoreLogin),
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, getString(R.string.msgStoreLogin), Toast.LENGTH_SHORT).show();
                             startActivity(intentStore);
                         } else {
-                            Toast.makeText(LoginActivity.this,
-                                    getString(R.string.msgCustomerLogin), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, getString(R.string.msgCustomerLogin), Toast.LENGTH_SHORT).show();
                             startActivity(intentCustomer);
                         }
                     }

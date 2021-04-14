@@ -4,13 +4,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.firebase.FireBase;
 
@@ -46,8 +47,9 @@ public class ConversationAdapter extends FirebaseRecyclerAdapter<ConversationAda
 
     public static FirebaseRecyclerOptions<Conversation> createOptions(String searchText) {
         Query query = FirebaseDatabase.getInstance(FireBase.FIREBASE_DATABASE_URL).getReference().child("conversations");
-        if (searchText != null && !searchText.trim().isEmpty())
+        if (searchText != null && !searchText.trim().isEmpty()) {
             query = query.orderByChild("email").startAt(searchText.trim()).endAt(searchText.trim() + '\uf8ff');
+        }
         query = query.orderByChild("negative_timestamp");
         return new FirebaseRecyclerOptions.Builder<Conversation>().setQuery(query, Conversation.class).build();
     }
