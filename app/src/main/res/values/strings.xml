@@ -18,6 +18,7 @@
     <string name="text_forgotPass">Forgot password?</string>
     <string name="label_email">E-mail address</string>
     <string name="label_password">Password</string>
+    <string name="label_repeat_password">Repeat password</string>
     <string name="text_login">Login</string>
     <string name="text_register">Register</string>
     <string name="cust">Customer</string>
