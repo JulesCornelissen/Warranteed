@@ -78,7 +78,6 @@ public class LoginActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     DocumentSnapshot document = task.getResult();
                                     boolean usertype = document.getBoolean("is store " + "owner");
-                                    System.out.println(usertype);
                                     //user gets send to the right screen.
                                     if (usertype) {
                                         Toast.makeText(LoginActivity.this, getString(R.string.msgStoreLogin), Toast.LENGTH_SHORT).show();
@@ -120,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         boolean usertype = document.contains("is store owner")
                                 && document.getBoolean("is store owner");
-                        System.out.println(usertype);
+
                         //user gets send to the right screen.
                         if (usertype) {
                             Toast.makeText(LoginActivity.this, getString(R.string.msgStoreLogin), Toast.LENGTH_SHORT).show();
