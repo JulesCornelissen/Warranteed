@@ -8,10 +8,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -20,6 +16,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import nl.tue.group2.Warranteed.MainActivity;
 import nl.tue.group2.Warranteed.MainStoreActivity;
 import nl.tue.group2.Warranteed.R;
@@ -113,7 +112,14 @@ public class LoginActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
-                        boolean usertype = document.getBoolean("is store owner");
+                        if (!document.exists()) {
+                            // in case of missing database files for the user prevent a crash and
+                            // log them out
+                            FirebaseAuth.getInstance().signOut();
+                            return;
+                        }
+                        boolean usertype = document.contains("is store owner")
+                                && document.getBoolean("is store owner");
                         System.out.println(usertype);
                         //user gets send to the right screen.
                         if (usertype) {
