@@ -18,9 +18,6 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +29,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import nl.tue.group2.Warranteed.notifications.Alarm;
 import nl.tue.group2.Warranteed.notifications.NotificationHandler;
 import nl.tue.group2.Warranteed.notifications.NotificationManager;
@@ -42,10 +41,8 @@ import nl.tue.group2.Warranteed.ui.login.LoginActivity;
 import nl.tue.group2.Warranteed.ui.store.StoreFragment;
 
 public class MainActivity extends AppCompatActivity {
-    //initialize the variables
-    private FirebaseAuth mAuth;
-    private FirebaseAuth firebaseAuth;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     //get current user
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     //get email of curent user
@@ -155,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         //get the current user
-                        FirebaseUser currentuser = firebaseAuth.getInstance().getCurrentUser();
+                        FirebaseUser currentuser = FirebaseAuth.getInstance().getCurrentUser();
                         //sign the user out
                         FirebaseAuth.getInstance().signOut();
                         //delete the account of the user
