@@ -10,10 +10,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,6 +22,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import nl.tue.group2.Warranteed.MainActivity;
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.firebase.FirebaseImageHandler;
@@ -87,9 +86,6 @@ public class AddFragment extends Fragment {
             dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
             dialog.show();
         });
-
-        // clear button
-
 
         // submit button
         this.getActivity().findViewById(R.id.submitReceiptButton).setOnClickListener(v -> {
@@ -219,13 +215,14 @@ public class AddFragment extends Fragment {
         data.put("image", imageId.toString());
         data.put("email", email);
         // create a new receipt in firebase
-        FirebaseFirestore.getInstance().collection("Receipt").document().set(data).addOnCompleteListener(task -> this.getActivity()
-                                                                                                                     .getSupportFragmentManager()
-                                                                                                                     .beginTransaction()
-                                                                                                                     .replace(
-                                                                                                                             R.id.fragment_container,
-                                                                                                                             new HomeFragment())
-                                                                                                                     .commit());
+        FirebaseFirestore.getInstance().collection("Receipt").document().set(data)
+                .addOnCompleteListener(task -> this.getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(
+                                R.id.fragment_container,
+                                new HomeFragment())
+                        .commit());
         MainActivity.updateReceiptStates();
     }
 }
