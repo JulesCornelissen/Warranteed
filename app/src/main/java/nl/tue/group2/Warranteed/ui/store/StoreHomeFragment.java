@@ -13,10 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -24,6 +20,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import nl.tue.group2.Warranteed.R;
 import nl.tue.group2.Warranteed.firebase.FirebaseImageHandler;
 import nl.tue.group2.Warranteed.ui.add.PhotoHandler;
@@ -60,19 +59,19 @@ public class StoreHomeFragment extends Fragment {
         // Set the image press handlers
         this.getActivity().findViewById(R.id.imageViewLogo).setOnClickListener(v -> {
             this.databaseImageKey = "logo";
-            PhotoHandler.requestImageCapture(this);
+            PhotoHandler.requestSelectPhoto(this);
         });
         this.getActivity().findViewById(R.id.imageViewPicture1).setOnClickListener(v -> {
             this.databaseImageKey = "picture1";
-            PhotoHandler.requestImageCapture(this);
+            PhotoHandler.requestSelectPhoto(this);
         });
         this.getActivity().findViewById(R.id.imageViewPicture2).setOnClickListener(v -> {
             this.databaseImageKey = "picture2";
-            PhotoHandler.requestImageCapture(this);
+            PhotoHandler.requestSelectPhoto(this);
         });
         this.getActivity().findViewById(R.id.imageViewPicture3).setOnClickListener(v -> {
             this.databaseImageKey = "picture3";
-            PhotoHandler.requestImageCapture(this);
+            PhotoHandler.requestSelectPhoto(this);
         });
     }
 
